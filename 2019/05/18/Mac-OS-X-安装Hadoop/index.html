@@ -8,18 +8,18 @@
   <link rel="dns-prefetch" href="https://github.com/RookieLinLucy666/study.github.io">
   <title>Mac OS X 安装Hadoop | 散自己财童子小林</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="Mac安装JDK##下载安装JDK  进入Oracle官网 找到Java SE 8u211，点击Download下载JDK 选择Accept License Agreement，登录Oracle账号(可免费申请)，点击Mac OS X x64选项即可下载  配置环境变量bash 打开vi ~/.bash_profile 输入i在文件末尾添加export JAVA_HOME=$(/usr/libex">
+  <meta name="description" content="Mac安装JDK##下载安装JDK  进入Oracle官网 找到Java SE 8u211，点击Download下载JDK 选择Accept License Agreement，登录Oracle账号(可免费申请)，点击Mac OS X x64选项即可下载">
 <meta name="keywords" content="2019,Hadoop">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Mac OS X 安装Hadoop">
 <meta property="og:url" content="https://github.com/RookieLinLucy666/study.github.io/2019/05/18/Mac-OS-X-安装Hadoop/index.html">
 <meta property="og:site_name" content="散自己财童子小林">
-<meta property="og:description" content="Mac安装JDK##下载安装JDK  进入Oracle官网 找到Java SE 8u211，点击Download下载JDK 选择Accept License Agreement，登录Oracle账号(可免费申请)，点击Mac OS X x64选项即可下载  配置环境变量bash 打开vi ~/.bash_profile 输入i在文件末尾添加export JAVA_HOME=$(/usr/libex">
+<meta property="og:description" content="Mac安装JDK##下载安装JDK  进入Oracle官网 找到Java SE 8u211，点击Download下载JDK 选择Accept License Agreement，登录Oracle账号(可免费申请)，点击Mac OS X x64选项即可下载">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-05-18T02:18:04.953Z">
+<meta property="og:updated_time" content="2019-05-18T02:29:31.361Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Mac OS X 安装Hadoop">
-<meta name="twitter:description" content="Mac安装JDK##下载安装JDK  进入Oracle官网 找到Java SE 8u211，点击Download下载JDK 选择Accept License Agreement，登录Oracle账号(可免费申请)，点击Mac OS X x64选项即可下载  配置环境变量bash 打开vi ~/.bash_profile 输入i在文件末尾添加export JAVA_HOME=$(/usr/libex">
+<meta name="twitter:description" content="Mac安装JDK##下载安装JDK  进入Oracle官网 找到Java SE 8u211，点击Download下载JDK 选择Accept License Agreement，登录Oracle账号(可免费申请)，点击Mac OS X x64选项即可下载">
   
     <link rel="alternative" href="/atom.xml" title="散自己财童子小林" type="application/atom+xml">
   
@@ -185,6 +185,7 @@
 <li>找到Java SE 8u211，点击Download下载JDK</li>
 <li>选择Accept License Agreement，登录Oracle账号(可免费申请)，点击Mac OS X x64选项即可下载</li>
 </ul>
+<a id="more"></a>
 <h2 id="配置环境变量"><a href="#配置环境变量" class="headerlink" title="配置环境变量"></a>配置环境变量</h2><h3 id="bash"><a href="#bash" class="headerlink" title="bash"></a>bash</h3><ul>
 <li>打开<code>vi ~/.bash_profile</code></li>
 <li>输入<code>i</code>在文件末尾添加<code>export JAVA_HOME=$(/usr/libexec/java_home)</code>，并按<code>esc</code>，输入<code>:wq!</code>保存。</li>
@@ -407,25 +408,38 @@
   
 
 
-  <div id="gitalk-container"></div>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
-<script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
-<script src="https://cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.js"></script>
-
+  <div id="comment"></div>
+<script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+<script src="//unpkg.com/valine/dist/Valine.min.js"></script>
 <script>
-var gitalk = new Gitalk({
-  clientID: '',
-  clientSecret: '',
-  repo: 'study.github.io',
-  owner: 'RookieLinLucy666',
-  admin: ['RookieLinLucy666'],
-  id: md5(window.location.pathname),
-  distractionFreeMode: true
-})
-
-gitalk.render('gitalk-container')
-</script>
-
+    new Valine({
+        el: '#comment' ,
+        notify:false, 
+        verify:false, 
+        appId: 'KOatHx97rx1usjL7LvbACcAp-gzGzoHsz',
+        appKey: 'G2lD18ciRjNRTTtxwxq9HdhB',
+        placeholder: 'ヾﾉ≧∀≦)o欢迎评论!',
+        path:window.location.pathname, 
+        avatar:'mm' 
+    });
+    document.body.addEventListener('click', function(e) {
+        if (e.target.classList.contains('vsubmit')) {
+            const email = document.querySelector('input[type=email]');
+            const nick = document.querySelector('input[name=nick]');
+            if (!email.value || !nick.value) {
+                const str = `<div class="valert txt-center"><div class="vtext">请填写昵称和邮箱！</div></div>`;
+                const vmark = document.querySelector('.vmark');
+                vmark.innerHTML = str;
+                vmark.style.display = 'block';
+                setTimeout(function() {
+                    vmark.style.display = 'none';
+                    vmark.innerHTML = '';
+                }, 2500);
+            }
+        }
+        });
+    </script>
+  
 
           </div>
         </div>
