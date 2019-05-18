@@ -370,6 +370,15 @@
   
 <nav id="article-nav">
   
+    <a href="/study.github.io/2019/05/18/Code-War-Practice/" id="article-nav-newer" class="article-nav-link-wrap">
+      <i class="icon-circle-left"></i>
+      <div class="article-nav-title">
+        
+          Code War Practice
+        
+      </div>
+    </a>
+  
   
     <a href="/study.github.io/2019/05/15/Hello-World-0/" id="article-nav-older" class="article-nav-link-wrap">
       <div class="article-nav-title">Hello World </div>
@@ -404,42 +413,29 @@
   
 
   
-
   
-
-
-  <div id="comment"></div>
+    <section id="comments" style="margin:10px;padding:10px;background:#fff;">
+      <div id="vcomment" class="comment"></div> 
 <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
 <script src="//unpkg.com/valine/dist/Valine.min.js"></script>
 <script>
-    new Valine({
-        el: '#comment' ,
-        notify:false, 
-        verify:false, 
-        appId: 'KOatHx97rx1usjL7LvbACcAp-gzGzoHsz',
-        appKey: 'G2lD18ciRjNRTTtxwxq9HdhB',
-        placeholder: 'ヾﾉ≧∀≦)o欢迎评论!',
-        path:window.location.pathname, 
-        avatar:'mm' 
-    });
-    document.body.addEventListener('click', function(e) {
-        if (e.target.classList.contains('vsubmit')) {
-            const email = document.querySelector('input[type=email]');
-            const nick = document.querySelector('input[name=nick]');
-            if (!email.value || !nick.value) {
-                const str = `<div class="valert txt-center"><div class="vtext">请填写昵称和邮箱！</div></div>`;
-                const vmark = document.querySelector('.vmark');
-                vmark.innerHTML = str;
-                vmark.style.display = 'block';
-                setTimeout(function() {
-                    vmark.style.display = 'none';
-                    vmark.innerHTML = '';
-                }, 2500);
-            }
-        }
+   var notify = 'false' == true ? true : false;
+   var verify = 'false' == true ? true : false;
+    window.onload = function() {
+        new Valine({
+            el: '.comment',
+            notify: notify,
+            verify: verify,
+            app_id: "KOatHx97rx1usjL7LvbACcAp-gzGzoHsz",
+            app_key: "G2lD18ciRjNRTTtxwxq9HdhB",
+            placeholder: "Just go go",
+            avatar:"mm"
         });
-    </script>
+    }
+</script>
+    </section>
   
+
 
           </div>
         </div>
@@ -543,6 +539,10 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">2019</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">codewar</a>
               </li>
              
               <li class="article-tag-list-item">
