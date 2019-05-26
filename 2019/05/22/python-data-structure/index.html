@@ -19,7 +19,7 @@
 <meta property="og:image" content="https://github.com/RookieLinLucy666/study.github.io/2019/05/22/python-data-structure/BFS:DFS.png">
 <meta property="og:image" content="https://github.com/RookieLinLucy666/study.github.io/2019/05/22/python-data-structure/BFS:DFS.png">
 <meta property="og:image" content="https://github.com/RookieLinLucy666/study.github.io/2019/05/22/python-data-structure/Dijkstra.png">
-<meta property="og:updated_time" content="2019-05-22T03:18:00.393Z">
+<meta property="og:updated_time" content="2019-05-22T03:22:47.263Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="python: data structure">
 <meta name="twitter:description" content="This article is to introduce three algorithm of data structrue including BFS, DFS and Dijkstra. And it gives the code of these algorithm.">
@@ -65,6 +65,10 @@
 				<li><a href="/study.github.io/tags/2019/">2019</a></li>
 	        
 				<li><a href="/study.github.io/">主页</a></li>
+	        
+				<li><a href="/study.github.io/tags/区块链/">区块链</a></li>
+	        
+				<li><a href="/study.github.io/tags/python/">python</a></li>
 	        
 			</ul>
 		</nav>
@@ -124,6 +128,10 @@
 			
 				
 			
+				
+			
+				
+			
 			
 			
 			<nav class="header-nav">
@@ -143,12 +151,16 @@
 			</nav>
 
 			<nav class="header-menu js-header-menu">
-				<ul style="width: 50%">
+				<ul style="width: 70%">
 				
 				
-					<li style="width: 50%"><a href="/study.github.io/tags/2019/">2019</a></li>
+					<li style="width: 25%"><a href="/study.github.io/tags/2019/">2019</a></li>
 		        
-					<li style="width: 50%"><a href="/study.github.io/">主页</a></li>
+					<li style="width: 25%"><a href="/study.github.io/">主页</a></li>
+		        
+					<li style="width: 25%"><a href="/study.github.io/tags/区块链/">区块链</a></li>
+		        
+					<li style="width: 25%"><a href="/study.github.io/tags/python/">python</a></li>
 		        
 				</ul>
 			</nav>
@@ -185,17 +197,20 @@
       
         <p>This article is to introduce three algorithm of data structrue including BFS, DFS and Dijkstra. And it gives the code of these algorithm.</p>
 <a id="more"></a>
-<h1 id="BFS-广度优先遍历算法"><a href="#BFS-广度优先遍历算法" class="headerlink" title="BFS 广度优先遍历算法"></a>BFS 广度优先遍历算法</h1><p>Data structure: queue</p>
+<h1 id="BFS-广度优先遍历算法"><a href="#BFS-广度优先遍历算法" class="headerlink" title="BFS 广度优先遍历算法"></a>BFS 广度优先遍历算法</h1><p>Link:<a href="https://www.youtube.com/watch?v=bD8RT0ub--0" target="_blank" rel="noopener">BFS/DFS</a></p>
+<p>Data structure: queue</p>
 <p>Chart:</p>
 <p><img src="/RookieLinLucy666/study.github.io/2019/05/22/python-data-structure/BFS:DFS.png" alt="BFS"></p>
 <p>Code:</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">graph = &#123;</span><br><span class="line">    <span class="string">'A'</span>:[<span class="string">'B'</span>,<span class="string">'C'</span>],</span><br><span class="line">    <span class="string">'B'</span>:[<span class="string">'A'</span>,<span class="string">'C'</span>,<span class="string">'D'</span>],</span><br><span class="line">    <span class="string">'C'</span>:[<span class="string">'A'</span>,<span class="string">'B'</span>,<span class="string">'D'</span>,<span class="string">'E'</span>],</span><br><span class="line">    <span class="string">'D'</span>:[<span class="string">'B'</span>,<span class="string">'C'</span>,<span class="string">'E'</span>,<span class="string">'F'</span>],</span><br><span class="line">    <span class="string">'E'</span>:[<span class="string">'C'</span>,<span class="string">'D'</span>],</span><br><span class="line">    <span class="string">'F'</span>:[<span class="string">'D'</span>]</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">BFS</span><span class="params">(graph, start)</span>:</span></span><br><span class="line">    queue = []</span><br><span class="line">    queue.append(start)</span><br><span class="line">    seen = set()</span><br><span class="line">    seen.add(start)</span><br><span class="line">    parent = &#123;start: <span class="literal">None</span>&#125;</span><br><span class="line">    <span class="keyword">while</span> len(queue) &gt; <span class="number">0</span>:</span><br><span class="line">        vertex = queue.pop(<span class="number">0</span>)</span><br><span class="line">        nodes = graph[vertex]</span><br><span class="line">        <span class="keyword">for</span> node <span class="keyword">in</span> nodes:</span><br><span class="line">            <span class="keyword">if</span> node <span class="keyword">not</span> <span class="keyword">in</span> seen:</span><br><span class="line">                queue.append(node)</span><br><span class="line">                seen.add(node)</span><br><span class="line">                parent[node] = vertex</span><br><span class="line">        print(vertex)</span><br><span class="line">    <span class="keyword">return</span> parent</span><br><span class="line"></span><br><span class="line">parent = BFS(graph, <span class="string">'A'</span>)</span><br><span class="line"><span class="keyword">for</span> key <span class="keyword">in</span> parent:</span><br><span class="line">    print(key, parent[key])</span><br></pre></td></tr></table></figure>
-<h1 id="DFS-深度优先遍历算法"><a href="#DFS-深度优先遍历算法" class="headerlink" title="DFS 深度优先遍历算法"></a>DFS 深度优先遍历算法</h1><p>Data structure: stack</p>
+<h1 id="DFS-深度优先遍历算法"><a href="#DFS-深度优先遍历算法" class="headerlink" title="DFS 深度优先遍历算法"></a>DFS 深度优先遍历算法</h1><p>Link:<a href="https://www.youtube.com/watch?v=bD8RT0ub--0" target="_blank" rel="noopener">BFS/DFS</a></p>
+<p>Data structure: stack</p>
 <p>Chart:</p>
 <p><img src="/RookieLinLucy666/study.github.io/2019/05/22/python-data-structure/BFS:DFS.png" alt="DFS"></p>
 <p>Code:</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">graph = &#123;</span><br><span class="line">    <span class="string">'A'</span>:[<span class="string">'B'</span>,<span class="string">'C'</span>],</span><br><span class="line">    <span class="string">'B'</span>:[<span class="string">'A'</span>,<span class="string">'C'</span>,<span class="string">'D'</span>],</span><br><span class="line">    <span class="string">'C'</span>:[<span class="string">'A'</span>,<span class="string">'B'</span>,<span class="string">'D'</span>,<span class="string">'E'</span>],</span><br><span class="line">    <span class="string">'D'</span>:[<span class="string">'B'</span>,<span class="string">'C'</span>,<span class="string">'E'</span>,<span class="string">'F'</span>],</span><br><span class="line">    <span class="string">'E'</span>:[<span class="string">'C'</span>,<span class="string">'D'</span>],</span><br><span class="line">    <span class="string">'F'</span>:[<span class="string">'D'</span>]</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">DFS</span><span class="params">(graph, start)</span>:</span></span><br><span class="line">    stack = []</span><br><span class="line">    stack.append(start)</span><br><span class="line">    seen = set()</span><br><span class="line">    seen.add(start)</span><br><span class="line">    parent = &#123;start: <span class="literal">None</span>&#125;</span><br><span class="line">    <span class="keyword">while</span> len(stack) &gt; <span class="number">0</span>:</span><br><span class="line">        vertex = stack.pop()</span><br><span class="line">        nodes = graph[vertex]</span><br><span class="line">        <span class="keyword">for</span> node <span class="keyword">in</span> nodes:</span><br><span class="line">            <span class="keyword">if</span> node <span class="keyword">not</span> <span class="keyword">in</span> seen:</span><br><span class="line">                stack.append(node)</span><br><span class="line">                seen.add(node)</span><br><span class="line">                parent[node] = vertex</span><br><span class="line">        print(vertex)</span><br><span class="line">    <span class="keyword">return</span> parent</span><br><span class="line"></span><br><span class="line">parent = DFS(graph, <span class="string">'A'</span>)</span><br><span class="line"><span class="keyword">for</span> key <span class="keyword">in</span> parent.keys():</span><br><span class="line">    print(key, parent[key])</span><br></pre></td></tr></table></figure>
 <p>#Dijkstra 迪杰斯特拉算法</p>
+<p>Link:<a href="https://www.youtube.com/watch?v=9wV1VxlfBlI&amp;t=242s" target="_blank" rel="noopener">Dijkstra</a></p>
 <p>Data structure: priority queue</p>
 <p>Chart:</p>
 <p><img src="/RookieLinLucy666/study.github.io/2019/05/22/python-data-structure/Dijkstra.png" alt="Dijkstra"></p>
@@ -318,6 +333,15 @@
 
   
 <nav id="article-nav">
+  
+    <a href="/study.github.io/2019/05/22/python-Getting-along-with-Integer-Partitions/" id="article-nav-newer" class="article-nav-link-wrap">
+      <i class="icon-circle-left"></i>
+      <div class="article-nav-title">
+        
+          python:Getting along with Integer Partitions
+        
+      </div>
+    </a>
   
   
     <a href="/study.github.io/2019/05/18/Code-War-Practice/" id="article-nav-older" class="article-nav-link-wrap">
@@ -491,6 +515,14 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">python</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">algorithm</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">区块链</a>
               </li>
             
             <div class="clearfix"></div>
