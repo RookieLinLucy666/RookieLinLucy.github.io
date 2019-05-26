@@ -28,7 +28,7 @@
 <meta property="og:image" content="https://github.com/RookieLinLucy666/study.github.io/2019/05/25/从比特币到以太坊/Base58Check编码的具体规则.png">
 <meta property="og:image" content="https://github.com/RookieLinLucy666/study.github.io/2019/05/25/从比特币到以太坊/HD钱包逻辑.png">
 <meta property="og:image" content="https://github.com/RookieLinLucy666/study.github.io/2019/05/25/从比特币到以太坊/MerklePath.png">
-<meta property="og:updated_time" content="2019-05-26T14:47:22.754Z">
+<meta property="og:updated_time" content="2019-05-26T15:27:33.483Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="从比特币到以太坊上">
 <meta name="twitter:description" content="[TOC]">
@@ -202,6 +202,9 @@
         
       </header>
     
+<!-- 目录内容 -->
+
+<!-- 目录内容结束 -->
     <div class="article-entry" itemprop="articleBody">
       
         <p>[TOC]</p>
@@ -387,13 +390,13 @@
 <p>首先就是比特币交易中对脚本系统的使用，这也是最初设计脚本系统的初衷。</p>
 <p>已知，在比特币交易的“输出”中有一个字段 scriptPubKey，保存的是“锁定脚本”。锁定脚本也就是一个自定义的谜题，以此来限定只有能解开此谜题的那个后续“输 入”才能花费/使用这个“输出”。</p>
 <p>对于比特币系统中的绝大部分转账交易，其锁定脚本都是类似的，叫做“Pay-to-Public-Key- Hash”或“P2PKH”脚本，这个脚本的写法是固定的，如下所示:</p>
-<p>OP_DUP OP_HASH160 <public key hash> OP_EQUALVERIFY OP_CHECKSIG</public></p>
-<p>其中的 <public key hash> 就是收款人的地址所对应的公钥的 RIPEMD160 哈希值，这个公钥哈希可以通过收款人的比特币地址解码得到（比特币地址是公钥哈希通过base58 check编码得到）。</public></p>
+<p>OP_DUP OP_HASH160 &lt;Public Key Hash&gt; OP_EQUALVERIFY OP_CHECKSIG</p>
+<p>其中的 &lt;Public Key Hash&gt;就是收款人的地址所对应的公钥的 RIPEMD160 哈希值，这个公钥哈希可以通过收款人的比特币地址解码得到（比特币地址是公钥哈希通过base58 check编码得到）。</p>
 <p>那么后续交易中的“输入”要使用这个输出，就必须提供一个“解锁脚本”。也就是比特币交易的“输入”数据的 scriptSig 字段。对于上述锁定脚本，其解锁脚本的写法也是固定的， 如下所示:</p>
-<p><signature> <public key></public></signature></p>
-<p>其中的 <publickey> 就是收款人的公钥，<signature> 就是用收款人的私钥对整个交易数据的哈希值的签名。</signature></publickey></p>
+<p>&lt;Signature&gt; &lt;Public Key&gt;</p>
+<p>其中的 &lt;PublicKey&gt; 就是收款人的公钥，&lt;Signature&gt; 就是用收款人的私钥对整个交易数据的哈希值的签名。</p>
 <p>比特币系统在验证后续交易的“输入”的合法性时，会把后续交易输入中的 scriptSig 和这个输入所引用的输出中的 scirptPubKey 这两个字段的值拼接在一起组成一个脚本代码，并执行，如果这个脚本代码最终在栈顶返回 1(也就是 true)这个“输入”才是合法的。在上述这个最常见的例子里，拼接之后的完整验证脚本代码就将是:</p>
-<p><signature> <public key> OP_DUP OP_HASH160 <public key hash> OP_EQUALVERIFY OP_CHECKSIG</public></public></signature></p>
+<p>&lt;Signature&gt; &lt;Public Key&gt; OP_DUP OP_HASH160 &lt;Public Key Hash&gt; OP_EQUALVERIFY OP_CHECKSIG</p>
 <p>其执行过程就是:</p>
 <p>1.将 Signature、Public Key 压栈，此时栈顶为 Public Key，其下为 Signature。</p>
 <p>2.执行 OP_DUP，这个指令会复制栈顶元素并压栈，于是栈顶为 Public Key，其下顺序为Public Key、Signature。</p>
@@ -405,19 +408,19 @@
 <p>这显然是一个非常漂亮的设计，在实现了基本的转账功能的同时，还提供了额外的灵活性，让我们可以通过这种“锁定脚本”和“解锁脚本”实现一些更复杂的功能，比如多重签名。</p>
 <p>##多重签名(Multisignature)</p>
 <p>多重签名是我们可以要求仅当指定的 N 个公钥中的 M 个提供了对应的签名才可以解锁使用某个“输出”。这种“输出”的 scriptPubKey，也就是锁定脚本的写法也是固定的，如下所示:</p>
-<p>M <public 1 key> <public 2 key> … <public key n> N CHECKMULTISIG</public></public></public></p>
+<p>M &lt;Public Key 1&gt; &lt;Public Key 2&gt; … &lt;Public Key N&gt; N CHECKMULTISIG</p>
 <p>与之相应的解锁脚本就应该是 M 个 Signature 数据。所以要计算的完整脚本应该是如下格 式:</p>
-<p><signature 1> <signature 2> … <signature m></signature></signature></signature></p>
-<p>M <public 1 key> <public 2 key> … <public key n> N CHECKMULTISIG</public></public></public></p>
+<p>&lt;Signature 1&gt;&lt;Signature 2&gt; … &lt;Signature M&gt;</p>
+<p>M &lt;Public Key 1&gt; &lt;Public Key 2&gt; … &lt;Public Key N&gt; N CHECKMULTISIG</p>
 <p>这个脚本的执行也很容易理解，CHECKMULTISIG 指令会从栈顶弹出 M + N + 2 （2=&gt;M and N）个元素， 然后进行相应的计算检查，这里不再详细罗列了。</p>
 <p>这里有一个很有趣的事情，就是目前的比特币客户端实现中实际上是有个 bug 的:如果我们仅按上述方式在后续“输入”的 scriptSig 里给出 M 个签名数据，这个脚本的执行会失败;这是因为 CHECKMULTISIG 指令实际上会从栈顶弹出 M+N+3 个元素，而不是理论上的 M + N + 2 个元素。所以这要求我们在实际设定 scriptSig 的时候需要多设定一个元素的数据，这个元素的数据可以是任意数值(通常我们就用 0 来设置)。于是目前来说，可以验证通过的 scriptSig 应该如下所示:</p>
-<p>0 <signature 1> <signature 2> … <signature m></signature></signature></signature></p>
+<p>0 &lt;Signature 1&gt; &lt;Signature 2&gt; … &lt;Signature M&gt;</p>
 <p>这当然是个客户端代码实现上的 bug，但如果要修改它，会影响太多的应用和外围工具，乃至对历史交易中输出数据的使用，所以目前这个 bug 也已经成为事实上的规则。这大概也是在区块链世界里所谓“代码即法律(code is law)”文化的一种独特的现象。</p>
 <p>##Pay-to-Script-Hash</p>
 <p>这是一种改进的锁定脚本，以刚刚介绍的多重签名锁定脚本为例，在使用了 Pay-to-Script- Hash 之后，锁定脚本和对应的解锁脚本将变为如下形式:</p>
-<p>偿付脚本(redeem script):M <pubkey1> <pubkey2> … <pubkeyn> N CHECKMULTISIG</pubkeyn></pubkey2></pubkey1></p>
-<p>锁定脚本(locking script):HASH160 <hash160 of redeem script> EQUAL</hash160></p>
-<p>解锁脚本(unlocking script):<sig1> <sig2> … <sigm> <redeem script></redeem></sigm></sig2></sig1></p>
+<p>偿付脚本(redeem script):M &lt;PubKey1&gt; &lt;PubKey2&gt; … &lt;PubKeyN&gt;N CHECKMULTISIG</p>
+<p>锁定脚本(locking script):HASH160 &lt;Hash160 of redeem script&gt; EQUAL</p>
+<p>解锁脚本(unlocking script):&lt;Sig1&gt; &lt;Sig2&gt; … &lt;SigM&gt; &lt;redeem script&gt;</p>
 <p>很明显，这种形式是将原始“偿付脚本(redeem script)”的保存从“输出”转移到“输入”（原本偿付脚本redeem script是在锁定脚本中，现在锁定脚本中保存redeem script的哈希值，将redeem script放入解锁脚本中保存）。“输出”中需要保存的锁定脚本的数据量变得很小，且与偿付脚本的实际大小无关。 因为锁定脚本是要保存到交易的输出中的，所以这实际上是大幅度减小了发送比特币的一 方需要构造的交易的实际数据大小，也就降低了发送比特币的一方需要支付的手续费(因为比特币中的交易手续费是基于交易数据的实际字节数大小来计算的)。这样的话，针对偿付脚本数据的相应手续费，也就不需要在对应的“输出”还没有被花费/使用时就预先支付了。</p>
 <p>##Pay-to-Script-Hash 地址</p>
 <p>Pay-to-Script-Hash其实就以刚刚介绍的“偿付脚本”的 RIPEMD160 哈希值作为原始地址进行 Base58 Check 编码所获得的地址。不过需要注意的是，在针对偿付脚本的 RIPEMD160 哈希值进行 Base58 Check 编码时，需要使用 0x05 作为版本前缀（之前的版本前缀为0x00，编码结果以1开头），所以其编码结果将以 3 开头。这也就是我们会在比特币主网上见到的那些以 3 开头的地址。</p>
