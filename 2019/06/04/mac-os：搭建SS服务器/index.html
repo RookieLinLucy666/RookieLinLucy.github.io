@@ -6,20 +6,20 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <link rel="dns-prefetch" href="https://github.com/RookieLinLucy666/study.github.io">
-  <title>Mac OS X 安装Hadoop | 散自己财童子小林</title>
+  <title>mac os：搭建SS服务器 | 散自己财童子小林</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="Mac安装JDK##下载安装JDK  进入Oracle官网 找到Java SE 8u211，点击Download下载JDK 选择Accept License Agreement，登录Oracle账号(可免费申请)，点击Mac OS X x64选项即可下载">
-<meta name="keywords" content="2019,Hadoop">
+  <meta name="description" content="本文适用于没有一键安装SS脚本的套餐。 [TOC] #查看服务器信息 1.登录搬瓦工个人中心，查看已购买产品，点击KiwiVM Control Panel，进入服务器管理界面 2.点击Main controls，查看SSH Port 远程登录1.打开终端或iterm2 2.输入ssh -p yourSSHport root@ipAddress,将yourSSHport替换为上述SSH Port，i">
+<meta name="keywords" content="2019">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Mac OS X 安装Hadoop">
-<meta property="og:url" content="https://github.com/RookieLinLucy666/study.github.io/2019/05/18/Mac-OS-X-安装Hadoop/index.html">
+<meta property="og:title" content="mac os：搭建SS服务器">
+<meta property="og:url" content="https://github.com/RookieLinLucy666/study.github.io/2019/06/04/mac-os：搭建SS服务器/index.html">
 <meta property="og:site_name" content="散自己财童子小林">
-<meta property="og:description" content="Mac安装JDK##下载安装JDK  进入Oracle官网 找到Java SE 8u211，点击Download下载JDK 选择Accept License Agreement，登录Oracle账号(可免费申请)，点击Mac OS X x64选项即可下载">
+<meta property="og:description" content="本文适用于没有一键安装SS脚本的套餐。 [TOC] #查看服务器信息 1.登录搬瓦工个人中心，查看已购买产品，点击KiwiVM Control Panel，进入服务器管理界面 2.点击Main controls，查看SSH Port 远程登录1.打开终端或iterm2 2.输入ssh -p yourSSHport root@ipAddress,将yourSSHport替换为上述SSH Port，i">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-05-18T02:29:31.361Z">
+<meta property="og:updated_time" content="2019-06-04T02:59:40.391Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Mac OS X 安装Hadoop">
-<meta name="twitter:description" content="Mac安装JDK##下载安装JDK  进入Oracle官网 找到Java SE 8u211，点击Download下载JDK 选择Accept License Agreement，登录Oracle账号(可免费申请)，点击Mac OS X x64选项即可下载">
+<meta name="twitter:title" content="mac os：搭建SS服务器">
+<meta name="twitter:description" content="本文适用于没有一键安装SS脚本的套餐。 [TOC] #查看服务器信息 1.登录搬瓦工个人中心，查看已购买产品，点击KiwiVM Control Panel，进入服务器管理界面 2.点击Main controls，查看SSH Port 远程登录1.打开终端或iterm2 2.输入ssh -p yourSSHport root@ipAddress,将yourSSHport替换为上述SSH Port，i">
   
     <link rel="alternative" href="/atom.xml" title="散自己财童子小林" type="application/atom+xml">
   
@@ -171,20 +171,20 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="post-Mac-OS-X-安装Hadoop" class="article article-type-post " itemscope itemprop="blogPost">
+            <article id="post-mac-os：搭建SS服务器" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 class="article-title" itemprop="name">
-      Mac OS X 安装Hadoop
+      mac os：搭建SS服务器
     </h1>
   
 
         
-        <a href="/study.github.io/2019/05/18/Mac-OS-X-安装Hadoop/" class="archive-article-date">
-  	<time datetime="2019-05-18T01:04:08.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-05-18</time>
+        <a href="/study.github.io/2019/06/04/mac-os：搭建SS服务器/" class="archive-article-date">
+  	<time datetime="2019-06-04T02:41:15.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-06-04</time>
 </a>
         
       </header>
@@ -194,79 +194,31 @@
 <!-- 目录内容结束 -->
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="Mac安装JDK"><a href="#Mac安装JDK" class="headerlink" title="Mac安装JDK"></a>Mac安装JDK</h1><p>##下载安装JDK</p>
-<ul>
-<li><a href="https://www.oracle.com/technetwork/java/javase/downloads/index.html" target="_blank" rel="noopener">进入Oracle官网</a></li>
-<li>找到Java SE 8u211，点击Download下载JDK</li>
-<li>选择Accept License Agreement，登录Oracle账号(可免费申请)，点击Mac OS X x64选项即可下载</li>
-</ul>
-<a id="more"></a>
-<h2 id="配置环境变量"><a href="#配置环境变量" class="headerlink" title="配置环境变量"></a>配置环境变量</h2><h3 id="bash"><a href="#bash" class="headerlink" title="bash"></a>bash</h3><ul>
-<li>打开<code>vi ~/.bash_profile</code></li>
-<li>输入<code>i</code>在文件末尾添加<code>export JAVA_HOME=$(/usr/libexec/java_home)</code>，并按<code>esc</code>，输入<code>:wq!</code>保存。</li>
-<li>在<code>~/</code>目录下，执行<code>source ~/.bash_profile</code></li>
-</ul>
-<p>###zsh</p>
-<ul>
-<li>打开<code>vi ~/.zshrc</code></li>
-<li>输入<code>i</code>在文件末尾添加<code>export JAVA_HOME=$(/usr/libexec/java_home)</code>，并按<code>esc</code>，输入<code>:wq!</code>保存。</li>
-<li>在<code>~/</code>目录下，执行<code>source ~/.zshrc</code></li>
-</ul>
-<h3 id="查看是否安装成功"><a href="#查看是否安装成功" class="headerlink" title="查看是否安装成功"></a>查看是否安装成功</h3><ul>
-<li>输入<code>java -version</code>，若出现JDK版本信息则成功。</li>
-</ul>
-<h2 id="卸载JDK"><a href="#卸载JDK" class="headerlink" title="卸载JDK"></a>卸载JDK</h2><p><code>ls /Library/Java/JavaVirtualMachines/</code>查看安装哪些JDK</p>
-<p><code>sudo rm -rf /Library/Java/JavaVirtualMachines/jdk1.8.0_211.jdk</code>卸载JDK</p>
-<h1 id="Homebrew安装"><a href="#Homebrew安装" class="headerlink" title="Homebrew安装"></a>Homebrew安装</h1><p>Mac自带ruby环境，只需要在终端输入<code>ruby -e &quot;$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)&quot;</code>安装</p>
-<h1 id="ssh登录方式"><a href="#ssh登录方式" class="headerlink" title="ssh登录方式"></a>ssh登录方式</h1><ul>
-<li><a href="https://gist.github.com/yisibl/8019693" target="_blank" rel="noopener">生成ssh公钥</a></li>
-<li>终端输入<code>cat ~/.ssh/id_rsa.pub</code>拷贝，<code>cat ~/.ssh/id_rsa.pub &gt;&gt; ~/.ssh/authorized_keys</code></li>
-<li>系统设置(System Preferences) -&gt; 共享(sharing) -&gt; 远程登录(Remote Login)</li>
-<li>终端测试<code>ssh localhost</code></li>
-</ul>
-<h2 id="可能出现的错误"><a href="#可能出现的错误" class="headerlink" title="可能出现的错误"></a>可能出现的错误</h2><p>Q:host key verification failed</p>
-<p>A:<code>cd ~/.ssh</code> 然后<code>rm known_hosts</code>。随后出现<code>Are you sure you want to continue connecting(yes/no)</code>，输入<code>yes</code></p>
-<p>Q：Warning:” Permission denied (publickey,password,keyboard-interactive)”</p>
-<p>A:<code>cat ~/.ssh/id_rsa.pub &gt;&gt; ~/.ssh/authorized_keys</code> 若有多个秘钥，也需使用<code>id_rsa.pub</code></p>
-<h1 id="安装配置Hadoop"><a href="#安装配置Hadoop" class="headerlink" title="安装配置Hadoop"></a>安装配置Hadoop</h1><h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><p>终端输入<code>brew install hadoop</code>，此时Hadoop被安装到<code>/usr/local/Cellar/hadoop</code>下。</p>
-<p><strong>若计算机原先安装前端框架yarn则会出现命名冲突name conflict，此时执行<code>brew uninstall yarn</code>即可</strong></p>
-<h2 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h2><h3 id="查看JDK目录"><a href="#查看JDK目录" class="headerlink" title="查看JDK目录"></a>查看JDK目录</h3><p>终端输入<code>cd $JAVA_HOME</code>进入JDK目录，<code>pwd</code>查看JDK路径。</p>
-<h3 id="配置Hadoop"><a href="#配置Hadoop" class="headerlink" title="配置Hadoop"></a>配置Hadoop</h3><p>####更改Hadoop配置文件信息</p>
-<p><code>cd /usr/local/Cellar/hadoop</code></p>
-<p><code>ls</code>查看Hadoop版本，本机为3.1.2</p>
-<p><code>cd /3.1.2/libexec/etc/hadoop</code></p>
-<p>用vscode打开<code>open hadoop-env.sh</code>，找到其中一行：</p>
-<p><code>export HADOOP_OPTS=&quot;$HADOOP_OPTS -Djava.net.preferIPv4Stack=true&quot;</code></p>
-<p>将其修改为：</p>
-<p><code>export HADOOP_OPTS=&quot;$HADOOP_OPTS -Djava.net.preferIPv4Stack=true -Djava.security.krb5.realm= -Djava.security.krb5.kdc=&quot;</code></p>
-<p><code>export JAVA_HOME=&quot;/Library/Java/JavaVirtualMachines/jdk1.8.0_211.jdk/Contents/Home&quot; #改为自己JDK目录</code></p>
-<h4 id="配置hdfs的地址和端口号"><a href="#配置hdfs的地址和端口号" class="headerlink" title="配置hdfs的地址和端口号"></a>配置hdfs的地址和端口号</h4><p><code>cd /usr/local/Cellar/hadoop/3.1.2/libexec/etc/hadoop</code>，打开<code>open core-site.xml</code>，填写<code>&lt;configutation&gt;&lt;\configutation&gt;</code>之间的内容。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">&lt;!-- Put site-specific property overrides in this file. --&gt;</span><br><span class="line"> &lt;configuration&gt;</span><br><span class="line">  &lt;property&gt;</span><br><span class="line">      &lt;name&gt;hadoop.tmp.dir&lt;/name&gt;</span><br><span class="line">	    &lt;value&gt;/usr/local/Cellar/hadoop/hdfs/tmp&lt;/value&gt;</span><br><span class="line">      &lt;description&gt;A base for other temporary directories.&lt;/description&gt;</span><br><span class="line">  &lt;/property&gt;</span><br><span class="line">  &lt;property&gt;</span><br><span class="line">      &lt;name&gt;fs.default.name&lt;/name&gt;</span><br><span class="line">      &lt;value&gt;hdfs://localhost:8020&lt;/value&gt;</span><br><span class="line">  &lt;/property&gt;</span><br><span class="line">&lt;/configuration&gt;</span><br></pre></td></tr></table></figure>
-<h4 id="设置map-reduce中jobtracker的地址和端口号"><a href="#设置map-reduce中jobtracker的地址和端口号" class="headerlink" title="设置map-reduce中jobtracker的地址和端口号"></a>设置map-reduce中jobtracker的地址和端口号</h4><p><code>cd /usr/local/Cellar/hadoop/3.1.2/libexec/etc/hadoop</code>，打开<code>mapred-site.xml</code>，填写<code>&lt;configutation&gt;&lt;\configutation&gt;</code>之间的内容。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&lt;configuration&gt;</span><br><span class="line">      &lt;property&gt;</span><br><span class="line">        &lt;name&gt;mapred.job.tracker&lt;/name&gt;</span><br><span class="line">        &lt;value&gt;localhost:8021&lt;/value&gt;</span><br><span class="line">      &lt;/property&gt;</span><br><span class="line">&lt;/configuration&gt;</span><br></pre></td></tr></table></figure>
-<h4 id="更改hdfs的默认备份方式-默认为3"><a href="#更改hdfs的默认备份方式-默认为3" class="headerlink" title="更改hdfs的默认备份方式(默认为3)"></a>更改hdfs的默认备份方式(默认为3)</h4><p><code>cd /usr/local/Cellar/hadoop/3.1.2/libexec/etc/hadoop</code>，打开<code>hdfs-site.xml</code>，填写<code>&lt;configutation&gt;&lt;\configutation&gt;</code>之间的内容。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&lt;configuration&gt;</span><br><span class="line">   &lt;property&gt;</span><br><span class="line">     &lt;name&gt;dfs.replication&lt;/name&gt;</span><br><span class="line">     &lt;value&gt;1&lt;/value&gt;</span><br><span class="line">    &lt;/property&gt;</span><br><span class="line">&lt;/configuration&gt;</span><br></pre></td></tr></table></figure>
-<h4 id="格式化新安装的HDFS"><a href="#格式化新安装的HDFS" class="headerlink" title="格式化新安装的HDFS"></a>格式化新安装的HDFS</h4><p><code>cd /usr/local/Cellar/hadoop/3.1.2/libexec/etc/hadoop</code>，在该目录下执行<code>hdfs namenode -format</code></p>
-<p>查看控制台，若出现ERROR，则需检查配置文件内容是否出错。</p>
-<h3 id="启动后台程序"><a href="#启动后台程序" class="headerlink" title="启动后台程序"></a>启动后台程序</h3><p><code>cd /usr/local/Cellar/hadoop/3.1.2/sbin</code>，在该目录下执行以下命令：</p>
-<ul>
-<li><p><code>./start-dfs.sh</code> or <code>./stop-dfs.sh</code>启动或关闭hdfs</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Starting namenodes on [localhost]</span><br><span class="line">Starting datanodes</span><br><span class="line">Starting secondary namenodes [MacBook-Pro.local]</span><br><span class="line">2019-05-18 10:04:32,583 WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable</span><br></pre></td></tr></table></figure>
-<p>说明成功启动本地服务，此时在浏览器输入如下网址:<code>http://localhost:9870</code>，查看Resource Manager。(<strong>Hadoop版本不同，端口号也不同</strong>)</p>
-</li>
-<li><p><code>./start-yarn.sh</code> or <code>./stop-yarn.sh</code>启动或关闭yarn</p>
-<p>JobTracker <code>http://localhost:8088</code> </p>
-<p>Specific Node Information <code>http://localhost:8042</code></p>
-</li>
-<li><p><code>./start-all.sh</code> or <code>./stop-all.sh</code>启动或关闭Hadoop，该命令可同时开启或关闭以上三个服务。</p>
-</li>
-</ul>
-<h3 id="环境配置错误"><a href="#环境配置错误" class="headerlink" title="环境配置错误"></a>环境配置错误</h3><ul>
-<li><p>Error：Invalid HADOOP_COMMON_HOME</p>
-<p>在<code>~/.bash_profile</code>里面配置环境变量HADOOP_COMMON_HOME<br><code>HADOOP_COMMON_HOME=$HADOOP_HOME</code>，HADOOP_HOME是配置的Hadoop的安装目录，修改完之后执行：source ~/.bash_profile</p>
-</li>
-</ul>
-<h3 id="其他错误"><a href="#其他错误" class="headerlink" title="其他错误"></a>其他错误</h3><p>输入命令时终端未响应=&gt;<code>ssh localhost</code></p>
+        <p>本文适用于没有一键安装SS脚本的套餐。</p>
+<p>[TOC]</p>
+<p>#查看服务器信息</p>
+<p>1.登录<a href="https://bwh88.net/clientarea.php?action=products" target="_blank" rel="noopener">搬瓦工个人中心</a>，查看已购买产品，点击KiwiVM Control Panel，进入<a href="服务器管理界面">服务器管理界面</a></p>
+<p>2.点击Main controls，查看SSH Port</p>
+<h1 id="远程登录"><a href="#远程登录" class="headerlink" title="远程登录"></a>远程登录</h1><p>1.打开终端或iterm2</p>
+<p>2.输入<code>ssh -p yourSSHport root@ipAddress</code>,将yourSSHport替换为上述SSH Port，ipAddress替换为vps的ip地址</p>
+<p>3.命令行出现选项，点击yes</p>
+<p>当命令行出现<code>[root@host~]#</code>开始操作</p>
+<p>#开始操作</p>
+<p>1.命令行输入<code>wget — no-check-certificate -O shadowsocks.sh https://raw.githubusercontent.com/teddysun/shadowsocks_install/master/shadowsocks.sh</code>，若出现<code>bash:wget:command not fund</code>，则输入<code>yum install wget</code>，按照提示输入”y”确认。随后再执行上一条命令</p>
+<p>2.<code>chomod +x shadowsocks.sh</code></p>
+<p>3.<code>./shadowsocks.sh 2&gt;&amp;1 | tee shadowsocks.log</code></p>
+<p>看见”please enter password for shadowsocks-python(Default password:teddysun.com)”，输入你想设置的密码，此时若按enter，则密码为teddysun.com</p>
+<p>看见”please enter a port for shadowsocks-python(Default port:12906)”，输入你想设置的端口号，若按enter，则端口号默认为12906</p>
+<p>看见”please select stream cipher for shadowsocks-python”，输入7</p>
+<p>最后需要几分钟时间安装，最后屏幕出现”Enjoy it！”则表示服务安装成功，可以上网啦。</p>
+<h1 id="修改密码"><a href="#修改密码" class="headerlink" title="修改密码"></a>修改密码</h1><h2 id="查看当前密码"><a href="#查看当前密码" class="headerlink" title="查看当前密码"></a>查看当前密码</h2><p><code>cat /etc/shadowsocks.json</code></p>
+<h2 id="修改ss密码"><a href="#修改ss密码" class="headerlink" title="修改ss密码"></a>修改ss密码</h2><p><code>vi /etc/shadowsocks.json</code></p>
+<p>按i键进入编辑模式，修改密码为123456</p>
+<p><code>&quot;password&quot;:&quot;123456&quot;</code></p>
+<p>然后按ESC，再输入:wq!保存退出</p>
+<p>重启ss即可<code>service shadowsocks restart</code></p>
+<h1 id="ping通，且端口号没有被封"><a href="#ping通，且端口号没有被封" class="headerlink" title="ping通，且端口号没有被封"></a>ping通，且端口号没有被封</h1><p>重新安装shadowsocks服务</p>
+<h1 id="ping不通，且ip地址被封"><a href="#ping不通，且ip地址被封" class="headerlink" title="ping不通，且ip地址被封"></a>ping不通，且ip地址被封</h1><p>搜索搬瓦工解封，支付8美元更换ip地址。(当前无免费更换ip服务)</p>
 
       
 
@@ -312,10 +264,6 @@
 			 
         		<li class="article-tag-list-item">
         			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">2019</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">Hadoop</a>
         		</li>
       		
 		</ul>
@@ -371,7 +319,7 @@
     <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="//pan.baidu.com/share/qrcode?url=https://github.com/RookieLinLucy666/study.github.io/2019/05/18/Mac-OS-X-安装Hadoop/" alt="微信分享二维码">
+      <img src="//pan.baidu.com/share/qrcode?url=https://github.com/RookieLinLucy666/study.github.io/2019/06/04/mac-os：搭建SS服务器/" alt="微信分享二维码">
     </div>
 </div>
 
@@ -385,18 +333,9 @@
   
 <nav id="article-nav">
   
-    <a href="/study.github.io/2019/05/18/Code-War-Practice/" id="article-nav-newer" class="article-nav-link-wrap">
-      <i class="icon-circle-left"></i>
-      <div class="article-nav-title">
-        
-          Code War Practice
-        
-      </div>
-    </a>
   
-  
-    <a href="/study.github.io/2019/05/15/Hello-World-0/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">Hello World </div>
+    <a href="/study.github.io/2019/05/30/python进阶/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">python进阶</div>
       <i class="icon-circle-right"></i>
     </a>
   

@@ -16,7 +16,7 @@
 <meta property="og:site_name" content="散自己财童子小林">
 <meta property="og:description" content="[TOC] *args和**kwargs调用函数12345678910111213141516171819202122232425262728293031323334353637383940def test_args(f_arg, *args):    print(&apos;farg: &apos;, f_arg)    for arg in args:        print(&apos;arg:&apos;, arg)test">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-05-31T08:22:16.671Z">
+<meta property="og:updated_time" content="2019-06-01T11:08:00.599Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="python进阶">
 <meta name="twitter:description" content="[TOC] *args和**kwargs调用函数12345678910111213141516171819202122232425262728293031323334353637383940def test_args(f_arg, *args):    print(&apos;farg: &apos;, f_arg)    for arg in args:        print(&apos;arg:&apos;, arg)test">
@@ -260,7 +260,7 @@
 <h1 id="try-else"><a href="#try-else" class="headerlink" title="try/else"></a>try/else</h1><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">try</span>:</span><br><span class="line">    print(<span class="string">'there may occur exceptions'</span>)</span><br><span class="line"><span class="keyword">except</span> Exception:</span><br><span class="line">    print(<span class="string">'exception'</span>)</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    print(<span class="string">'this would run if no exception occurs. And an error would not be caught here'</span>)</span><br><span class="line"><span class="keyword">finally</span>:</span><br><span class="line">    print(<span class="string">'this would be printed in every case'</span>)</span><br></pre></td></tr></table></figure>
 <h1 id="lambda表达式"><a href="#lambda表达式" class="headerlink" title="lambda表达式"></a>lambda表达式</h1><h2 id="规范-1"><a href="#规范-1" class="headerlink" title="规范"></a>规范</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">lambda 参数:操作(参数)</span><br></pre></td></tr></table></figure>
 <h2 id="应用-1"><a href="#应用-1" class="headerlink" title="应用"></a>应用</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">add = <span class="keyword">lambda</span> x,y : x+y</span><br><span class="line">print(add(<span class="number">3</span>,<span class="number">5</span>))</span><br><span class="line"></span><br><span class="line">items = [(<span class="number">1</span>,<span class="number">2</span>),(<span class="number">4</span>,<span class="number">1</span>),(<span class="number">9</span>,<span class="number">10</span>),(<span class="number">13</span>,<span class="number">-3</span>)]</span><br><span class="line">items.sort(key=<span class="keyword">lambda</span> x:x[<span class="number">1</span>])</span><br><span class="line">print(items)</span><br><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="string">8</span></span><br><span class="line"><span class="string">[(13, -3), (4, 1), (1, 2), (9, 10)]</span></span><br><span class="line"><span class="string">'''</span></span><br></pre></td></tr></table></figure>
-<h1 id="列表辗平"><a href="#列表辗平" class="headerlink" title="列表辗平"></a>列表辗平</h1><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> itertools <span class="keyword">import</span> chain</span><br><span class="line">a_list = [[<span class="number">1</span>,<span class="number">2</span>],[<span class="number">3</span>],[<span class="number">4</span>,<span class="number">5</span>]]</span><br><span class="line">print(list(chain.from_iterable(a_list)))</span><br><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="string">[1, 2, 3, 4, 5]</span></span><br><span class="line"><span class="string">'''</span></span><br></pre></td></tr></table></figure>
+<h1 id="列表辗平l"><a href="#列表辗平l" class="headerlink" title="列表辗平l"></a>列表辗平l</h1><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> itertools <span class="keyword">import</span> chain</span><br><span class="line">a_list = [[<span class="number">1</span>,<span class="number">2</span>],[<span class="number">3</span>],[<span class="number">4</span>,<span class="number">5</span>]]</span><br><span class="line">print(list(chain.from_iterable(a_list)))</span><br><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="string">[1, 2, 3, 4, 5]</span></span><br><span class="line"><span class="string">'''</span></span><br></pre></td></tr></table></figure>
 <h1 id="open函数"><a href="#open函数" class="headerlink" title="open函数"></a>open函数</h1><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">with</span> open(<span class="string">'out.log'</span>,<span class="string">'r'</span>) <span class="keyword">as</span> f:</span><br><span class="line">		print(f.readlines())</span><br><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="string">['func1was called\n', 'func was called\n']</span></span><br><span class="line"><span class="string">'''</span></span><br></pre></td></tr></table></figure>
 
       
@@ -379,6 +379,15 @@
 
   
 <nav id="article-nav">
+  
+    <a href="/study.github.io/2019/06/04/mac-os：搭建SS服务器/" id="article-nav-newer" class="article-nav-link-wrap">
+      <i class="icon-circle-left"></i>
+      <div class="article-nav-title">
+        
+          mac os：搭建SS服务器
+        
+      </div>
+    </a>
   
   
     <a href="/study.github.io/2019/05/26/从比特币到以太坊：下/" id="article-nav-older" class="article-nav-link-wrap">
@@ -543,6 +552,10 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">codewar</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">Hadoop</a>
               </li>
              
@@ -552,10 +565,6 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">algorithm</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">codewar</a>
               </li>
              
               <li class="article-tag-list-item">
