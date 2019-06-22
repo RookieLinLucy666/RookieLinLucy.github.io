@@ -171,6 +171,152 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-Heroku搭建自己的服务器教程" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/study.github.io/2019/06/22/Heroku搭建自己的服务器教程/">Heroku搭建自己的服务器教程</a>
+    </h1>
+  
+
+        
+        <a href="/study.github.io/2019/06/22/Heroku搭建自己的服务器教程/" class="archive-article-date">
+  	<time datetime="2019-06-22T07:48:39.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-06-22</time>
+</a>
+        
+      </header>
+    
+<!-- 目录内容 -->
+
+<!-- 目录内容结束 -->
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>转载自：<a href="https://ixs.im/fun/Heroku_ssh/" target="_blank" rel="noopener">https://ixs.im/fun/Heroku_ssh/</a></p>
+<p>Heroku是我在《高级软件工程》课堂上得知的一个云服务平台。用Heroku部署后的应用(saas/web app)其主机在美国和欧洲，<strong>且主机地址没有被qiang</strong>。利用这一点就可以免费搭建一个自己的ss服务器。</p>
+<p>由于有GitHub上的开源项目，其搭建过程可以称之为傻瓜式。</p>
+<h1 id="注册Heroku"><a href="#注册Heroku" class="headerlink" title="注册Heroku"></a>注册Heroku</h1><p>到这里注册： <a href="https://signup.heroku.com/" target="_blank" rel="noopener">https://signup.heroku.com/</a> <del>[<em>需要富强上网</em>]</del></p>
+<blockquote>
+<p>ps：建议用gmail邮箱注册。163啥的应该是注册不了滴</p>
+</blockquote>
+<p><del>这一步需要靠你自己了。什么蓝🙃灯赛🙂风我相信你可以的。</del></p>
+<p><del>如果你实在一点办法都没有。我给你俩<strong>在线代理</strong>的网站。速度可能慢点。</del> <del><a href="https://www.anyproxy.top" target="_blank" rel="noopener">https://www.anyproxy.top</a></del><del><a href="https://www.anyproxy.cn" target="_blank" rel="noopener">https://www.anyproxy.cn</a></del><del>只能帮你到这了！</del></p>
+<p><strong>惊奇地发现，Heroku好像不被qiang了😃😃😃</strong></p>
+<h1 id="部署"><a href="#部署" class="headerlink" title="部署"></a>部署</h1><p>登录上你的Heroku之后，</p>
+<p><a href="https://heroku.com/deploy?template=https://github.com/onplus/shadowsocks-heroku/tree/re" target="_blank" rel="noopener">—–》》》点这里《《《—–</a></p>
+<p>进去之后改两个地方：</p>
+<ul>
+<li>App name<ul>
+<li>起个名字。是唯一标识的。会提示你可不可用。</li>
+</ul>
+</li>
+<li>KEY<ul>
+<li>设置一个密码。</li>
+</ul>
+</li>
+</ul>
+<p>这两个地方我们会在下一步用到。</p>
+<p>一切从简，其他地方不必修改。</p>
+<h1 id="启动本地客户端"><a href="#启动本地客户端" class="headerlink" title="启动本地客户端"></a>启动本地客户端</h1><ul>
+<li><p>下载：<a href="https://github.com/onplus/shadowsocks-heroku/releases">https://github.com/onplus/shadowsocks-heroku/releases</a></p>
+<p>根据你是什么系统。下载对应的客户端压缩包。</p>
+</li>
+<li><p>解压后有个<code>config.json</code>文件：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="attr">"server"</span>: <span class="string">"你设置的AppName.herokuapp.com"</span>,</span><br><span class="line">  <span class="attr">"local_address"</span>: <span class="string">"127.0.0.1"</span>,</span><br><span class="line">  <span class="attr">"scheme"</span>: <span class="string">"ws"</span>,</span><br><span class="line">  <span class="attr">"local_port"</span>: <span class="string">"1080"</span>,</span><br><span class="line">  <span class="attr">"remote_port"</span>: <span class="string">"80"</span>,</span><br><span class="line">  <span class="attr">"password"</span>: <span class="string">"这里输入你设置的密码"</span>,</span><br><span class="line">  <span class="attr">"timeout"</span>: <span class="number">600</span>,</span><br><span class="line">  <span class="attr">"method"</span>: <span class="string">"aes-256-cfb"</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>启动</p>
+<ul>
+<li><p>Windows：</p>
+<p>直接打开start或ssh的exe文件都可以打开。区别是一个在后台运行了。一个是有黑框界面。</p>
+</li>
+<li><p>Mac/Linux:</p>
+<p>cd到该目录下，执行<code>./ss-h</code> 。你会看到一条server listening at {xxx}的提示。</p>
+<p><img src="/RookieLinLucy666/study.github.io/2019/06/22/Heroku搭建自己的服务器教程/Users/linyijing/Documents/blog/source/_posts/Heroku搭建自己的服务器教程/terminal.png" alt="terminal.png"></p>
+</li>
+</ul>
+</li>
+</ul>
+<p>这样本地客户端就启动了。</p>
+<h1 id="配置代理"><a href="#配置代理" class="headerlink" title="配置代理"></a>配置代理</h1><p>在Chrome浏览器安装Proxy SwitchyOmega插件</p>
+<h2 id="安装Proxy-SwitchyOmega"><a href="#安装Proxy-SwitchyOmega" class="headerlink" title="安装Proxy SwitchyOmega"></a>安装Proxy SwitchyOmega</h2><p><a href="https://chrome.google.com/webstore/detail/proxy-switchyomega/padekgcemlokbadohgkifijomclgjgif?utm_source=chrome-ntp-icon" target="_blank" rel="noopener">chrome应用商店下载</a></p>
+<ul>
+<li><p>不能访问谷歌的到这里下载：</p>
+<p><a href="https://extfans.com/" target="_blank" rel="noopener">https://extfans.com/</a></p>
+<p>进去后输入id：padekgcemlokbadohgkifijomclgjgif</p>
+<h2 id="配置Proxy-SwitchyOmega"><a href="#配置Proxy-SwitchyOmega" class="headerlink" title="配置Proxy SwitchyOmega"></a>配置Proxy SwitchyOmega</h2><p>如图。6步。</p>
+</li>
+</ul>
+<p>  <img src="/RookieLinLucy666/study.github.io/2019/06/22/Heroku搭建自己的服务器教程/Users/linyijing/Documents/blog/source/_posts/Heroku搭建自己的服务器教程/switchomega.png" alt="switchomega.png"></p>
+<p>  切换到proxy模式就可以Google了~</p>
+<h2 id="进阶配置"><a href="#进阶配置" class="headerlink" title="进阶配置"></a>进阶配置</h2><p>proxy模式就是所有的网站都通过代理来访问。这样其实有点多余。</p>
+<p>下面我们通过添加规则，让插件去判断什么情况下启用代理。</p>
+<p>在插件的 auto switch里，添加规则列表网站：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">https://raw.githubusercontent.com/gfwlist/gfwlist/master/gfwlist.txt</span><br></pre></td></tr></table></figure>
+<p>如图，记得点应用选项以保存。</p>
+<p><img src="/RookieLinLucy666/study.github.io/2019/06/22/Heroku搭建自己的服务器教程/Users/linyijing/Documents/blog/source/_posts/Heroku搭建自己的服务器教程/autoswitch.png" alt="autoswitch.png"></p>
+<p>这样你选择auto switch模式，插件就可以按照规则来判断是否使用代理。</p>
+<p>如果你想访问的 网站不在规则列表里。在上面的规则上自己添加一个条件就好啦~</p>
+<p>本篇教程结束。这种方法永久免费还不会被封。</p>
+<p>缺点就是只能在PC端使用。关于手机端的教程下次再写啦~</p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">2019</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">Heroku</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/study.github.io/2019/06/22/Heroku搭建自己的服务器教程/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-mac-os：搭建SS服务器" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -1531,6 +1677,10 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">codewar</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">Heroku</a>
               </li>
              
               <li class="article-tag-list-item">

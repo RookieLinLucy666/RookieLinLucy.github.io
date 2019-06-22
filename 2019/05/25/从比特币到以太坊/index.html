@@ -28,7 +28,7 @@
 <meta property="og:image" content="https://github.com/RookieLinLucy666/study.github.io/2019/05/25/从比特币到以太坊/Base58Check编码的具体规则.png">
 <meta property="og:image" content="https://github.com/RookieLinLucy666/study.github.io/2019/05/25/从比特币到以太坊/HD钱包逻辑.png">
 <meta property="og:image" content="https://github.com/RookieLinLucy666/study.github.io/2019/05/25/从比特币到以太坊/MerklePath.png">
-<meta property="og:updated_time" content="2019-05-28T15:04:16.403Z">
+<meta property="og:updated_time" content="2019-06-09T01:48:12.211Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="从比特币到以太坊上">
 <meta name="twitter:description" content="[TOC]">
@@ -215,7 +215,7 @@
 <p>此外，P2P协议与http/https/ftp/smtp/pop3/imap等协议相同，都是基于tcp/ip协议之上的应用层协议，通过不同的tcp端口进行区分。如http使用80端口，https使用443端口，比特币协议使用8333端口，以太坊协议使用30303端口。因此它们彼此之间并不冲突，它们是对现有互联网生态的补充和完善。</p>
 <h2 id="数字签名"><a href="#数字签名" class="headerlink" title="数字签名"></a>数字签名</h2><p>非对称加密，即加密和解密使用不同的秘钥。每一个密钥通常由一个私钥和一个公钥组成，公钥基于私钥确定生成，且与私钥唯一对应。私钥是由持有人控制、不公开的秘钥。公钥是公开的、可以供任何人使用的密钥。非对称加密算法既支持公钥加密、私钥解密，也支持私钥加密，公钥解密。</p>
 <blockquote>
-<p>Bob由两把钥匙，一把公钥，一把私钥。Bob把公钥送给他的朋友们Patty、Doug和Susan每人一把。</p>
+<p>Bob有两把钥匙，一把公钥，一把私钥。Bob把公钥送给他的朋友们Patty、Doug和Susan每人一把。</p>
 <p>Susan要给Bob写一封保密的信，写完后用Bob的公钥加密，达到保密效果。Bob收信后用私钥解密，即可看见内容。只要Bob的私钥不泄露，这封信就是安全的。</p>
 <p>Bob给Susan回信，决定采用”数字签名”。他写完后先用hash函数，生成摘要，再使用私钥，对摘要加密，生成数字签名。Bob将签名附在信件下发给Susan。Susan收到后，取下数字签名，用Bob的公钥解密，得到信件的摘要。由此证明，这封信确实由Bob发出。Susan再对信件内容使用hash函数，将得到的结果与摘要对比，若两者一致，则证明这封信没有被修改过。</p>
 <p>Doug想欺骗Susan，他偷偷使用Susan电脑，用自己的公钥换走Bob的公钥。此时，Susan拥有的是Doug的公钥，但是还以为是Bob的公钥。因此，Doug可以冒充Bob，用自己的私钥做成”数字签名”，写信给Susan，让Susan用公钥解密，让Susan以为是Bob写的信。但是，Susan感觉不对，发现自己不确定手里的公钥是否属于Bob。因此Susan要求Bob去找证书中心(CA)，为公钥做认证。CA用自己的私钥，对Bob的公钥和一些相关信息进行加密，生成”数字证书”。Bob拿到数字证书后，给Susan写信，在签名的同时，附上数字证书。Susan通过CA的公钥揭开数字证书，拿到Bob的真实公钥，证明数字签名是Bob签的。</p>
@@ -757,6 +757,10 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">codewar</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">Heroku</a>
               </li>
              
               <li class="article-tag-list-item">
