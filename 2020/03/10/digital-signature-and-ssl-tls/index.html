@@ -6,20 +6,20 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <link rel="dns-prefetch" href="https://github.com/RookieLinLucy666/study.github.io">
-  <title>什么是比特币，它如何运作以及什么影响它的价格 | 散自己财童子小林</title>
+  <title>digital-signature-and-ssl-tls | 散自己财童子小林</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="What is bitcoin, how does it work and what affects its price?原文链接：https://www.telegraph.co.uk/technology/0/what-is-bitcoin-everything-need-know-about-the-cryptocurrency/ 来源：The Telegraph  Few technolo">
+  <meta name="description" content="密码学中常用的知识 来源：阮一峰的网络日志、编程随想 数字签名和数字证书数字签名http://www.ruanyifeng.com/blog/2011/08/what_is_a_digital_signature.html 数字证书https://kb.cnblogs.com/page/194742/ca CA必须是可信的第三方，CA公钥人人都有，数字签名本身是可以让人看见的，要想保证数字签名的真">
 <meta name="keywords" content="2020">
 <meta property="og:type" content="article">
-<meta property="og:title" content="什么是比特币，它如何运作以及什么影响它的价格">
-<meta property="og:url" content="https://github.com/RookieLinLucy666/study.github.io/2020/03/03/什么是比特币，它如何运作以及什么影响它的价格/index.html">
+<meta property="og:title" content="digital-signature-and-ssl-tls">
+<meta property="og:url" content="https://github.com/RookieLinLucy666/study.github.io/2020/03/10/digital-signature-and-ssl-tls/index.html">
 <meta property="og:site_name" content="散自己财童子小林">
-<meta property="og:description" content="What is bitcoin, how does it work and what affects its price?原文链接：https://www.telegraph.co.uk/technology/0/what-is-bitcoin-everything-need-know-about-the-cryptocurrency/ 来源：The Telegraph  Few technolo">
+<meta property="og:description" content="密码学中常用的知识 来源：阮一峰的网络日志、编程随想 数字签名和数字证书数字签名http://www.ruanyifeng.com/blog/2011/08/what_is_a_digital_signature.html 数字证书https://kb.cnblogs.com/page/194742/ca CA必须是可信的第三方，CA公钥人人都有，数字签名本身是可以让人看见的，要想保证数字签名的真">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2020-03-04T01:30:44.974Z">
+<meta property="og:updated_time" content="2020-03-10T08:54:19.353Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="什么是比特币，它如何运作以及什么影响它的价格">
-<meta name="twitter:description" content="What is bitcoin, how does it work and what affects its price?原文链接：https://www.telegraph.co.uk/technology/0/what-is-bitcoin-everything-need-know-about-the-cryptocurrency/ 来源：The Telegraph  Few technolo">
+<meta name="twitter:title" content="digital-signature-and-ssl-tls">
+<meta name="twitter:description" content="密码学中常用的知识 来源：阮一峰的网络日志、编程随想 数字签名和数字证书数字签名http://www.ruanyifeng.com/blog/2011/08/what_is_a_digital_signature.html 数字证书https://kb.cnblogs.com/page/194742/ca CA必须是可信的第三方，CA公钥人人都有，数字签名本身是可以让人看见的，要想保证数字签名的真">
   
     <link rel="alternative" href="/atom.xml" title="散自己财童子小林" type="application/atom+xml">
   
@@ -153,20 +153,20 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="post-什么是比特币，它如何运作以及什么影响它的价格" class="article article-type-post " itemscope itemprop="blogPost">
+            <article id="post-digital-signature-and-ssl-tls" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 class="article-title" itemprop="name">
-      什么是比特币，它如何运作以及什么影响它的价格
+      digital-signature-and-ssl-tls
     </h1>
   
 
         
-        <a href="/study.github.io/2020/03/03/什么是比特币，它如何运作以及什么影响它的价格/" class="archive-article-date">
-  	<time datetime="2020-03-03T14:20:55.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-03-03</time>
+        <a href="/study.github.io/2020/03/10/digital-signature-and-ssl-tls/" class="archive-article-date">
+  	<time datetime="2020-03-10T08:53:51.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-03-10</time>
 </a>
         
       </header>
@@ -176,100 +176,47 @@
 <!-- 目录内容结束 -->
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="What-is-bitcoin-how-does-it-work-and-what-affects-its-price"><a href="#What-is-bitcoin-how-does-it-work-and-what-affects-its-price" class="headerlink" title="What is bitcoin, how does it work and what affects its price?"></a>What is bitcoin, how does it work and what affects its price?</h1><p>原文链接：<a href="https://www.telegraph.co.uk/technology/0/what-is-bitcoin-everything-need-know-about-the-cryptocurrency/" target="_blank" rel="noopener">https://www.telegraph.co.uk/technology/0/what-is-bitcoin-everything-need-know-about-the-cryptocurrency/</a></p>
-<p>来源：The Telegraph</p>
+        <p>密码学中常用的知识</p>
+<p>来源：阮一峰的网络日志、编程随想</p>
+<h1 id="数字签名和数字证书"><a href="#数字签名和数字证书" class="headerlink" title="数字签名和数字证书"></a>数字签名和数字证书</h1><h3 id="数字签名"><a href="#数字签名" class="headerlink" title="数字签名"></a>数字签名</h3><p><a href="http://www.ruanyifeng.com/blog/2011/08/what_is_a_digital_signature.html" target="_blank" rel="noopener">http://www.ruanyifeng.com/blog/2011/08/what_is_a_digital_signature.html</a></p>
+<h3 id="数字证书"><a href="#数字证书" class="headerlink" title="数字证书"></a>数字证书</h3><p><a href="https://kb.cnblogs.com/page/194742/ca" target="_blank" rel="noopener">https://kb.cnblogs.com/page/194742/ca</a></p>
+<p>CA必须是可信的第三方，CA公钥人人都有，数字签名本身是可以让人看见的，要想保证数字签名的真实性需要涉及到CA（私钥很难被获取，公钥有可能被掉包，因此需要CA来保证公钥的真实性）。CA用其私钥对发件人的公钥等进行加密生成数字证书，收件人收到信件后利用CA的公钥对数字证书进行解密获得到发件人的公钥，然后用公钥对数字签名解密获得信件摘要，确保数字签名和公钥真的是发件人的，随后再对信件内容取hash值，两次hash值对比保证信件内容没有被修改过。上述内容仅针对数字签名或者用以传递公钥，假设没有包劫持等。要对信件内容进行保密的话只需要发件人用收件人的公钥进行加密，收件人收到后用其私钥解密，以此对信件内容进行保密。</p>
+<h3 id="密码学笔记"><a href="#密码学笔记" class="headerlink" title="密码学笔记"></a>密码学笔记</h3><p><a href="http://www.ruanyifeng.com/blog/2006/12/notes_on_cryptography.html" target="_blank" rel="noopener">http://www.ruanyifeng.com/blog/2006/12/notes_on_cryptography.html</a></p>
+<p>对称加密：一把密钥加密解密，一旦密钥泄露就被破解</p>
+<p>非对称加密：公钥加密信息，私钥解密，保密传输；私钥加密，公钥解密，数字签名。</p>
+<h1 id="SSL-TLS协议"><a href="#SSL-TLS协议" class="headerlink" title="SSL/TLS协议"></a>SSL/TLS协议</h1><p>图解SSL/TLS协议</p>
+<p><a href="https://www.ruanyifeng.com/blog/2014/09/illustration-ssl.html" target="_blank" rel="noopener">https://www.ruanyifeng.com/blog/2014/09/illustration-ssl.html</a></p>
+<h3 id="SSL-TLS协议运行机制概述"><a href="#SSL-TLS协议运行机制概述" class="headerlink" title="SSL/TLS协议运行机制概述"></a>SSL/TLS协议运行机制概述</h3><p><a href="https://www.ruanyifeng.com/blog/2014/02/ssl_tls.html" target="_blank" rel="noopener">https://www.ruanyifeng.com/blog/2014/02/ssl_tls.html</a></p>
+<h3 id="SSL-TLS协议流程（基于RSA算法）"><a href="#SSL-TLS协议流程（基于RSA算法）" class="headerlink" title="SSL/TLS协议流程（基于RSA算法）"></a>SSL/TLS协议流程（基于RSA算法）</h3><p>1.客户端向服务器发出加密通信请求，并给出协议版本号、客户端生成的一个随机数、支持的加密方法以及支持的压缩方法（不包括域名，一般一个服务器只对应一个证书）</p>
+<p>2.服务器收到加密通信请求后，向客户端发出回应，并确认使用的加密通信协议版本、加密方法（如RSA公钥加密）、服务器证书以及服务器生成的一个随机数（若服务器需要确认客户端身份需要请求客户端提供客户端证书）</p>
+<p>3.客户端验证数字证书，用CA的公钥解密数字证书获取服务器的公钥，客户端生成一个新的随机数，用服务器的公钥加密这个随机数，最后将加密后的随机数、编码改变通知（此后的信息用双方商定的加密方法和密钥发送）、客户端握手结束通知（前面发送所有内容的hash值，供服务器校验）</p>
+<p>4.服务器使用私钥解密客户端生成的随机数（premaster secret），向客户端发送编码改变通知（此后的信息用双方商定的加密方法和密钥发送）和服务器握手结束通知（前面发送所有内容的hash值，供客户端校验）。</p>
+<p>5.客户端和服务器根据约定的加密方法，使用前面三个随机数，计算生成本次会话需要的“对话密钥”，用于加密接下来的对话过程。（对称加密）</p>
 <blockquote>
-<p>Few technologies have the ability to stir passionate online debate and baffle the vast majority of the population as <a href="https://www.telegraph.co.uk/technology/2017/08/01/bitcoin-cash-everything-need-know-bitcoins-hard-fork/" target="_blank" rel="noopener">bitcoin</a>. The virtual currency rocketed in value last year before crashing at the start of 2018.</p>
+<p>如何保证公钥不被篡改？</p>
+<p>数字证书</p>
 </blockquote>
-<p>很少有技术像比特币一样能够引起激烈的在线辩论，并使绝大多数人感到困惑。 去年虚拟货币的价格猛涨，然后在2018年初崩溃。</p>
 <blockquote>
-<p>But bitcoin appears here to stay, at least for the time being. Although the <a href="https://www.telegraph.co.uk/technology/0/cryptocurrency-calculator-much-could-have-made-lost-buying-bitcoin/" target="_blank" rel="noopener">price </a>has fallen since the start of the year to around $6,400 (£4,900), well below its peak of $20,000, it is still above its price a year ago and interest in it continues.</p>
+<p>非对称加密计算量大，如何减少时间？</p>
+<p>每次对话（session）只使用以此非对称加密生成“对话密钥”，其后使用“对话密钥”进行对称加密，减少计算量。</p>
 </blockquote>
-<p>但是，至少暂时而言，比特币似乎在这里存在。 尽管价格自今年年初以来已下跌至约6,400美元（4,900英镑），远低于其20,000美元的峰值，但仍高于一年前的价格，并且人们对该市场的兴趣持续。</p>
 <blockquote>
-<p>There have been spikes along the way, possibly caused by mass computer trading or <a href="https://www.telegraph.co.uk/business/2018/04/12/stocks-struggle-oil-rally-continues-markets-brace-war-syria/#update-20180412-1512" target="_blank" rel="noopener">short sellers</a> jumping ship and encouraging buyers to flood back in.</p>
+<p>为什么需要随机数？</p>
+<p>SSL/TLS中证书是静态的，引入随机数保证密钥的随机性，使得每次的对话密钥都不一样。</p>
 </blockquote>
-<p>比特币价格一路飙升，可能是由于大规模计算机交易或卖空者跳船并鼓励买主大量涌入造成的。</p>
 <blockquote>
-<p>It all leaves investors with a slew of questions. Is Bitcoin the future of currency? Is it currency at all? What is it for? And should I buy some? Read on to have your questions answered.</p>
+<p>为什么需要三个随机数？</p>
+<p>假如只有一个随机数，那么其随机性可能不够，会被人猜出来，三个随机数很难猜</p>
 </blockquote>
-<p>这给投资者带来了很多问题。 比特币是货币的未来吗？ 它是货币吗？ 它有什么用？我应该买比特币吗？ 请继续阅读以回答您的问题。</p>
-<h1 id="What-is-Bitcoin"><a href="#What-is-Bitcoin" class="headerlink" title="What is Bitcoin?"></a>What is Bitcoin?</h1><blockquote>
-<p><a href="https://www.telegraph.co.uk/technology/2017/09/06/bitcoin-ethereum-price-rises-cryptocurrencies-make-recovery/" target="_blank" rel="noopener">Bitcoin </a>is a digital currency created in 2009 that uses decentralised technology for secure payments and storing money that doesn’t require banks or people’s names. It was announced on an email circular as a way to liberate money in a similar way to how the internet made information free. </p>
-</blockquote>
-<p>比特币是2009年创建的一种数字货币，它使用去中心化技术进行安全支付并存储，不需要银行或人名的货币。 它是在一封电子邮件通函中宣布的，以一种类似于互联网使信息免费的方式来释放金钱的方式。</p>
-<h1 id="How-does-it-work"><a href="#How-does-it-work" class="headerlink" title="How does it work?"></a>How does it work?</h1><blockquote>
-<p>Bitcoin works on a public ledger called a blockchain, which holds a decentralised record of all transactions that is updated and held by all users of the network.</p>
-</blockquote>
-<p>比特币在被称为区块链的公共账本上运行，该账本保存了网络所有用户更新和持有的所有交易的去中心化记录。</p>
 <blockquote>
-<p>To create bitcoins, users must generate blocks on the network. Each block is created cryptographically by harnessing users’ computer power and is then added to the blockchain, letting users earn by keeping the network running. </p>
+<p>服务器与客户端在握手阶段使用服务器的公私钥进行非对称加密，连接建立后的对话session使用随机数生成的“对话密钥”进行对称加密</p>
 </blockquote>
-<p>要创建比特币，用户必须在网络上生成区块。 利用用户的算力资源以加密的方式创建每个区块，然后将其添加到区块链中，让用户通过维护网络运行来获取比特币。</p>
-<blockquote>
-<p>A limit for how many bitcoins can be created is built into the system so the value can’t be diluted.  The maximum amount is just under 21 million bitcoin. There are currently just over 17 million in circulation, each of which was worth around $6,400 (£4,900) at the time of writing. That puts its total value at around $108.8 billion.</p>
-</blockquote>
-<p>系统内置了比特币总量的限制，因此比特币的价值不会被稀释。 比特币的最大总量为2100万。 目前有超过1700万的流通量，在撰写本文时，每个比特币的价值约为6,400美元（4,900英镑）。 这使其总价值约为1088亿美元。</p>
-<blockquote>
-<p>While at first ordinary people could mine thousands of bitcoins, potentially now worth millions of pounds, bitcoin mining now requires a huge amount of computer power to achieve. You can read our guide to bitcoin mining here.</p>
-</blockquote>
-<p>最初，普通人可以开采成千上万的比特币，这些比特币现在可能价值数百万英镑，而比特币挖矿现在需要大量的算力才能实现。 您可以在此处阅读我们的比特币采矿指南。</p>
-<h1 id="What-affects-its-price"><a href="#What-affects-its-price" class="headerlink" title="What affects its price?"></a>What affects its price?</h1><blockquote>
-<p>The price of a<a href="https://www.telegraph.co.uk/technology/2017/09/05/bitcoin-price-drops-20pc-three-days/" target="_blank" rel="noopener"> Bitcoin has jumped up and down</a> since it first entered the mainstream consciousness in 2013. That year prices rose by almost 10,000 per cent before the collapse of Mt Gox, the biggest online bitcoin exchange at the time, sent it crashing.</p>
-</blockquote>
-<p>自从2013年首次进入主流视线以来，比特币的价格经历了暴涨和暴跌。在当时最大的在线比特币交易所Mt Gox崩溃之前比特币的价格上涨了将近10,000％。</p>
-<blockquote>
-<p>Prices slowly crept up after that but surged again in 2017. This is largely put down to regulators appearing to warm to bitcoin and the rise of initial coin offerings - a way for projects to raise money by selling cryptographic tokens similar to bitcoins. Sceptics believed we were in the middle of a Bitcoin bubble while advocates say we are just beginning to see the rise starting.</p>
-</blockquote>
-<p>之后价格缓慢攀升，但在2017年再次飙升。这在很大程度上归因于监管机构似乎对比特币感到热心，以及初始代币发行的兴起-项目通过出售类似于比特币的加密代币来筹集资金的一种方式。 怀疑论者认为我们正处于比特币泡沫，而拥护者则表示我们才刚刚开始看到上升的开始。</p>
-<blockquote>
-<p>Prices have fallen in 2018 amid fears of a regulatory crackdown.</p>
-</blockquote>
-<p>由于担心会受到监管，价格在2018年下跌。</p>
-<h1 id="Who-is-Satoshi-Nakamoto"><a href="#Who-is-Satoshi-Nakamoto" class="headerlink" title="Who is Satoshi Nakamoto?"></a>Who is Satoshi Nakamoto?</h1><blockquote>
-<p>Satoshi Nakamoto is the mysterious creator of Bitcoin and blockchain. Despite countless attempts to unmask the person or people behind the name, their identity has remained elusive. </p>
-</blockquote>
-<p>中本聪（Satoshi Nakamoto）是比特币和区块链的神秘创造者。 尽管无数次尝试揭露姓名背后的人，但他们的身份仍然成谜。</p>
-<blockquote>
-<p>There have been numerous unsuccessful attempts by journalists to reveal the Bitcoin founder. In a high-profile incident in 2014, Newsweek magazine relaunched with a feature outing Dorian Nakamoto, a 64-year-old Japanese-American man, as the creator. The affair, having fallen apart under scrutiny, ended with a car chase and the real Nakamoto refuting the allegations. </p>
-</blockquote>
-<p>记者曾多次尝试揭露比特币创始人，但均未成功。 在2014年的一次备受关注的事件中，《新闻周刊》（Newsweek）杂志重新推出了专题报道，推测其中一位是64岁的日裔美国人多里安·中本（Dorian Nakamoto）为比特币创始人。 此事在经过仔细审查后分崩离析，以否认和真正的中本聪驳斥了指控而告终。</p>
-<blockquote>
-<p>The most recent candidate was Craig Wright, a former Australian academic, who claimed to be the bitcoin inventor. Wright wrote blog posts and gave interviews to Wired, BBC and the Economist in 2015 and 2016 saying he was behind bitcoin.</p>
-</blockquote>
-<p>最近的候选人是前澳大利亚学者克雷格·赖特（Craig Steven Wright），他声称自己是比特币的发明者。 赖特（Wright）在2015年和2016年撰写了博客文章，并对《连线》，BBC和《经济学人》进行了采访，称他支持比特币。</p>
-<blockquote>
-<p>After failing to provide unquestionable proof, Wright posted an apology message that said: “I believed that I could put the years of anonymity and hiding behind me. But, as the events of this week unfolded and I prepared to publish the proof of access to the earliest keys, I broke. I do not have the courage. I cannot.”  </p>
-</blockquote>
-<p>在无法提供确凿的证据之后，赖特发表道歉消息，说：“我相信我可以把多年的匿名性和躲藏在我身后。但是，随着本周事件的发展，我本准备发布私钥的证据。我没有勇气。我不能。”</p>
-<h1 id="How-many-people-use-bitcoin"><a href="#How-many-people-use-bitcoin" class="headerlink" title="How many people use bitcoin?"></a>How many people use bitcoin?</h1><blockquote>
-<p>One of the largest Bitcoin storage platforms, Blockchain.info, claims it has more than 25 million cryptocurrency wallet holders. This has almost doubled from 10 million at the start of 2017.</p>
-</blockquote>
-<p>最大的比特币存储平台之一Blockchain.info声称，它拥有超过2500万加密货币钱包持有者。 这比2017年初的1000万几乎翻了一番。</p>
-<h1 id="What-is-it-used-for"><a href="#What-is-it-used-for" class="headerlink" title="What is it used for?"></a>What is it used for?</h1><blockquote>
-<p>Bitcoin has a range of uses, including funding companies, investing cash and transferring money without fees. It is commonly associated with criminal activity such as drug dealing, cyber crime and money laundering, since it can be near-impossible to tie a bitcoin wallet to any one individual.</p>
-</blockquote>
-<p>比特币有多种用途，包括成立公司，投资现金和免费转移资金。 它通常与毒品交易，网络犯罪和洗钱等犯罪活动相关联，因为将比特币钱包绑定到任何个人几乎是不可能的。</p>
-<blockquote>
-<p>Bitcoin can be spent online and at select retailers in the UK. They include CEX stores, some pubs and stores like e-cigarette shops and YourSushi restaurants. A full list of online and offline businesses that accept bitcoin is available <a href="http://www.wheretospendbitcoins.co.uk/search" target="_blank" rel="noopener">here</a>. They can also be withdrawn at a couple of dozen bitcoin ATMs, which can be found <a href="https://coinatmradar.com/country/225/bitcoin-atm-united-kingdom/" target="_blank" rel="noopener">here</a>.</p>
-</blockquote>
-<p>比特币可以在网上和英国的特定零售商处消费。 它们包括CEX商店，一些酒吧和商店，例如电子烟商店和YourSushi餐厅。 此处提供接受比特币的在线和离线业务的完整列表。 也可以在几十个比特币自动柜员机上取款，可以在此处找到。</p>
-<blockquote>
-<p>However, a surge of network activity has meant transaction fees spiking, meaning some retailers have lost enthusiasm. Computer maker Dell, for example, ended its pilot of accepting Bitcoins, as did online gaming store Steam.</p>
-</blockquote>
-<p>但是，网络活动的激增意味着交易费用飙升，使得一些零售商失去了热情。 例如，计算机制造商戴尔和在线游戏商店Steam都结束了接受比特币的试验。</p>
-<blockquote>
-<p>Others simply hold their Bitcoins, hoping they will accumulate in value and prove to be a lucrative investment. Its price is notoriously volatile, and early investors are now sitting on massive gains.</p>
-</blockquote>
-<p>其他人只是持有比特币，希望它们积累价值并证明是一笔有利可图的投资。 众所周知，它的价格波动很大，早期投资者现在正坐享巨额收益。</p>
-<h1 id="Should-I-invest-in-Bitcoin"><a href="#Should-I-invest-in-Bitcoin" class="headerlink" title="Should I invest in Bitcoin?"></a>Should I invest in Bitcoin?</h1><blockquote>
-<p>Bitcoin is safeguarded against fraud and theft through independent and decentralised set up, as well as being free from transaction fees. It has also given great returns to some investors, with the price jumping from a few dollars at the beginning of 2013 to $1,100 by November. People who invested £2,000 five years ago would now be very wealthy. </p>
-</blockquote>
-<p>比特币通过独立和去中心化的设置来保护其免受欺诈和盗窃，并且免收交易费。 它也为一些投资者带来了丰厚的回报，其价格从2013年初的几美元跃升至11月的1100美元。 五年前投资2,000英镑的人现在将变得非常有钱。</p>
-<blockquote>
-<p>After a few level years, its<a href="https://www.telegraph.co.uk/technology/2017/05/28/bitcoin-bubble-back-investors-should-avoid/" target="_blank" rel="noopener"> dollar price soared during 2017</a>, and it peaked at more than $20,000. But the price has plunged since then, leaving investors to ponder whether its bubble has burst or the best is yet to come.</p>
-</blockquote>
-<p>经过几年的发展，其美元价格在2017年飙升，最高达到20,000美元以上。 但此后价格一直暴跌，让投资者思考其泡沫是否破裂或最好的时刻尚未到来。</p>
+<p>整个握手阶段不加密（也没法加密），都是明文的，若有人窃听并可得知双方商定的加密方式以及三个随机数中的两个（premaster key使用非对称加密算法加密，并非明文），整个对话的安全取决于premaster key是否被破解。因此，为保证握手阶段的安全，使用DH算法替代RSA算法，此时premaster key不需要传递，双方交换参数之后可在本地算出该随机数，因此提高安全性。</p>
+<h3 id="对话session恢复"><a href="#对话session恢复" class="headerlink" title="对话session恢复"></a>对话session恢复</h3><p>握手阶段由于某种原因对话中断，重新握手</p>
+<h4 id="session-ID"><a href="#session-ID" class="headerlink" title="session ID"></a>session ID</h4><p>每次对话有个编号session ID，下次重连时客户端只需要给出这个编号并且服务器有这个编号记录，双方可以使用已有的“对话密钥”，而不用重新生成。</p>
+<h4 id="session-ticket"><a href="#session-ticket" class="headerlink" title="session ticket"></a>session ticket</h4><p>session ID的缺点是其往往只保留在一台服务器上，当客户端请求发送到另一台服务器上，无法恢复对话。（可能是服务器集群）</p>
+<p>利用session ticket，客户端不发送session ID，而是客户端发送一个服务器在上次对话中发送来的session ticket，这个session ticket是加密的，只有服务器能解密，其中包含对话的主要信息（如对话密钥和加密方法），当另一个服务器收到session ticket时解密（服务器集群），此时不必重新生成“对话密钥”</p>
+<h1 id="容错，高可用和灾备"><a href="#容错，高可用和灾备" class="headerlink" title="容错，高可用和灾备"></a>容错，高可用和灾备</h1><p><a href="http://www.ruanyifeng.com/blog/2019/11/fault-tolerance.html" target="_blank" rel="noopener">http://www.ruanyifeng.com/blog/2019/11/fault-tolerance.html</a></p>
 
       
 
@@ -370,7 +317,7 @@
     <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="//pan.baidu.com/share/qrcode?url=https://github.com/RookieLinLucy666/study.github.io/2020/03/03/什么是比特币，它如何运作以及什么影响它的价格/" alt="微信分享二维码">
+      <img src="//pan.baidu.com/share/qrcode?url=https://github.com/RookieLinLucy666/study.github.io/2020/03/10/digital-signature-and-ssl-tls/" alt="微信分享二维码">
     </div>
 </div>
 
@@ -384,18 +331,9 @@
   
 <nav id="article-nav">
   
-    <a href="/study.github.io/2020/03/04/Blockchain-The-revolution-that-hasn-t-quite-happened/" id="article-nav-newer" class="article-nav-link-wrap">
-      <i class="icon-circle-left"></i>
-      <div class="article-nav-title">
-        
-          Blockchain: The revolution that hasn&#39;t quite happened 
-        
-      </div>
-    </a>
   
-  
-    <a href="/study.github.io/2020/03/03/git本地账号切换/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">git本地账号切换</div>
+    <a href="/study.github.io/2020/03/05/精通以太坊阅读笔记-什么是以太坊/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">第一章</div>
       <i class="icon-circle-right"></i>
     </a>
   
