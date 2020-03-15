@@ -8,18 +8,18 @@
   <link rel="dns-prefetch" href="https://github.com/RookieLinLucy666/study.github.io">
   <title>digital-signature-and-ssl-tls | 散自己财童子小林</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="密码学中常用的知识 来源：阮一峰的网络日志、编程随想 数字签名和数字证书数字签名http://www.ruanyifeng.com/blog/2011/08/what_is_a_digital_signature.html 数字证书https://kb.cnblogs.com/page/194742/ca CA必须是可信的第三方，CA公钥人人都有，数字签名本身是可以让人看见的，要想保证数字签名的真">
+  <meta name="description" content="密码学中常用的知识 来源：阮一峰的网络日志、编程随想 数字签名和数字证书数字签名http://www.ruanyifeng.com/blog/2011/08/what_is_a_digital_signature.html 私钥加密 sign(Message, private key) = Signature每次的数字签名内容都不一样，只有公钥可以解开 Verify(Message, Signat">
 <meta name="keywords" content="2020">
 <meta property="og:type" content="article">
 <meta property="og:title" content="digital-signature-and-ssl-tls">
 <meta property="og:url" content="https://github.com/RookieLinLucy666/study.github.io/2020/03/10/digital-signature-and-ssl-tls/index.html">
 <meta property="og:site_name" content="散自己财童子小林">
-<meta property="og:description" content="密码学中常用的知识 来源：阮一峰的网络日志、编程随想 数字签名和数字证书数字签名http://www.ruanyifeng.com/blog/2011/08/what_is_a_digital_signature.html 数字证书https://kb.cnblogs.com/page/194742/ca CA必须是可信的第三方，CA公钥人人都有，数字签名本身是可以让人看见的，要想保证数字签名的真">
+<meta property="og:description" content="密码学中常用的知识 来源：阮一峰的网络日志、编程随想 数字签名和数字证书数字签名http://www.ruanyifeng.com/blog/2011/08/what_is_a_digital_signature.html 私钥加密 sign(Message, private key) = Signature每次的数字签名内容都不一样，只有公钥可以解开 Verify(Message, Signat">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2020-03-10T08:54:19.353Z">
+<meta property="og:updated_time" content="2020-03-15T08:15:30.203Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="digital-signature-and-ssl-tls">
-<meta name="twitter:description" content="密码学中常用的知识 来源：阮一峰的网络日志、编程随想 数字签名和数字证书数字签名http://www.ruanyifeng.com/blog/2011/08/what_is_a_digital_signature.html 数字证书https://kb.cnblogs.com/page/194742/ca CA必须是可信的第三方，CA公钥人人都有，数字签名本身是可以让人看见的，要想保证数字签名的真">
+<meta name="twitter:description" content="密码学中常用的知识 来源：阮一峰的网络日志、编程随想 数字签名和数字证书数字签名http://www.ruanyifeng.com/blog/2011/08/what_is_a_digital_signature.html 私钥加密 sign(Message, private key) = Signature每次的数字签名内容都不一样，只有公钥可以解开 Verify(Message, Signat">
   
     <link rel="alternative" href="/atom.xml" title="散自己财童子小林" type="application/atom+xml">
   
@@ -179,6 +179,9 @@
         <p>密码学中常用的知识</p>
 <p>来源：阮一峰的网络日志、编程随想</p>
 <h1 id="数字签名和数字证书"><a href="#数字签名和数字证书" class="headerlink" title="数字签名和数字证书"></a>数字签名和数字证书</h1><h3 id="数字签名"><a href="#数字签名" class="headerlink" title="数字签名"></a>数字签名</h3><p><a href="http://www.ruanyifeng.com/blog/2011/08/what_is_a_digital_signature.html" target="_blank" rel="noopener">http://www.ruanyifeng.com/blog/2011/08/what_is_a_digital_signature.html</a></p>
+<p>私钥加密 sign(Message, private key) = Signature每次的数字签名内容都不一样，只有公钥可以解开</p>
+<p>Verify(Message, Signature, public key) =True / False, 256 bit signature, 2 ^ 256 天文数字</p>
+<p>Alice和Bob可以共用一个公开账本往上面记账，但是Bob有可能冒充Alice转账。因此Alice的每条转账后面都加上签名，Bob无法伪造签名。但是Bob可以复制很多条有Alice签名的交易，即双花。因此，每条交易上需要添加一个交易编号，当Bob想要复制上一条交易时，由于交易编号改变，需要Alice重新签名 </p>
 <h3 id="数字证书"><a href="#数字证书" class="headerlink" title="数字证书"></a>数字证书</h3><p><a href="https://kb.cnblogs.com/page/194742/ca" target="_blank" rel="noopener">https://kb.cnblogs.com/page/194742/ca</a></p>
 <p>CA必须是可信的第三方，CA公钥人人都有，数字签名本身是可以让人看见的，要想保证数字签名的真实性需要涉及到CA（私钥很难被获取，公钥有可能被掉包，因此需要CA来保证公钥的真实性）。CA用其私钥对发件人的公钥等进行加密生成数字证书，收件人收到信件后利用CA的公钥对数字证书进行解密获得到发件人的公钥，然后用公钥对数字签名解密获得信件摘要，确保数字签名和公钥真的是发件人的，随后再对信件内容取hash值，两次hash值对比保证信件内容没有被修改过。上述内容仅针对数字签名或者用以传递公钥，假设没有包劫持等。要对信件内容进行保密的话只需要发件人用收件人的公钥进行加密，收件人收到后用其私钥解密，以此对信件内容进行保密。</p>
 <h3 id="密码学笔记"><a href="#密码学笔记" class="headerlink" title="密码学笔记"></a>密码学笔记</h3><p><a href="http://www.ruanyifeng.com/blog/2006/12/notes_on_cryptography.html" target="_blank" rel="noopener">http://www.ruanyifeng.com/blog/2006/12/notes_on_cryptography.html</a></p>
@@ -330,6 +333,15 @@
 
   
 <nav id="article-nav">
+  
+    <a href="/study.github.io/2020/03/15/recommand-video/" id="article-nav-newer" class="article-nav-link-wrap">
+      <i class="icon-circle-left"></i>
+      <div class="article-nav-title">
+        
+          recommand-video
+        
+      </div>
+    </a>
   
   
     <a href="/study.github.io/2020/03/05/精通以太坊阅读笔记-什么是以太坊/" id="article-nav-older" class="article-nav-link-wrap">
