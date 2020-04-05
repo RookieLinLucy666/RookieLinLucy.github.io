@@ -153,6 +153,211 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-ubuntu-shadowsocks-config" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/study.github.io/2020/04/05/ubuntu-shadowsocks-config/">ubuntu-shadowsocks-config</a>
+    </h1>
+  
+
+        
+        <a href="/study.github.io/2020/04/05/ubuntu-shadowsocks-config/" class="archive-article-date">
+  	<time datetime="2020-04-05T13:32:15.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-04-05</time>
+</a>
+        
+      </header>
+    
+<!-- 目录内容 -->
+
+<!-- 目录内容结束 -->
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="ubuntu-shadowsocks代理配置"><a href="#ubuntu-shadowsocks代理配置" class="headerlink" title="ubuntu shadowsocks代理配置"></a>ubuntu shadowsocks代理配置</h1><ul>
+<li>更新Ubuntu依赖到最新</li>
+</ul>
+<p><code>sudo apt-get update</code></p>
+<ul>
+<li>安装python的包管理工具</li>
+</ul>
+<p><code>apt install python3-pip</code></p>
+<ul>
+<li>安装shadowsocks<br><code>pip3 install shadowsocks</code></li>
+</ul>
+<blockquote>
+<p>Traceback (most recent call last):<br>  File “/usr/bin/pip3”, line 11, in <module><br>    sys.exit(main())<br>  File “/usr/lib/python3/dist-packages/pip/<strong>init</strong>.py”, line 215, in main<br>    locale.setlocale(locale.LC_ALL, ‘’)<br>  File “/usr/lib/python3.5/locale.py”, line 594, in setlocale<br>    return _setlocale(category, locale)<br>locale.Error: unsupported locale setting</module></p>
+</blockquote>
+<p>语言设置的问题</p>
+<p><code>export LC_ALL=C</code></p>
+<ul>
+<li>安装</li>
+</ul>
+<p><code>sudo apt-get -y install python-m2crypto</code></p>
+<ul>
+<li>给服务增加一个配置文件：shadowsocks.json</li>
+</ul>
+<p><code>sudo vi /etc/shadowsocks.json</code></p>
+<blockquote>
+</blockquote>
+<p>{“server”:”144.34.181.242”,”server_port”:2443,”local_address”:”127.0.0.1”,”password”:”Y2ZkODBlOW”,”timeout”:300,”method”:”aes-256-cfb”,”fast_open”:false,”workers”:1}</p>
+<p>点<code>esc</code>退出，输出<code>:!wq</code>保存</p>
+<ul>
+<li>启动服务</li>
+</ul>
+<p><code>sslocal -c /etc/shadowsocks.json</code></p>
+<ul>
+<li>开机后自动运行<br>在/home下新建个文件叫做shadow.sh，在里面写上启动ss客户端需要的命令，然后保存即可。</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">#！/bin/bash</span><br><span class="line">#shadow.sh</span><br><span class="line">sslocal -c /etc/shadowsocks.json</span><br></pre></td></tr></table></figure>
+<p>终端执行命令 <code>sh /home/shadow.sh</code></p>
+<ul>
+<li><p>在后台运行<br><code>nohup sh /home/shadow.sh</code></p>
+</li>
+<li><p>加入开机运行<br><code>sudo vi /etc/rc.local</code>编辑，输入<code>nohup bash /home/shadow.sh&gt;/home/d.txt &amp;</code>保存</p>
+</li>
+</ul>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">-2020</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/study.github.io/2020/04/05/ubuntu-shadowsocks-config/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-basic-knowledge" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/study.github.io/2020/03/15/basic-knowledge/">basic knowledge</a>
+    </h1>
+  
+
+        
+        <a href="/study.github.io/2020/03/15/basic-knowledge/" class="archive-article-date">
+  	<time datetime="2020-03-15T08:22:07.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-03-15</time>
+</a>
+        
+      </header>
+    
+<!-- 目录内容 -->
+
+<!-- 目录内容结束 -->
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>区块链基础知识：</p>
+<p>解决了区块链去中心化网络中两个关键的问题：<strong>谁来记账（创建区块）以及如何维护全网数据的一致性</strong>。它的目标就是让网络中的各个节点形成一致的区块链结构，也就是说需要满足以下属性：</p>
+<ul>
+<li><strong>一致性：所有诚实节点保存的区块链的前缀部分完全相同</strong></li>
+<li><strong>有效性：由某个诚实节点发布的信息终将被其他所有节点记录在自己的区块链中</strong></li>
+</ul>
+<p>为什么需要共识？区块链中每个矿工由于网络的问题收到的交易顺序不一样，该打包哪些交易由挖到矿的矿工决定，也是共识协议规定的，最后大家存储共识协议选出来的那个矿工打包的区块。同时通过共识协议中的挖矿难题difficult to solve， easy to verify进行验证，已达成挖矿成功的共识。最长合法链原则同样保证一致性。</p>
+<p>查看加密货币市场：</p>
+<p><a href="https://coinmarketcap.com/all/views/all/" target="_blank" rel="noopener">https://coinmarketcap.com/all/views/all/</a></p>
+<p>截止2020年3月，全球共有5201种加密货币，加密货币市值达到1519亿美元。</p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">2020</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/study.github.io/2020/03/15/basic-knowledge/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-recommand-video" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -160,7 +365,7 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/study.github.io/2020/03/15/recommand-video/">recommand-video</a>
+      <a class="article-title" href="/study.github.io/2020/03/15/recommand-video/">recommand-video-links</a>
     </h1>
   
 
@@ -180,6 +385,10 @@
 <p><a href="https://www.bilibili.com/video/av37065233?p=1" target="_blank" rel="noopener">https://www.bilibili.com/video/av37065233?p=1</a></p>
 <p>区块链学习中文资源</p>
 <p><a href="https://github.com/RookieLinLucy666/blockchain">https://github.com/RookieLinLucy666/blockchain</a></p>
+<p>详解区块链P2P网络</p>
+<p><a href="https://keeganlee.me/post/blockchain/20180313/" target="_blank" rel="noopener">https://keeganlee.me/post/blockchain/20180313/</a></p>
+<p>Kademlia协议原理简介</p>
+<p><a href="http://www.yeolar.com/note/2010/03/21/kademlia/#id13" target="_blank" rel="noopener">http://www.yeolar.com/note/2010/03/21/kademlia/#id13</a></p>
 
       
 
@@ -1220,169 +1429,6 @@
 
 
   
-    <article id="post-Heroku搭建自己的服务器教程" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/study.github.io/2019/06/22/Heroku搭建自己的服务器教程/">Heroku搭建自己的服务器教程</a>
-    </h1>
-  
-
-        
-        <a href="/study.github.io/2019/06/22/Heroku搭建自己的服务器教程/" class="archive-article-date">
-  	<time datetime="2019-06-22T07:48:39.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-06-22</time>
-</a>
-        
-      </header>
-    
-<!-- 目录内容 -->
-
-<!-- 目录内容结束 -->
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>转载自：<a href="https://ixs.im/fun/Heroku_ssh/" target="_blank" rel="noopener">https://ixs.im/fun/Heroku_ssh/</a></p>
-        
-          <a class="article-more-a" href="/study.github.io/2019/06/22/Heroku搭建自己的服务器教程/#more">more >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">2019</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">Heroku</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/study.github.io/2019/06/22/Heroku搭建自己的服务器教程/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-mac-os：搭建SS服务器" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/study.github.io/2019/06/04/mac-os：搭建SS服务器/">mac os：搭建SS服务器</a>
-    </h1>
-  
-
-        
-        <a href="/study.github.io/2019/06/04/mac-os：搭建SS服务器/" class="archive-article-date">
-  	<time datetime="2019-06-04T02:41:15.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-06-04</time>
-</a>
-        
-      </header>
-    
-<!-- 目录内容 -->
-
-<!-- 目录内容结束 -->
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>本文适用于没有一键安装SS脚本的套餐。</p>
-<p>[TOC]</p>
-        
-          <a class="article-more-a" href="/study.github.io/2019/06/04/mac-os：搭建SS服务器/#more">more >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">2019</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/study.github.io/2019/06/04/mac-os：搭建SS服务器/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
   
     <nav id="page-nav">
       <span class="page-number current">1</span><a class="page-number" href="/study.github.io/page/2/">2</a><a class="extend next" rel="next" href="/study.github.io/page/2/">Next &raquo;</a>
@@ -1516,6 +1562,10 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">algorithm</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">-2020</a>
               </li>
              
               <li class="article-tag-list-item">
