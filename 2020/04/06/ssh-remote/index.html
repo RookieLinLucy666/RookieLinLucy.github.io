@@ -6,20 +6,20 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <link rel="dns-prefetch" href="https://github.com/RookieLinLucy666/study.github.io">
-  <title>ubuntu-shadowsocks-config | 散自己财童子小林</title>
+  <title>ssh-remote | 散自己财童子小林</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="ubuntu shadowsocks代理配置 更新Ubuntu依赖到最新  sudo apt-get update  安装python的包管理工具  apt install python3-pip  安装shadowsockspip3 install shadowsocks   Traceback (most recent call last):  File “/usr/bin/pip3”, li">
+  <meta name="description" content="1.mac本机生成秘钥 cd ~/.ssh ssh-keygen -t rsa 一路按回车，执行完毕后cd ~/.sshls可以看到id_rsa（私钥）和id_rsa.pub（公钥） 添加ssh ssh-add -K ~/.ssh/id_rsa 2.将公钥拷贝到服务器上 ssh-copy-id root@101.200.241.24 输入密码 拷贝完成后再次使用ssh命令连接到服务器 ssh ro">
 <meta name="keywords" content="2020">
 <meta property="og:type" content="article">
-<meta property="og:title" content="ubuntu-shadowsocks-config">
-<meta property="og:url" content="https://github.com/RookieLinLucy666/study.github.io/2020/04/05/ubuntu-shadowsocks-config/index.html">
+<meta property="og:title" content="ssh-remote">
+<meta property="og:url" content="https://github.com/RookieLinLucy666/study.github.io/2020/04/06/ssh-remote/index.html">
 <meta property="og:site_name" content="散自己财童子小林">
-<meta property="og:description" content="ubuntu shadowsocks代理配置 更新Ubuntu依赖到最新  sudo apt-get update  安装python的包管理工具  apt install python3-pip  安装shadowsockspip3 install shadowsocks   Traceback (most recent call last):  File “/usr/bin/pip3”, li">
+<meta property="og:description" content="1.mac本机生成秘钥 cd ~/.ssh ssh-keygen -t rsa 一路按回车，执行完毕后cd ~/.sshls可以看到id_rsa（私钥）和id_rsa.pub（公钥） 添加ssh ssh-add -K ~/.ssh/id_rsa 2.将公钥拷贝到服务器上 ssh-copy-id root@101.200.241.24 输入密码 拷贝完成后再次使用ssh命令连接到服务器 ssh ro">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2020-04-06T07:17:29.235Z">
+<meta property="og:updated_time" content="2020-04-06T13:06:15.663Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="ubuntu-shadowsocks-config">
-<meta name="twitter:description" content="ubuntu shadowsocks代理配置 更新Ubuntu依赖到最新  sudo apt-get update  安装python的包管理工具  apt install python3-pip  安装shadowsockspip3 install shadowsocks   Traceback (most recent call last):  File “/usr/bin/pip3”, li">
+<meta name="twitter:title" content="ssh-remote">
+<meta name="twitter:description" content="1.mac本机生成秘钥 cd ~/.ssh ssh-keygen -t rsa 一路按回车，执行完毕后cd ~/.sshls可以看到id_rsa（私钥）和id_rsa.pub（公钥） 添加ssh ssh-add -K ~/.ssh/id_rsa 2.将公钥拷贝到服务器上 ssh-copy-id root@101.200.241.24 输入密码 拷贝完成后再次使用ssh命令连接到服务器 ssh ro">
   
     <link rel="alternative" href="/atom.xml" title="散自己财童子小林" type="application/atom+xml">
   
@@ -153,20 +153,20 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="post-ubuntu-shadowsocks-config" class="article article-type-post " itemscope itemprop="blogPost">
+            <article id="post-ssh-remote" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 class="article-title" itemprop="name">
-      ubuntu-shadowsocks-config
+      ssh-remote
     </h1>
   
 
         
-        <a href="/study.github.io/2020/04/05/ubuntu-shadowsocks-config/" class="archive-article-date">
-  	<time datetime="2020-04-05T13:32:15.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-04-05</time>
+        <a href="/study.github.io/2020/04/06/ssh-remote/" class="archive-article-date">
+  	<time datetime="2020-04-06T13:05:35.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-04-06</time>
 </a>
         
       </header>
@@ -176,55 +176,19 @@
 <!-- 目录内容结束 -->
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="ubuntu-shadowsocks代理配置"><a href="#ubuntu-shadowsocks代理配置" class="headerlink" title="ubuntu shadowsocks代理配置"></a>ubuntu shadowsocks代理配置</h1><ul>
-<li>更新Ubuntu依赖到最新</li>
-</ul>
-<p><code>sudo apt-get update</code></p>
-<ul>
-<li>安装python的包管理工具</li>
-</ul>
-<p><code>apt install python3-pip</code></p>
-<ul>
-<li>安装shadowsocks<br><code>pip3 install shadowsocks</code></li>
-</ul>
-<blockquote>
-<p>Traceback (most recent call last):<br>  File “/usr/bin/pip3”, line 11, in <module><br>    sys.exit(main())<br>  File “/usr/lib/python3/dist-packages/pip/<strong>init</strong>.py”, line 215, in main<br>    locale.setlocale(locale.LC_ALL, ‘’)<br>  File “/usr/lib/python3.5/locale.py”, line 594, in setlocale<br>    return _setlocale(category, locale)<br>locale.Error: unsupported locale setting</module></p>
-</blockquote>
-<p>语言设置的问题</p>
-<p><code>export LC_ALL=C</code></p>
-<ul>
-<li>安装</li>
-</ul>
-<p><code>sudo apt-get -y install python-m2crypto</code></p>
-<ul>
-<li>给服务增加一个配置文件：shadowsocks.json</li>
-</ul>
-<p><code>sudo vi /etc/shadowsocks.json</code></p>
-<blockquote>
-</blockquote>
-<p>{“server”:”xxxxxxxxxxx”,”server_port”:2443,”local_address”:”127.0.0.1”,”password”:”xxxxxxxxx”,”timeout”:300,”method”:”aes-256-cfb”,”fast_open”:false,”workers”:1}</p>
-<p>点<code>esc</code>退出，输出<code>:!wq</code>保存</p>
-<ul>
-<li>启动服务</li>
-</ul>
-<p><code>sslocal -c /etc/shadowsocks.json</code></p>
-<blockquote>
-<p>Traceback (most recent call last):<br>  File “/usr/local/bin/sslocal”, line 11, in <module><br>    sys.exit(main())<br>  File “/usr/local/lib/python3.6/dist-packages/shadowsocks/local.py”, line 39, in main<br>    config = shell.get_config(True)<br>  File “/usr/local/lib/python3.6/dist-packages/shadowsocks/shell.py”, line 262, in get_config<br>    check_config(config, is_local)<br>  File “/usr/local/lib/python3.6/dist-packages/shadowsocks/shell.py”, line 124, in check_config<br>    encrypt.try_cipher(config[‘password’], config[‘method’])<br>  File “/usr/local/lib/python3.6/dist-packages/shadowsocks/encrypt.py”, line 44, in try_cipher<br>    Encryptor(key, method)<br>  File “/usr/local/lib/python3.6/dist-packages/shadowsocks/encrypt.py”, line 83, in <strong>init</strong><br>    random_string(self._method_info[1]))<br>  File “/usr/local/lib/python3.6/dist-packages/shadowsocks/encrypt.py”, line 109, in get_cipher<br>    return m<a href="method, key, iv, op">2</a><br>  File “/usr/local/lib/python3.6/dist-packages/shadowsocks/crypto/openssl.py”, line 76, in <strong>init</strong><br>    load_openssl()<br>  File “/usr/local/lib/python3.6/dist-packages/shadowsocks/crypto/openssl.py”, line 52, in load_openssl<br>    libcrypto.EVP_CIPHER_CTX_cleanup.argtypes = (c_void_p,)<br>  File “/usr/lib/python3.6/ctypes/<strong>init</strong>.py”, line 361, in <strong>getattr</strong><br>    func = self.<strong>getitem</strong>(name)<br>  File “/usr/lib/python3.6/ctypes/<strong>init</strong>.py”, line 366, in <strong>getitem</strong><br>    func = self._FuncPtr((name_or_ordinal, self))<br>AttributeError: /usr/lib/x86_64-linux-gnu/libcrypto.so.1.1: undefined symbol: EVP_CIPHER_CTX_cleanup</module></p>
-</blockquote>
-<p>这个问题是由于在openssl1.1.0版本中，废弃了EVP_CIPHER_CTX_cleanup函数。<br>修改方法：</p>
-<p>find / -name openssl.py<br>用vim打开文件：sudo vi /usr/local/lib/python3.6/dist-packages/shadowsocks/crypto/openssl.py(路径即为find返回结果)<br>点击esc进入命令模式，输入:52,跳转到52行（shadowsocks2.8.2版本，其他版本搜索一下cleanup）<br>点击i进入编辑模式<br>将第52行libcrypto.EVP_CIPHER_CTX_cleanup.argtypes = (c_void_p,)<br>改为libcrypto.EVP_CIPHER_CTX_reset.argtypes = (c_void_p,)</p>
-<p>点esc进入命令模式，输入/cleanup回车，搜索cleanup，（全文件共2处，此处位于111行），将libcrypto.EVP_CIPHER_CTX_cleanup(self._ctx)<br>改为libcrypto.EVP_CIPHER_CTX_reset(self._ctx)<br>保存并退出<br>启动shadowsocks服务：sslocal -c /etc/shadowsocks.json</p>
-<ul>
-<li>开机后自动运行<br>在/home下新建个文件叫做shadow.sh，sudo vi shadow.sh在里面写上启动ss客户端需要的命令，然后保存即可。</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">#！/bin/bash</span><br><span class="line">#shadow.sh</span><br><span class="line">sslocal -c /etc/shadowsocks.json</span><br></pre></td></tr></table></figure>
-<p>终端执行命令 <code>sh /home/shadow.sh</code></p>
-<ul>
-<li><p>在后台运行<br><code>nohup sh /home/shadow.sh</code></p>
-</li>
-<li><p>加入开机运行<br><code>sudo vi /etc/rc.local</code>编辑，输入<code>nohup bash /home/shadow.sh&gt;/home/d.txt &amp;</code>保存</p>
-</li>
-</ul>
+        <p>1.mac本机生成秘钥</p>
+<p><code>cd ~/.ssh</code></p>
+<p><code>ssh-keygen -t rsa</code></p>
+<p>一路按回车，执行完毕后<br><code>cd ~/.ssh</code><br><code>ls</code><br>可以看到<code>id_rsa</code>（私钥）和<code>id_rsa.pub</code>（公钥）</p>
+<p>添加ssh</p>
+<p><code>ssh-add -K ~/.ssh/id_rsa</code></p>
+<p>2.将公钥拷贝到服务器上</p>
+<p><code>ssh-copy-id root@101.200.241.24</code></p>
+<p>输入密码</p>
+<p>拷贝完成后再次使用ssh命令连接到服务器</p>
+<p><code>ssh root@101.200.241.24</code></p>
+<p>如果进行以上操作后还是需要输入密码。则可能是文件.ssh文件夹或者authorized_keys权限不对导致，需要给.ssh文件夹和authorized_keys文件赋权</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">chmod 777 ~/.ssh</span><br><span class="line">chmod 777 ~/.ssh/authorized_keys</span><br></pre></td></tr></table></figure>
 
       
 
@@ -325,7 +289,7 @@
     <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="//pan.baidu.com/share/qrcode?url=https://github.com/RookieLinLucy666/study.github.io/2020/04/05/ubuntu-shadowsocks-config/" alt="微信分享二维码">
+      <img src="//pan.baidu.com/share/qrcode?url=https://github.com/RookieLinLucy666/study.github.io/2020/04/06/ssh-remote/" alt="微信分享二维码">
     </div>
 </div>
 
@@ -339,18 +303,9 @@
   
 <nav id="article-nav">
   
-    <a href="/study.github.io/2020/04/05/git-proxy/" id="article-nav-newer" class="article-nav-link-wrap">
-      <i class="icon-circle-left"></i>
-      <div class="article-nav-title">
-        
-          git-proxy
-        
-      </div>
-    </a>
   
-  
-    <a href="/study.github.io/2020/03/15/basic-knowledge/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">basic knowledge</div>
+    <a href="/study.github.io/2020/04/06/caliper-fabric/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">caliper-fabric 0.2.0 测试及错误解决</div>
       <i class="icon-circle-right"></i>
     </a>
   

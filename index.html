@@ -153,6 +153,95 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-ssh-remote" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/study.github.io/2020/04/06/ssh-remote/">ssh-remote</a>
+    </h1>
+  
+
+        
+        <a href="/study.github.io/2020/04/06/ssh-remote/" class="archive-article-date">
+  	<time datetime="2020-04-06T13:05:35.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-04-06</time>
+</a>
+        
+      </header>
+    
+<!-- 目录内容 -->
+
+<!-- 目录内容结束 -->
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>1.mac本机生成秘钥</p>
+<p><code>cd ~/.ssh</code></p>
+<p><code>ssh-keygen -t rsa</code></p>
+<p>一路按回车，执行完毕后<br><code>cd ~/.ssh</code><br><code>ls</code><br>可以看到<code>id_rsa</code>（私钥）和<code>id_rsa.pub</code>（公钥）</p>
+<p>添加ssh</p>
+<p><code>ssh-add -K ~/.ssh/id_rsa</code></p>
+<p>2.将公钥拷贝到服务器上</p>
+<p><code>ssh-copy-id root@101.200.241.24</code></p>
+<p>输入密码</p>
+<p>拷贝完成后再次使用ssh命令连接到服务器</p>
+<p><code>ssh root@101.200.241.24</code></p>
+<p>如果进行以上操作后还是需要输入密码。则可能是文件.ssh文件夹或者authorized_keys权限不对导致，需要给.ssh文件夹和authorized_keys文件赋权</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">chmod 777 ~/.ssh</span><br><span class="line">chmod 777 ~/.ssh/authorized_keys</span><br></pre></td></tr></table></figure>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">2020</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/study.github.io/2020/04/06/ssh-remote/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-caliper-fabric" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -177,7 +266,7 @@
     <div class="article-entry" itemprop="articleBody">
       
         <ul>
-<li>ubuntu16.04换源</li>
+<li>ubuntu换源</li>
 </ul>
 <p><a href="https://blog.csdn.net/u012308586/article/details/102953882" target="_blank" rel="noopener">https://blog.csdn.net/u012308586/article/details/102953882</a></p>
 <ul>
@@ -191,11 +280,15 @@
 <p>-下载caliper-benchmark仓库</p>
 <p><code>git clone https://github.com/hyperledger/caliper-benchmarks.git</code></p>
 <p><code>cd caliper-benckmarks</code></p>
+<ul>
+<li>切换benchmark版本</li>
+</ul>
+<p><code>git checkout v0.2.0</code></p>
 <p>以下命令均在caliper-benchmarks目录下操作</p>
 <ul>
 <li>npm项目初始化</li>
 </ul>
-<p><code>npm init</code></p>
+<p><code>npm init -y</code></p>
 <ul>
 <li>安装caliper-cli</li>
 </ul>
@@ -215,12 +308,32 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npx caliper bind --caliper-bind-sut fabric --caliper-bind-sdk 1.4.1</span><br></pre></td></tr></table></figure>
 <p>若直接在caliper2.0/3.0和benchmark latest的基础上运行benchmarks会出现如下错误</p>
 <blockquote>
-<p>Error [caliper] [caliper-flow]     Error: TypeError: Cannot read property ‘hasOwnProperty’ of undefined<br>at ClientOrchestrator.init (~/caliper-benchmarks/node_modules/@hyperledger/caliper-core/lib/client/client-orchestrator.js:41:24)<br>    at Object.module.exports.run (~/caliper-benchmarks/node_modules/@hyperledger/caliper-core/lib/caliper-flow.js:106:60)<br>    at <anonymous><br>    at process._tickCallback (internal/process/next_tick.js:189:7)<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">- 切换benchmark版本</span><br><span class="line"></span><br><span class="line">    `git checkout v0.2.0`</span><br><span class="line">    </span><br><span class="line">- 运行benchmark</span><br><span class="line"></span><br><span class="line">    `npx caliper benchmark run \</span><br><span class="line">    --caliper-workspace . \</span><br><span class="line">    --caliper-benchconfig benchmarks/scenario/simple/config.yaml \</span><br><span class="line">    --caliper-networkconfig networks/fabric/fabric-v1.4.1/2org1peergoleveldb/fabric-go.yaml`</span><br><span class="line">    </span><br><span class="line">    该命令仅适用于caliper0.2.0</span><br><span class="line">    </span><br><span class="line">若出现下述错误，则更改权限`sudo chmod +x /usr/local/bin/docker-compose`</span><br><span class="line"></span><br><span class="line">&gt;/bin/sh: 1: docker-compose: Permission denied</span><br><span class="line"></span><br><span class="line">若出现如下错误，则是`npx caliper bind --caliper-bind-sut fabric --caliper-bind-sdk 1.4.1`版本和docker pull的版本不同导致，只需要利用`npx caliper bind --caliper-bind-sut fabric --caliper-bind-sdk 1.4.1`安装相应版本</span><br><span class="line"></span><br><span class="line">&gt;error [caliper] [caliper-flow] 	Error: Error: Invalid endorsement for simple@v0 in mychannel from peer0.org2.example.com: error starting container: error starting container: Failed to generate platform-specific docker build: Error returned from build: 1 &quot;/opt/go/pkg/tool/linux_amd64/link: signal: killed</span><br><span class="line">&quot;</span><br><span class="line">    at proposalResponses.forEach (/home/ubuntu/caliper-benchmarks/node_modules/@hyperledger/caliper-fabric/lib/fabric.js:1358:31)</span><br><span class="line">    at Array.forEach (&lt;anonymous&gt;)</span><br><span class="line">    at Fabric._instantiateChaincodes (/home/ubuntu/caliper-benchmarks/node_modules/@hyperledger/caliper-fabric/lib/fabric.js:1354:35)</span><br><span class="line">    at &lt;anonymous&gt;</span><br><span class="line">    </span><br><span class="line"></span><br><span class="line">- docker换源</span><br><span class="line"></span><br><span class="line">初次运行benchmark会出现镜像拉取缓慢，因此需要对docker换源</span><br></pre></td></tr></table></figure></anonymous></p>
+<p>Error [caliper] [caliper-flow]     Error: TypeError: Cannot read property ‘hasOwnProperty’ of undefined<br>at ClientOrchestrator.init (~/caliper-benchmarks/node_modules/@hyperledger/caliper-core/lib/client/client-orchestrator.js:41:24)<br>    at Object.module.exports.run (~/caliper-benchmarks/node_modules/@hyperledger/caliper-core/lib/caliper-flow.js:106:60)<br>    at <anonymous><br>    at process._tickCallback (internal/process/next_tick.js:189:7)</anonymous></p>
 </blockquote>
-<p>cd  /etc/docker/</p>
-<h1 id="新建daemon文件"><a href="#新建daemon文件" class="headerlink" title="新建daemon文件"></a>新建daemon文件</h1><p>sudo vi daemon.json</p>
-<h1 id="编辑daemon-json内容"><a href="#编辑daemon-json内容" class="headerlink" title="编辑daemon.json内容"></a>编辑daemon.json内容</h1><p>{<br>  “registry-mirrors”: [“<a href="https://docker.mirrors.ustc.edu.cn&quot;]" target="_blank" rel="noopener">https://docker.mirrors.ustc.edu.cn&quot;]</a> #中科大镜像<br>}<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">- mac上设置ssh不断掉，并且session保持</span><br><span class="line"></span><br><span class="line">`sudo vi ~/.ssh/config`，输入如下内容</span><br></pre></td></tr></table></figure></p>
-<p>Host *<br>    ServerAliveInterval 60<br>    ControlMaster auto<br>    ControlPath ~/.ssh/%h-%p-%r<br>    ControlPersist yes<code>`</code></p>
+<ul>
+<li>docker换源</li>
+</ul>
+<p>初次运行benchmark会出现镜像拉取缓慢，因此需要对docker换源</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">cd  /etc/docker/</span><br><span class="line"># 新建daemon文件</span><br><span class="line"></span><br><span class="line">sudo vi daemon.json</span><br><span class="line">#  编辑daemon.json内容</span><br><span class="line">&#123;</span><br><span class="line">  &quot;registry-mirrors&quot;: [&quot;https://docker.mirrors.ustc.edu.cn&quot;] </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>重启服务<br><code>sudo systemctl daemon-reload</code><br><code>sudo systemctl restart docker</code><br>若出现下述错误</p>
+<blockquote>
+<p>Job for docker.service failed because the control process exited with error code.<br>则是daemon.json文件配置错误，请检查分隔符等。</p>
+</blockquote>
+<ul>
+<li>运行benchmark</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">npx caliper benchmark run \</span><br><span class="line">    --caliper-workspace . \</span><br><span class="line">    --caliper-benchconfig benchmarks/scenario/simple/config.yaml \</span><br><span class="line">    --caliper-networkconfig networks/fabric/fabric-v1.4.1/2org1peergoleveldb/fabric-go.yaml</span><br></pre></td></tr></table></figure>
+<p>该命令仅适用于caliper0.2.0</p>
+<p>若出现下述错误，则更改权限<code>sudo chmod +x /usr/local/bin/docker-compose</code></p>
+<blockquote>
+<p>/bin/sh: 1: docker-compose: Permission denied</p>
+</blockquote>
+<p>若出现如下错误，则</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">cd networks/fabric/docker-compose/2org1peergoleveldb</span><br><span class="line">vi docker-compose.yaml</span><br><span class="line">#找到environment，输入如下内容与上面对齐</span><br><span class="line">- CORE_CHAINCODE_EXECUTETIMEOUT=30s</span><br><span class="line">- CORE_CHAINCODE_STARTUPTIMEOUT=600s</span><br></pre></td></tr></table></figure>
+<p>然后返回工作目录caliper-benckmarks下面，接着运行benchmark</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line">npx caliper benchmark run \</span><br><span class="line">    --caliper-workspace . \</span><br><span class="line">    --caliper-benchconfig benchmarks/scenario/simple/config.yaml \</span><br><span class="line">    --caliper-networkconfig networks/fabric/fabric-v1.4.1/2org1peergoleveldb/fabric-go.yaml</span><br><span class="line">``` </span><br><span class="line"></span><br><span class="line">如果还是出现下述错误</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&gt;error [caliper] [caliper-flow] 	Error: Error: Invalid endorsement for simple@v0 in mychannel from peer0.org2.example.com: error starting container: error starting container: Failed to generate platform-specific docker build: Error returned from build: 1 &quot;/opt/go/pkg/tool/linux_amd64/link: signal: killed</span><br><span class="line">&quot;</span><br><span class="line">    at proposalResponses.forEach (/home/ubuntu/caliper-benchmarks/node_modules/@hyperledger/caliper-fabric/lib/fabric.js:1358:31)</span><br><span class="line">    at Array.forEach (&lt;anonymous&gt;)</span><br><span class="line">    at Fabric._instantiateChaincodes (/home/ubuntu/caliper-benchmarks/node_modules/@hyperledger/caliper-fabric/lib/fabric.js:1354:35)</span><br><span class="line">    at &lt;anonymous&gt;</span><br><span class="line">   </span><br><span class="line">若出现以下错误，重新运行上述命令即可</span><br><span class="line">    </span><br><span class="line">&gt;error: [FabricCAClientService.js]: Failed to enroll admin, error:%o message=Calling enrollment endpoint failed with error [Error: connect ECONNREFUSED 127.0.0.1:7054], stack=Error: Calling enrollment endpoint failed with error [Error: connect ECONNREFUSED 127.0.0.1:7054]</span><br><span class="line">    at ClientRequest.request.on (/root/caliper-benchmarks/node_modules/fabric-ca-client/lib/FabricCAClient.js:487:12)</span><br><span class="line">    at emitOne (events.js:116:13)</span><br><span class="line">    at ClientRequest.emit (events.js:211:7)</span><br><span class="line">    at Socket.socketErrorListener (_http_client.js:401:9)</span><br><span class="line">    at emitOne (events.js:116:13)</span><br><span class="line">    at Socket.emit (events.js:211:7)</span><br><span class="line">    at emitErrorNT (internal/streams/destroy.js:73:8)</span><br><span class="line">    at _combinedTickCallback (internal/process/next_tick.js:139:11)</span><br><span class="line">    at process._tickCallback (internal/process/next_tick.js:181:9)</span><br><span class="line">2020.04.06-16:21:18.565 error [caliper] [caliper-flow] 	Error: Error: Couldn&apos;t enroll Org1&apos;s registrar or set it as user context: Calling enrollment endpoint failed with error [Error: connect ECONNREFUSED 127.0.0.1:7054]</span><br><span class="line">    at Fabric._setUserContextByEnrollment (/root/caliper-benchmarks/node_modules/@hyperledger/caliper-fabric/lib/fabric.js:1688:19)</span><br><span class="line">    at &lt;anonymous&gt;</span><br><span class="line">    at process._tickCallback (internal/process/next_tick.js:189:7)</span><br><span class="line">    </span><br><span class="line">- mac上设置ssh不断掉，并且session保持</span><br><span class="line"></span><br><span class="line">`sudo vi ~/.ssh/config`，输入如下内容，对所有服务器保持不断开（也可针对特定服务器，请搜索）</span><br></pre></td></tr></table></figure>
+<p>Host *<br>    ServerAliveInterval 60<br>    ControlMaster auto<br>    ControlPath ~/.ssh/%h-%p-%r<br>    ControlPersist yes<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">    </span><br><span class="line"></span><br><span class="line">编辑服务器 `cd /etc/ssh/sshd_config`，最后增加</span><br></pre></td></tr></table></figure></p>
+<p>ClientAliveInterval 60<br>ClientAliveCountMax 1<br><code>`</code><br>这 样，SSH Server 每 60 秒就会自动发送一个信号给 Client，而等待 Client 回应</p>
 
       
 
@@ -387,7 +500,7 @@
       
         <h1 id="ubuntu16-04-国内安装NodeJS、Docker、Docker-Compose（2020-04-05）"><a href="#ubuntu16-04-国内安装NodeJS、Docker、Docker-Compose（2020-04-05）" class="headerlink" title="ubuntu16.04 国内安装NodeJS、Docker、Docker Compose（2020-04-05）"></a>ubuntu16.04 国内安装NodeJS、Docker、Docker Compose（2020-04-05）</h1><h2 id="NodeJS"><a href="#NodeJS" class="headerlink" title="NodeJS"></a>NodeJS</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"># 安装nvm</span><br><span class="line">curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.2/install.sh | bash</span><br><span class="line"># 加载nvm配置</span><br><span class="line">source ~/.$(basename $SHELL)rc</span><br><span class="line"># 安装Node.js 8</span><br><span class="line">nvm install 8</span><br><span class="line"># 使用Node.js 8</span><br><span class="line">nvm use 8</span><br></pre></td></tr></table></figure>
 <h2 id="Docker"><a href="#Docker" class="headerlink" title="Docker"></a>Docker</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"># 更新包索引</span><br><span class="line">sudo apt-get update</span><br><span class="line"># 安装基础依赖库</span><br><span class="line">sudo apt-get install \</span><br><span class="line">    apt-transport-https \</span><br><span class="line">    ca-certificates \</span><br><span class="line">    curl \</span><br><span class="line">    gnupg-agent \</span><br><span class="line">    software-properties-common</span><br><span class="line"># 添加Docker官方GPG key</span><br><span class="line">curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -</span><br><span class="line"># 添加docker仓库</span><br><span class="line">sudo add-apt-repository \</span><br><span class="line">&quot;deb [arch=amd64] https://download.docker.com/linux/ubuntu \</span><br><span class="line">$(lsb_release -cs) \</span><br><span class="line">stable&quot;</span><br><span class="line"># 更新包索引</span><br><span class="line">sudo apt-get update</span><br><span class="line"># 安装Docker</span><br><span class="line">sudo apt-get install docker-ce docker-ce-cli containerd.io</span><br><span class="line">#加入Docker用户组</span><br><span class="line">sudo groupadd docker</span><br><span class="line">sudo usermod -aG docker $USER</span><br></pre></td></tr></table></figure>
-<h2 id="Docker-Compose"><a href="#Docker-Compose" class="headerlink" title="Docker Compose"></a>Docker Compose</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo curl -L &quot;https://github.com/docker/compose/releases/download/1.24.0/docker-compose-$(uname -s)-$(uname -m)&quot; -o /usr/local/bin/docker-compose</span><br><span class="line">sudo chmod +x /usr/local/bin/docker-compose</span><br></pre></td></tr></table></figure>
+<h2 id="Docker-Compose"><a href="#Docker-Compose" class="headerlink" title="Docker Compose"></a>Docker Compose</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo curl -L https://get.daocloud.io/docker/compose/releases/download/1.22.0/docker-compose-`uname -s`-`uname -m` &gt; /usr/local/bin/docker-compose</span><br><span class="line">sudo chmod +x /usr/local/bin/docker-compose</span><br></pre></td></tr></table></figure>
       
 
       
@@ -587,8 +700,14 @@
 <li>启动服务</li>
 </ul>
 <p><code>sslocal -c /etc/shadowsocks.json</code></p>
+<blockquote>
+<p>Traceback (most recent call last):<br>  File “/usr/local/bin/sslocal”, line 11, in <module><br>    sys.exit(main())<br>  File “/usr/local/lib/python3.6/dist-packages/shadowsocks/local.py”, line 39, in main<br>    config = shell.get_config(True)<br>  File “/usr/local/lib/python3.6/dist-packages/shadowsocks/shell.py”, line 262, in get_config<br>    check_config(config, is_local)<br>  File “/usr/local/lib/python3.6/dist-packages/shadowsocks/shell.py”, line 124, in check_config<br>    encrypt.try_cipher(config[‘password’], config[‘method’])<br>  File “/usr/local/lib/python3.6/dist-packages/shadowsocks/encrypt.py”, line 44, in try_cipher<br>    Encryptor(key, method)<br>  File “/usr/local/lib/python3.6/dist-packages/shadowsocks/encrypt.py”, line 83, in <strong>init</strong><br>    random_string(self._method_info[1]))<br>  File “/usr/local/lib/python3.6/dist-packages/shadowsocks/encrypt.py”, line 109, in get_cipher<br>    return m<a href="method, key, iv, op">2</a><br>  File “/usr/local/lib/python3.6/dist-packages/shadowsocks/crypto/openssl.py”, line 76, in <strong>init</strong><br>    load_openssl()<br>  File “/usr/local/lib/python3.6/dist-packages/shadowsocks/crypto/openssl.py”, line 52, in load_openssl<br>    libcrypto.EVP_CIPHER_CTX_cleanup.argtypes = (c_void_p,)<br>  File “/usr/lib/python3.6/ctypes/<strong>init</strong>.py”, line 361, in <strong>getattr</strong><br>    func = self.<strong>getitem</strong>(name)<br>  File “/usr/lib/python3.6/ctypes/<strong>init</strong>.py”, line 366, in <strong>getitem</strong><br>    func = self._FuncPtr((name_or_ordinal, self))<br>AttributeError: /usr/lib/x86_64-linux-gnu/libcrypto.so.1.1: undefined symbol: EVP_CIPHER_CTX_cleanup</module></p>
+</blockquote>
+<p>这个问题是由于在openssl1.1.0版本中，废弃了EVP_CIPHER_CTX_cleanup函数。<br>修改方法：</p>
+<p>find / -name openssl.py<br>用vim打开文件：sudo vi /usr/local/lib/python3.6/dist-packages/shadowsocks/crypto/openssl.py(路径即为find返回结果)<br>点击esc进入命令模式，输入:52,跳转到52行（shadowsocks2.8.2版本，其他版本搜索一下cleanup）<br>点击i进入编辑模式<br>将第52行libcrypto.EVP_CIPHER_CTX_cleanup.argtypes = (c_void_p,)<br>改为libcrypto.EVP_CIPHER_CTX_reset.argtypes = (c_void_p,)</p>
+<p>点esc进入命令模式，输入/cleanup回车，搜索cleanup，（全文件共2处，此处位于111行），将libcrypto.EVP_CIPHER_CTX_cleanup(self._ctx)<br>改为libcrypto.EVP_CIPHER_CTX_reset(self._ctx)<br>保存并退出<br>启动shadowsocks服务：sslocal -c /etc/shadowsocks.json</p>
 <ul>
-<li>开机后自动运行<br>在/home下新建个文件叫做shadow.sh，在里面写上启动ss客户端需要的命令，然后保存即可。</li>
+<li>开机后自动运行<br>在/home下新建个文件叫做shadow.sh，sudo vi shadow.sh在里面写上启动ss客户端需要的命令，然后保存即可。</li>
 </ul>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">#！/bin/bash</span><br><span class="line">#shadow.sh</span><br><span class="line">sslocal -c /etc/shadowsocks.json</span><br></pre></td></tr></table></figure>
 <p>终端执行命令 <code>sh /home/shadow.sh</code></p>
@@ -1115,136 +1234,6 @@
 
 
   
-    <article id="post-精通以太坊阅读笔记" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/study.github.io/2020/03/05/精通以太坊阅读笔记/">精通以太坊阅读笔记-快速术语表</a>
-    </h1>
-  
-
-        
-        <a href="/study.github.io/2020/03/05/精通以太坊阅读笔记/" class="archive-article-date">
-  	<time datetime="2020-03-04T16:16:31.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-03-05</time>
-</a>
-        
-      </header>
-    
-<!-- 目录内容 -->
-
-<!-- 目录内容结束 -->
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>地址Address是ECDSA（椭圆曲线签名算法）公钥的Keccak（哈希算法）散列的最右边160位，为16进制的40个字符长度，“0x”开头</p>
-<p>断言Assert当assert()失败时，用尽所有剩余的gas，与require不同</p>
-<p>大端序Big-endian是最高有效位放在前面，对应小端序little-endian，最低有效位在前面</p>
-<p>以太坊区块链没有区块大小的限制，它改为使用gas费用限制</p>
-<p>共识Consensus是网络中的大多数节点在本地验证的最佳区块链中都有相同的区块的情况，与共识算法不同</p>
-<p>拜占庭分叉（Byzantine Fork）、君士坦丁堡（Constantinople）是大都会（Metropolis）发展阶段的两大分叉，前者包含EIP-49（大都会难度炸弹延迟和区块链奖励减少），后者预计切换到混合工作证明/权益证明共识算法等</p>
-<p>合约创建交易Contract creation transaction以零地址作为收件人，用于注册合约并将其记录在以太坊中</p>
-<p>去中心化组织Decentralised Autonomous Organization（DAO）。2016年4月30日发布的“The DAO”合约在2016年6月遭受黑客攻击，最终在1192000个区块激起硬分叉（代号DAO）恢复被攻击的DAO合约，导致以太坊和以太经典两个系统</p>
-<p>契约Deed，ERC721提案引入的不可替代的标记标准，与ERC20代币不同，契约证明所有权并且不可互换，还未有任何辖区承认其合法地位</p>
-<p>数字签名Digital Signature用私钥加密为文档生成称为“签名”的短字符串数据，验证该文件由特定私钥所有者签名以及该文件签名之后未被更改</p>
-<p>熵Entropy，表示可预测性的缺乏或随机性水平，在生成秘密信息（私钥等）时需要依赖高熵源确保输出不可预测</p>
-<p>Ethash 以太坊1.0的工作量证明算法</p>
-<p>Fallback function 缺少数据或声明时执行</p>
-<p>水龙头 Faucet 测试网testnet上为开发人员免费提供测试ether</p>
-<p>Ganache 私有以太坊区块链，可以测试</p>
-<p>gas 执行智能合约每条指令产生的计算单位</p>
-<p>gas limit 区块中允许消耗的最大gas</p>
-<p>Geth Go编写的最突出的以太坊协议实现之一</p>
-<p>硬分叉hard fork 硬分叉后的节点处理未硬分叉节点的交易视为无效</p>
-<p>软分叉soft fork 软分叉后的节点处理未软分叉节点的交易可以是有效的</p>
-<p>分层确定钱包HD wallet是使用分层确定密钥生成和传输协议的钱包（BIP32）</p>
-<p>分层确定钱包种子 HD wallet seed用作生成HD钱包的主私钥和主链码的种子。钱包种子可以用助记词表示，使人们更容易复制，备份和恢复私钥。</p>
-<p>家园 Homestead 以太坊的第二个发展阶段，于2016年3月在1,150,000区块启动。</p>
-<p>冰河时代 Ice Age 以太坊在200,000区块的硬分叉，提出难度指数级增长（又名难度炸弹），引发了到权益证明Proof-of-Stake的过渡。</p>
-<p>互换客户端地址协议 Inter exchange Client Address Protocol (ICAP) 以太坊地址编码，与国际银行帐号（IBAN）编码部分兼容，为以太坊地址提供多样的，校验和的，可互操作的编码。 ICAP地址可以编码以太坊地址或通过以太坊名称注册表注册的常用名称。他们总是以XE开始。其目的是引入一个新的IBAN国家代码：XE，X表示”extended”， 加上以太坊的E，用于非管辖货币（例如XBT，XRP，XCP）。</p>
-<p>内部交易（又称“消息”）Internal transaction (also “message”) 从一个合约地址发送到另一个合约地址或EOA的交易（合约内部调用）</p>
-<p>Keccak256 以太坊使用的加密哈希方法</p>
-<p>密钥推导方法 Key Derivation Function (KDF) 也称为密码扩展算法，它被keystore格式使用，以防止对密码加密的暴力破解，字典或彩虹表攻击。它重复对密码进行哈希。</p>
-<p>Keystore 文件 JSON 编码的文件，包含一个（随机生成的）私钥，被一个密码加密，以提供额外的安全性。</p>
-<p>LevelDB是一种开源的磁盘key-value存储系统</p>
-<p>库 Library 用作之前部署的代码，其他合约可以调用只读计算</p>
-<p>轻量级客户端 Lightweight client 不存储区块链的本地副本，也不验证块和事务。它提供了钱包的功能，可以创建和广播交易</p>
-<p>消息 Message 内部交易，从未被序列化，只在EVM中发送（合约间调用）</p>
-<p>大都会阶段 Metropolis Stage 是以太坊的第三个开发阶段，在2017年10月启动。第二阶段是家园 Homestead，于2016年3月在1,150,000区块启动</p>
-<p>Mist是以太坊基金会创建的第一个以太坊浏览器。它还包含一个基于浏览器的钱包，这是ERC20令牌标准的首次实施（Fabian Vogelsteller，ERC20的作者也是Mist的主要开发人员）。Mist也是第一个引入camelCase校验码（EIP-155）的钱包。Mist运行完整节点，提供完整的DApp浏览器，支持基于Swarm的存储和ENS地址</p>
-<p>随机数 Nonce，密码学中，随机数指代只可以用一次的数值。在以太坊中用到两类随机数。1.账户随机数 - 这只是一个账户的交易计数。2.工作量证明随机数- 用于获得工作证明的区块中的随机值（取决于当时的难度）。</p>
-<p>Ommer是祖父节点的子节点，但它本身并不是父节点。当矿工找到一个有效的区块时，另一个矿工可能已经发布了一个竞争的区块，并添加到区块链顶部。像比特币一样，以太坊中的孤儿区块可以被新的区块作为ommers包含，并获得部分奖励。术语 “ommer” 是对父节点的兄弟姐妹节点的性别中立的称呼，但也可以表示为“叔叔”。</p>
-<p>Parity 以太坊客户端软件最突出的支持共同操作（多重签名）的实现之一。</p>
-<p>权益证明 Proof-of-Stake (PoS)要求用户证明一定数量的加密货币的所有权，以便能够参与交易验证。</p>
-<p>收据 Receipt 以太坊客户端返回的数据，表示特定交易的结果，包括交易的哈希值，其区块编号，使用的燃气量，以及在部署智能合约时的合约地址。</p>
-<p>重入攻击 Re-entrancy Attack 当攻击者合约（Attacker contracts）调用受害者合约（Victim contracts）的方法时，可以重复这种攻击。让我们称它为victim.withdraw()，在对该合约函数的原始调用完成之前，再次调用victim.withdraw()方法，持续递归调用它自己。 递归调用可以通过攻击者合约的后备方法实现。 攻击者必须执行的唯一技巧是在用完燃气之前中断递归调用，并避免盗用的以太被还原。</p>
-<p>Require 在Solidity中，require（false）编译为 <strong>0xfd</strong>，它是 <strong>REVERT</strong> 操作码。REVERT指令提供了一种停止执行和恢复状态更改的方式，不消耗所有提供的燃气并且能够返回原因。 应使用require函数来确保满足有效条件，如输入或合同状态变量，或者验证调用外部合约的返回值。（与assert()耗尽所有燃料不同）</p>
-<p>Revert() 当需要处理与 require() 相同的情况，但使用更复杂的逻辑时，使用 revert()。 例如，如果你的代码有一些嵌套的 if/else 逻辑流程，你会发现使用revert() 而不是require（）是合理的</p>
-<p>递归长度前缀 Recursive Length Prefix (RLP)  一种编码标准，由以太坊开发人员设计用来编码和序列化任意复杂度和长度的对象（数据结构）</p>
-<p>SELFDESTRUCT 操作码。只要整个网络存在，智能合同就会存在并可执行。如果它们被编程为自毁的或使用委托调用（delegatecall）或调用代码（callcode）执行该操作，它们将从区块链中消失。 一旦执行自毁操作，存储在合同地址处的剩余Ether将被发送到另一个地址，并将存储和代码从状态中移除。 尽管这是预期的行为，但自毁合同的修剪可能或不会被以太坊客户实施。 SELFDESTRUCT 之前称作 SUICIDE, 在EIP6中, SUICIDE 重命名为 SELFDESTRUCT。</p>
-<p>宁静 Serenity，以太坊第四个也是最后一个开发阶段。宁静还没有计划发布的日期。</p>
-<p>Spurious Dragon，在＃2,675,00块的硬分叉，来解决更多的拒绝服务攻击向量，以及另一种状态清除。还有转播攻击保护机制。</p>
-<p>Swarm，一种去中心化（P2P）的存储网络。与 Web3 和 Whisper 共同使用来构建 DApps。</p>
-<p>Tangerine Whistle，在 #2,463,00 块的硬分叉，改变了某些 I/O 密集操作的燃气计算方式，并从拒绝服务攻击中清除累积状态，这种攻击利用了这些操作的低燃气成本。</p>
-<p>图灵完备 Turing Complete，在计算理论中，如果数据操纵规则（如计算机的指令集，程序设计语言或细胞自动机）可用于模拟任何图灵机，则它被称为图灵完备或计算上通用的。这个概念是以英国数学家和计算机科学家阿兰图灵命名的。</p>
-<p>钱包 Wallet，拥有你的所有密钥的软件。作为访问和控制以太坊账户并与智能合约交互的界面。请注意，密钥不需要存储在你的钱包中，并且可以从脱机存储（例如 USB 闪存驱动器或纸张）中检索以提高安全性。尽管名字为钱包，但它从不存储实际的硬币或代币。</p>
-<p>Wei，以太的最小单位，1018 wei = 1 ether.</p>
-<p>Whisper，一种去中心化（P2P）消息系统。与 Web3 和 Swarm 一起使用来构建 DApps。</p>
-<p>零地址 Zero address，特殊的以太坊地址，全部是由 <code>0</code> 组成（即 <code>0x0000000000000000000000000000000000000000</code>)，被指定为创建一个智能合约所发起的交易（Transaction）的目标地址（即 <code>to</code> 参数的值）。</p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">2020</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/study.github.io/2020/03/05/精通以太坊阅读笔记/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
   
     <nav id="page-nav">
       <span class="page-number current">1</span><a class="page-number" href="/study.github.io/page/2/">2</a><a class="page-number" href="/study.github.io/page/3/">3</a><a class="extend next" rel="next" href="/study.github.io/page/2/">Next &raquo;</a>
@@ -1361,11 +1350,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">Heroku</a>
+                <a href="javascript:void(0)" class="js-tag color5">2020</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">2020</a>
+                <a href="javascript:void(0)" class="js-tag color2">Heroku</a>
               </li>
              
               <li class="article-tag-list-item">
