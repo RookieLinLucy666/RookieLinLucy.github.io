@@ -153,6 +153,86 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-fabric-app" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/study.github.io/2020/04/10/fabric-app/">fabric-app</a>
+    </h1>
+  
+
+        
+        <a href="/study.github.io/2020/04/10/fabric-app/" class="archive-article-date">
+  	<time datetime="2020-04-09T17:59:30.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-04-10</time>
+</a>
+        
+      </header>
+    
+<!-- 目录内容 -->
+
+<!-- 目录内容结束 -->
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><a href="http://www.luyixian.cn/news_show_312965.aspx" target="_blank" rel="noopener">http://www.luyixian.cn/news_show_312965.aspx</a><br><a href="http://blog.hubwiz.com/2020/03/10/hyperledger-caliper-multi-host/" target="_blank" rel="noopener">http://blog.hubwiz.com/2020/03/10/hyperledger-caliper-multi-host/</a><br><a href="https://hyperledger.github.io/caliper/vLatest/installing-caliper/" target="_blank" rel="noopener">https://hyperledger.github.io/caliper/vLatest/installing-caliper/</a></p>
+<h1 id="设置区块链网络"><a href="#设置区块链网络" class="headerlink" title="设置区块链网络"></a>设置区块链网络</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">cd $GOPATH/src/github.com/hyperledger/fabric-samples/first-network</span><br><span class="line"># 停止区块链网络</span><br><span class="line">./byfn.sh down</span><br></pre></td></tr></table></figure>
+<h1 id="启动网络"><a href="#启动网络" class="headerlink" title="启动网络"></a>启动网络</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cd $GOPATH/src/github.com/hyperledger/fabric-samples/fabcar</span><br><span class="line">./startFabric.sh javascript</span><br></pre></td></tr></table></figure>
+<p>Error: failed to endorse chaincode install: rpc error: code = Unavailable desc = transport is closing</p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">2020</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/study.github.io/2020/04/10/fabric-app/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-fabric-v0-2-0" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -1070,126 +1150,6 @@
 
 
   
-    <article id="post-digital-signature-and-ssl-tls" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/study.github.io/2020/03/10/digital-signature-and-ssl-tls/">digital-signature-and-ssl-tls</a>
-    </h1>
-  
-
-        
-        <a href="/study.github.io/2020/03/10/digital-signature-and-ssl-tls/" class="archive-article-date">
-  	<time datetime="2020-03-10T08:53:51.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-03-10</time>
-</a>
-        
-      </header>
-    
-<!-- 目录内容 -->
-
-<!-- 目录内容结束 -->
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>密码学中常用的知识</p>
-<p>来源：阮一峰的网络日志、编程随想</p>
-<h1 id="数字签名和数字证书"><a href="#数字签名和数字证书" class="headerlink" title="数字签名和数字证书"></a>数字签名和数字证书</h1><h3 id="数字签名"><a href="#数字签名" class="headerlink" title="数字签名"></a>数字签名</h3><p><a href="http://www.ruanyifeng.com/blog/2011/08/what_is_a_digital_signature.html" target="_blank" rel="noopener">http://www.ruanyifeng.com/blog/2011/08/what_is_a_digital_signature.html</a></p>
-<p>私钥加密 sign(Message, private key) = Signature每次的数字签名内容都不一样，只有公钥可以解开</p>
-<p>Verify(Message, Signature, public key) =True / False, 256 bit signature, 2 ^ 256 天文数字</p>
-<p>Alice和Bob可以共用一个公开账本往上面记账，但是Bob有可能冒充Alice转账。因此Alice的每条转账后面都加上签名，Bob无法伪造签名。但是Bob可以复制很多条有Alice签名的交易，即双花。因此，每条交易上需要添加一个交易编号，当Bob想要复制上一条交易时，由于交易编号改变，需要Alice重新签名 </p>
-<h3 id="数字证书"><a href="#数字证书" class="headerlink" title="数字证书"></a>数字证书</h3><p><a href="https://kb.cnblogs.com/page/194742/ca" target="_blank" rel="noopener">https://kb.cnblogs.com/page/194742/ca</a></p>
-<p>CA必须是可信的第三方，CA公钥人人都有，数字签名本身是可以让人看见的，要想保证数字签名的真实性需要涉及到CA（私钥很难被获取，公钥有可能被掉包，因此需要CA来保证公钥的真实性）。CA用其私钥对发件人的公钥等进行加密生成数字证书，收件人收到信件后利用CA的公钥对数字证书进行解密获得到发件人的公钥，然后用公钥对数字签名解密获得信件摘要，确保数字签名和公钥真的是发件人的，随后再对信件内容取hash值，两次hash值对比保证信件内容没有被修改过。上述内容仅针对数字签名或者用以传递公钥，假设没有包劫持等。要对信件内容进行保密的话只需要发件人用收件人的公钥进行加密，收件人收到后用其私钥解密，以此对信件内容进行保密。</p>
-<h3 id="密码学笔记"><a href="#密码学笔记" class="headerlink" title="密码学笔记"></a>密码学笔记</h3><p><a href="http://www.ruanyifeng.com/blog/2006/12/notes_on_cryptography.html" target="_blank" rel="noopener">http://www.ruanyifeng.com/blog/2006/12/notes_on_cryptography.html</a></p>
-<p>对称加密：一把密钥加密解密，一旦密钥泄露就被破解</p>
-<p>非对称加密：公钥加密信息，私钥解密，保密传输；私钥加密，公钥解密，数字签名。</p>
-<h1 id="SSL-TLS协议"><a href="#SSL-TLS协议" class="headerlink" title="SSL/TLS协议"></a>SSL/TLS协议</h1><p>图解SSL/TLS协议</p>
-<p><a href="https://www.ruanyifeng.com/blog/2014/09/illustration-ssl.html" target="_blank" rel="noopener">https://www.ruanyifeng.com/blog/2014/09/illustration-ssl.html</a></p>
-<h3 id="SSL-TLS协议运行机制概述"><a href="#SSL-TLS协议运行机制概述" class="headerlink" title="SSL/TLS协议运行机制概述"></a>SSL/TLS协议运行机制概述</h3><p><a href="https://www.ruanyifeng.com/blog/2014/02/ssl_tls.html" target="_blank" rel="noopener">https://www.ruanyifeng.com/blog/2014/02/ssl_tls.html</a></p>
-<h3 id="SSL-TLS协议流程（基于RSA算法）"><a href="#SSL-TLS协议流程（基于RSA算法）" class="headerlink" title="SSL/TLS协议流程（基于RSA算法）"></a>SSL/TLS协议流程（基于RSA算法）</h3><p>1.客户端向服务器发出加密通信请求，并给出协议版本号、客户端生成的一个随机数、支持的加密方法以及支持的压缩方法（不包括域名，一般一个服务器只对应一个证书）</p>
-<p>2.服务器收到加密通信请求后，向客户端发出回应，并确认使用的加密通信协议版本、加密方法（如RSA公钥加密）、服务器证书以及服务器生成的一个随机数（若服务器需要确认客户端身份需要请求客户端提供客户端证书）</p>
-<p>3.客户端验证数字证书，用CA的公钥解密数字证书获取服务器的公钥，客户端生成一个新的随机数，用服务器的公钥加密这个随机数，最后将加密后的随机数、编码改变通知（此后的信息用双方商定的加密方法和密钥发送）、客户端握手结束通知（前面发送所有内容的hash值，供服务器校验）</p>
-<p>4.服务器使用私钥解密客户端生成的随机数（premaster secret），向客户端发送编码改变通知（此后的信息用双方商定的加密方法和密钥发送）和服务器握手结束通知（前面发送所有内容的hash值，供客户端校验）。</p>
-<p>5.客户端和服务器根据约定的加密方法，使用前面三个随机数，计算生成本次会话需要的“对话密钥”，用于加密接下来的对话过程。（对称加密）</p>
-<blockquote>
-<p>如何保证公钥不被篡改？</p>
-<p>数字证书</p>
-</blockquote>
-<blockquote>
-<p>非对称加密计算量大，如何减少时间？</p>
-<p>每次对话（session）只使用以此非对称加密生成“对话密钥”，其后使用“对话密钥”进行对称加密，减少计算量。</p>
-</blockquote>
-<blockquote>
-<p>为什么需要随机数？</p>
-<p>SSL/TLS中证书是静态的，引入随机数保证密钥的随机性，使得每次的对话密钥都不一样。</p>
-</blockquote>
-<blockquote>
-<p>为什么需要三个随机数？</p>
-<p>假如只有一个随机数，那么其随机性可能不够，会被人猜出来，三个随机数很难猜</p>
-</blockquote>
-<blockquote>
-<p>服务器与客户端在握手阶段使用服务器的公私钥进行非对称加密，连接建立后的对话session使用随机数生成的“对话密钥”进行对称加密</p>
-</blockquote>
-<p>整个握手阶段不加密（也没法加密），都是明文的，若有人窃听并可得知双方商定的加密方式以及三个随机数中的两个（premaster key使用非对称加密算法加密，并非明文），整个对话的安全取决于premaster key是否被破解。因此，为保证握手阶段的安全，使用DH算法替代RSA算法，此时premaster key不需要传递，双方交换参数之后可在本地算出该随机数，因此提高安全性。</p>
-<h3 id="对话session恢复"><a href="#对话session恢复" class="headerlink" title="对话session恢复"></a>对话session恢复</h3><p>握手阶段由于某种原因对话中断，重新握手</p>
-<h4 id="session-ID"><a href="#session-ID" class="headerlink" title="session ID"></a>session ID</h4><p>每次对话有个编号session ID，下次重连时客户端只需要给出这个编号并且服务器有这个编号记录，双方可以使用已有的“对话密钥”，而不用重新生成。</p>
-<h4 id="session-ticket"><a href="#session-ticket" class="headerlink" title="session ticket"></a>session ticket</h4><p>session ID的缺点是其往往只保留在一台服务器上，当客户端请求发送到另一台服务器上，无法恢复对话。（可能是服务器集群）</p>
-<p>利用session ticket，客户端不发送session ID，而是客户端发送一个服务器在上次对话中发送来的session ticket，这个session ticket是加密的，只有服务器能解密，其中包含对话的主要信息（如对话密钥和加密方法），当另一个服务器收到session ticket时解密（服务器集群），此时不必重新生成“对话密钥”</p>
-<h1 id="容错，高可用和灾备"><a href="#容错，高可用和灾备" class="headerlink" title="容错，高可用和灾备"></a>容错，高可用和灾备</h1><p><a href="http://www.ruanyifeng.com/blog/2019/11/fault-tolerance.html" target="_blank" rel="noopener">http://www.ruanyifeng.com/blog/2019/11/fault-tolerance.html</a></p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">2020</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/study.github.io/2020/03/10/digital-signature-and-ssl-tls/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
   
     <nav id="page-nav">
       <span class="page-number current">1</span><a class="page-number" href="/study.github.io/page/2/">2</a><a class="page-number" href="/study.github.io/page/3/">3</a><a class="extend next" rel="next" href="/study.github.io/page/2/">Next &raquo;</a>
@@ -1306,15 +1266,15 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">2020</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">Heroku</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">Hadoop</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">2020</a>
               </li>
              
               <li class="article-tag-list-item">
