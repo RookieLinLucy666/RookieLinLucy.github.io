@@ -153,6 +153,97 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-fabric-chaincode-write" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/study.github.io/2020/04/13/fabric-chaincode-write/">fabric链码编写</a>
+    </h1>
+  
+
+        
+        <a href="/study.github.io/2020/04/13/fabric-chaincode-write/" class="archive-article-date">
+  	<time datetime="2020-04-13T07:24:41.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-04-13</time>
+</a>
+        
+      </header>
+    
+<!-- 目录内容 -->
+
+<!-- 目录内容结束 -->
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="环境"><a href="#环境" class="headerlink" title="环境"></a>环境</h1><p><a href="https://rookielinlucy666.github.io/study.github.io/2020/04/08/fabric-v0-2-0/" target="_blank" rel="noopener">https://rookielinlucy666.github.io/study.github.io/2020/04/08/fabric-v0-2-0/</a></p>
+<h1 id="选择一个位置存放代码"><a href="#选择一个位置存放代码" class="headerlink" title="选择一个位置存放代码"></a>选择一个位置存放代码</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">cd $GOPATH/src/github.com/hyperledger/fabric-samples/chaincode</span><br><span class="line">mkdir helloworl &amp;&amp; cd helloworld</span><br><span class="line">mkdir go &amp;&amp; cd go</span><br><span class="line">touch helloworld.go</span><br><span class="line">open helloworld.go</span><br><span class="line"></span><br><span class="line">cp ../../sacc/go.mod ./</span><br><span class="line">cp ../../sacc/go.sum ./</span><br><span class="line">vi go.mod</span><br><span class="line">#将module github.com/hyperledger/fabric-samples/chaincode/sacc修改为下面</span><br><span class="line">module github.com/hyperledger/fabric-samples/chaincode/helloworld</span><br></pre></td></tr></table></figure>
+<h1 id="导入包"><a href="#导入包" class="headerlink" title="导入包"></a>导入包</h1><p>使用Go import导入链码shim包和peer protobuf包，随后加入一个HelloWorld结构体作为链码shim方法的接受者。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">package main</span><br><span class="line"></span><br><span class="line">import (</span><br><span class="line">	&quot;fmt&quot;</span><br><span class="line"></span><br><span class="line">	&quot;github.com/hyperledger/fabric-chaincode-go/shim&quot;</span><br><span class="line">	&quot;github.com/hyperledger/fabric-protos-go/peer&quot;</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">type HelloWorld struct &#123;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>由于此时还未实现<code>main</code>函数，采用vscode保存时可能出错，并且上述<code>import</code>中的包也还未使用，vscode会删除导入的包。因此，此时无需保存，接着code即可。</p>
+<h1 id="初始化链码Init"><a href="#初始化链码Init" class="headerlink" title="初始化链码Init"></a>初始化链码Init</h1><p>实现Chaincode interface的Init方法。<code>stub.GetStringArgs()</code>获取传入的参数，<code>stub.PutState(args[0], []byte(args[1]))</code>存储键值对参数，并返回<code>peer.Response</code>对象表明初始化成功。Init方法在链码初始化时执行，同时在链码升级时同样需要init方法来重置或者迁移链码。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">func (t *HelloWorld) Init(stub shim.ChaincodeStubInterface) peer.Response &#123;</span><br><span class="line"></span><br><span class="line">	args := stub.GetStringArgs()</span><br><span class="line">	if len(args) != 2 &#123;</span><br><span class="line">		return shim.Error(&quot;Incorrect arguments. Expecting a key and a value&quot;)</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	err := stub.PutState(args[0], []byte(args[1]))</span><br><span class="line">	if err != nil &#123;</span><br><span class="line">		return shim.Error(fmt.Sprintf(&quot;Failed to create asset: %s&quot;, args[0]))</span><br><span class="line">	&#125;</span><br><span class="line">	return shim.Success(nil)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="调用链码Invoke"><a href="#调用链码Invoke" class="headerlink" title="调用链码Invoke"></a>调用链码Invoke</h1><p>应用程序中将有两个方法分别是<code>set</code>和<code>get</code>用来存取键值对。<code>stub.GetFunctionAndParameters()</code>获取调用的方法名和参数。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">func (t *HelloWorld) Invoke(stub shim.ChaincodeStubInterface) peer.Response &#123;</span><br><span class="line">	fn, args := stub.GetFunctionAndParameters()</span><br><span class="line"></span><br><span class="line">	var result string</span><br><span class="line">	var err error</span><br><span class="line">	if fn == &quot;set&quot; &#123;</span><br><span class="line">		result, err = set(stub, args)</span><br><span class="line">	&#125; else &#123;</span><br><span class="line">		result, err = get(stub, args)</span><br><span class="line">	&#125;</span><br><span class="line">	if err != nil &#123;</span><br><span class="line">		return shim.Error(err.Error())</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	return shim.Success([]byte(result))</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="实现链码程序set和get"><a href="#实现链码程序set和get" class="headerlink" title="实现链码程序set和get"></a>实现链码程序set和get</h1><p>通过Chaincode interface中的<code>ChaincodeStubInterface.GetState</code>和<code>ChaincodeStubInterface.PutState</code>实现键值对的存取。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">func set(stub shim.ChaincodeStubInterface, args []string) (string, error) &#123;</span><br><span class="line">	if len(args) != 2 &#123;</span><br><span class="line">		return &quot;&quot;, fmt.Errorf(&quot;Incorrect arguments. Expecting a key and a value&quot;)</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	err := stub.PutState(args[0], []byte(args[1]))</span><br><span class="line">	if err != nil &#123;</span><br><span class="line">		return &quot;&quot;, fmt.Errorf(&quot;Failed to set asset: %s&quot;, args[0])</span><br><span class="line">	&#125;</span><br><span class="line">	return args[1], nil</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">func get(stub shim.ChaincodeStubInterface, args []string) (string, error) &#123;</span><br><span class="line">	if len(args) != 1 &#123;</span><br><span class="line">		return &quot;&quot;, fmt.Errorf(&quot;Incorrect arguments. Expecting a key&quot;)</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	value, err := stub.GetState(args[0])</span><br><span class="line">	if err != nil &#123;</span><br><span class="line">		return &quot;&quot;, fmt.Errorf(&quot;Failed to get asset: %s&quot;, args[0])</span><br><span class="line">	&#125;</span><br><span class="line">	return string(value), nil</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="组合main"><a href="#组合main" class="headerlink" title="组合main"></a>组合main</h1><p>容器进行链码初始化时需要调用main方法。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">func main() &#123;</span><br><span class="line">	if err := shim.Start(new(HelloWorld)); err != nil &#123;</span><br><span class="line">		fmt.Printf(&quot;Error starting HelloWorld chaincode: %s&quot;, err)</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="编译链码"><a href="#编译链码" class="headerlink" title="编译链码"></a>编译链码</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">go get</span><br><span class="line">go build</span><br></pre></td></tr></table></figure>
+<p>若没有错误，将在当前目录下出现名为<code>helloworld</code>的二进制文件。</p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">2020</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/study.github.io/2020/04/13/fabric-chaincode-write/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-fabric-app" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -1093,90 +1184,6 @@
 
 
   
-    <article id="post-recommand-video" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/study.github.io/2020/03/15/recommand-video/">recommand-video-links</a>
-    </h1>
-  
-
-        
-        <a href="/study.github.io/2020/03/15/recommand-video/" class="archive-article-date">
-  	<time datetime="2020-03-15T08:15:53.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-03-15</time>
-</a>
-        
-      </header>
-    
-<!-- 目录内容 -->
-
-<!-- 目录内容结束 -->
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>北京大学区块链技术与应用-肖臻老师</p>
-<p><a href="https://www.bilibili.com/video/av37065233?p=1" target="_blank" rel="noopener">https://www.bilibili.com/video/av37065233?p=1</a></p>
-<p>区块链学习中文资源</p>
-<p><a href="https://github.com/RookieLinLucy666/blockchain">https://github.com/RookieLinLucy666/blockchain</a></p>
-<p>详解区块链P2P网络</p>
-<p><a href="https://keeganlee.me/post/blockchain/20180313/" target="_blank" rel="noopener">https://keeganlee.me/post/blockchain/20180313/</a></p>
-<p>Kademlia协议原理简介</p>
-<p><a href="http://www.yeolar.com/note/2010/03/21/kademlia/#id13" target="_blank" rel="noopener">http://www.yeolar.com/note/2010/03/21/kademlia/#id13</a></p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">2020</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/study.github.io/2020/03/15/recommand-video/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
   
     <nav id="page-nav">
       <span class="page-number current">1</span><a class="page-number" href="/study.github.io/page/2/">2</a><a class="page-number" href="/study.github.io/page/3/">3</a><a class="extend next" rel="next" href="/study.github.io/page/2/">Next &raquo;</a>
@@ -1293,11 +1300,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">Heroku</a>
+                <a href="javascript:void(0)" class="js-tag color5">2020</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">2020</a>
+                <a href="javascript:void(0)" class="js-tag color2">Heroku</a>
               </li>
              
               <li class="article-tag-list-item">
