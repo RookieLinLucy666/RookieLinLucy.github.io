@@ -16,7 +16,7 @@
 <meta property="og:site_name" content="散财童子小林">
 <meta property="og:description" content="设置区块链网络123cd $GOPATH/src/github.com/hyperledger/fabric-samples/first-network# 停止区块链网络./byfn.sh down 启动网络12cd $GOPATH/src/github.com/hyperledger/fabric-samples/fabcar./startFabric.sh javascript 若出现下述错误">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2020-04-10T15:04:40.699Z">
+<meta property="og:updated_time" content="2020-04-13T07:40:19.013Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="fabric-app">
 <meta name="twitter:description" content="设置区块链网络123cd $GOPATH/src/github.com/hyperledger/fabric-samples/first-network# 停止区块链网络./byfn.sh down 启动网络12cd $GOPATH/src/github.com/hyperledger/fabric-samples/fabcar./startFabric.sh javascript 若出现下述错误">
@@ -179,7 +179,7 @@
         <h1 id="设置区块链网络"><a href="#设置区块链网络" class="headerlink" title="设置区块链网络"></a>设置区块链网络</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">cd $GOPATH/src/github.com/hyperledger/fabric-samples/first-network</span><br><span class="line"># 停止区块链网络</span><br><span class="line">./byfn.sh down</span><br></pre></td></tr></table></figure>
 <h1 id="启动网络"><a href="#启动网络" class="headerlink" title="启动网络"></a>启动网络</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cd $GOPATH/src/github.com/hyperledger/fabric-samples/fabcar</span><br><span class="line">./startFabric.sh javascript</span><br></pre></td></tr></table></figure>
 <p>若出现下述错误，则将<code>./startFabric.sh</code>分解，可以出现正确结果。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">cd ../test-network</span><br><span class="line">./network.sh down</span><br><span class="line">./network.sh up createChannel -ca -s couchdb</span><br><span class="line">./network.sh deployCC -l go</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">cd $GOPATH/src/github.com/hyperledger/fabric-samples/test-network</span><br><span class="line">./network.sh down</span><br><span class="line">./network.sh up createChannel -ca -s couchdb</span><br><span class="line">./network.sh deployCC -l go</span><br></pre></td></tr></table></figure>
 <blockquote>
 <p>Error: failed to endorse chaincode install: rpc error: code = Unavailable desc = transport is closing</p>
 </blockquote>
@@ -323,7 +323,7 @@
       <i class="icon-circle-left"></i>
       <div class="article-nav-title">
         
-          fabric链码编写
+          fabric链码编写和测试
         
       </div>
     </a>
@@ -495,15 +495,15 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">2020</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">Heroku</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">Hadoop</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">2020</a>
               </li>
              
               <li class="article-tag-list-item">
