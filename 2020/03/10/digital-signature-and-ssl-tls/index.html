@@ -16,7 +16,7 @@
 <meta property="og:site_name" content="散财童子小林">
 <meta property="og:description" content="密码学中常用的知识 来源：阮一峰的网络日志、编程随想 数字签名和数字证书数字签名http://www.ruanyifeng.com/blog/2011/08/what_is_a_digital_signature.html 私钥加密 sign(Message, private key) = Signature每次的数字签名内容都不一样，只有公钥可以解开 Verify(Message, Signat">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2020-03-15T08:15:30.203Z">
+<meta property="og:updated_time" content="2020-04-15T08:17:05.848Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="digital-signature-and-ssl-tls">
 <meta name="twitter:description" content="密码学中常用的知识 来源：阮一峰的网络日志、编程随想 数字签名和数字证书数字签名http://www.ruanyifeng.com/blog/2011/08/what_is_a_digital_signature.html 私钥加密 sign(Message, private key) = Signature每次的数字签名内容都不一样，只有公钥可以解开 Verify(Message, Signat">
@@ -184,6 +184,11 @@
 <p>Alice和Bob可以共用一个公开账本往上面记账，但是Bob有可能冒充Alice转账。因此Alice的每条转账后面都加上签名，Bob无法伪造签名。但是Bob可以复制很多条有Alice签名的交易，即双花。因此，每条交易上需要添加一个交易编号，当Bob想要复制上一条交易时，由于交易编号改变，需要Alice重新签名 </p>
 <h3 id="数字证书"><a href="#数字证书" class="headerlink" title="数字证书"></a>数字证书</h3><p><a href="https://kb.cnblogs.com/page/194742/ca" target="_blank" rel="noopener">https://kb.cnblogs.com/page/194742/ca</a></p>
 <p>CA必须是可信的第三方，CA公钥人人都有，数字签名本身是可以让人看见的，要想保证数字签名的真实性需要涉及到CA（私钥很难被获取，公钥有可能被掉包，因此需要CA来保证公钥的真实性）。CA用其私钥对发件人的公钥等进行加密生成数字证书，收件人收到信件后利用CA的公钥对数字证书进行解密获得到发件人的公钥，然后用公钥对数字签名解密获得信件摘要，确保数字签名和公钥真的是发件人的，随后再对信件内容取hash值，两次hash值对比保证信件内容没有被修改过。上述内容仅针对数字签名或者用以传递公钥，假设没有包劫持等。要对信件内容进行保密的话只需要发件人用收件人的公钥进行加密，收件人收到后用其私钥解密，以此对信件内容进行保密。</p>
+<p>申请（签名）文件：在申请人公钥的基础上加上申请人的属性（我是谁，来自哪里，名字叫什么）以及证书使用场景等信息，利用申请人私钥签名，发给CA（私下安全发送），通过私钥防止别人篡改文件。</p>
+<p>证书文件：证书由公钥加上描述信息，通过私钥签名后得到</p>
+<p>签名过程：CA收到申请文件后进行核实，确保申请人确实是证书描述的申请人，防止别人冒充申请者进行申请，核实通过后，用CA的私钥对申请文件进行签名，签名后的证书包含申请人的基本信息，CA的基本信息，证书使用年限，申请人公钥，签名用到的哈希算法，CA的签名。</p>
+<p>证书验证过程：在tls握手过程中，浏览器得到网站证书，打开证书查看是哪个CA签名的证书，在自己的CA库中找到相应的证书，用证书里面的公钥解密网站证书上的签名，取出网站证书的哈希值，然后用同样的算法算出网站证书的哈希值，如果两个哈希值相同则证书合法且没被人篡改过。随后读出域名，检查域名与访问的网站的域名是否相同，若相同则证书不是被冒用的，此时检查通过。</p>
+<p>CA颁布的证书（包括身份证书、TLS证书等）流程如上。</p>
 <h3 id="密码学笔记"><a href="#密码学笔记" class="headerlink" title="密码学笔记"></a>密码学笔记</h3><p><a href="http://www.ruanyifeng.com/blog/2006/12/notes_on_cryptography.html" target="_blank" rel="noopener">http://www.ruanyifeng.com/blog/2006/12/notes_on_cryptography.html</a></p>
 <p>对称加密：一把密钥加密解密，一旦密钥泄露就被破解</p>
 <p>非对称加密：公钥加密信息，私钥解密，保密传输；私钥加密，公钥解密，数字签名。</p>
@@ -510,15 +515,15 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">2020</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">Heroku</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">Hadoop</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">2020</a>
               </li>
              
               <li class="article-tag-list-item">
