@@ -153,6 +153,128 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-caliper-deploy-sacc" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/study.github.io/2020/04/29/caliper-deploy-sacc/">Hyperledger Caliper部署示例链码sacc</a>
+    </h1>
+  
+
+        
+        <a href="/study.github.io/2020/04/29/caliper-deploy-sacc/" class="archive-article-date">
+  	<time datetime="2020-04-29T07:22:37.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-04-29</time>
+</a>
+        
+      </header>
+    
+<!-- 目录内容 -->
+
+<!-- 目录内容结束 -->
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="Hyperledger-Fabric性能测试工具Caliper介绍"><a href="#Hyperledger-Fabric性能测试工具Caliper介绍" class="headerlink" title="Hyperledger Fabric性能测试工具Caliper介绍"></a>Hyperledger Fabric性能测试工具Caliper介绍</h1><p>官方文档：<a href="https://hyperledger.github.io/caliper/vNext/architecture-ch/" target="_blank" rel="noopener">https://hyperledger.github.io/caliper/vNext/architecture-ch/</a></p>
+<p><a href="https://www.jianshu.com/p/1644810cf790" target="_blank" rel="noopener">https://www.jianshu.com/p/1644810cf790</a></p>
+<h1 id="Caliper安装"><a href="#Caliper安装" class="headerlink" title="Caliper安装"></a>Caliper安装</h1><p><a href="https://rookielinlucy666.github.io/study.github.io/2020/04/06/caliper-fabric/" target="_blank" rel="noopener">https://rookielinlucy666.github.io/study.github.io/2020/04/06/caliper-fabric/</a></p>
+<h1 id="Caliper测试sacc链码"><a href="#Caliper测试sacc链码" class="headerlink" title="Caliper测试sacc链码"></a>Caliper测试sacc链码</h1><p>在第二步的环境下进行测试。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cd caliper-benchmarks/benchmarks/scenario</span><br><span class="line">mkdir hello</span><br></pre></td></tr></table></figure>
+<ul>
+<li>修改<code>config.yaml</code></li>
+</ul>
+<p><code>cd caliper-benchmarks/benchmarks/scenario/hello</code></p>
+<p><code>vi config.yaml</code>修改<code>config.yaml</code> 文件内容如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">---</span><br><span class="line">test:</span><br><span class="line">  name: hello</span><br><span class="line">  description: This is an example benchmark for caliper, to test the backend DLT&apos;s</span><br><span class="line">    performance with simple account opening &amp; querying transactions</span><br><span class="line">  clients:</span><br><span class="line">    type: local</span><br><span class="line">    number: 1</span><br><span class="line">  rounds:</span><br><span class="line">  - label: set</span><br><span class="line">    description: Test description for the setting data through the deployed chaincode</span><br><span class="line">    txNumber:</span><br><span class="line">    - 100</span><br><span class="line">    rateControl:</span><br><span class="line">    - type: fixed-rate</span><br><span class="line">      opts:</span><br><span class="line">        tps: 50</span><br><span class="line">    arguments:</span><br><span class="line">      data: &apos;02cd44766d9f2d43944e78eb1dad08bad37e12cc42ce89fe3a5f54849536e2ca&apos;</span><br><span class="line">    callback: benchmarks/scenario/hello/set.js</span><br><span class="line">  - label: get</span><br><span class="line">    description: Test description for the query performance of the deployed chaincode</span><br><span class="line">    txNumber:</span><br><span class="line">    - 100</span><br><span class="line">    rateControl:</span><br><span class="line">    - type: fixed-rate</span><br><span class="line">      opts:</span><br><span class="line">        tps: 100</span><br><span class="line">    callback: benchmarks/scenario/hello/get.js</span><br><span class="line">monitor:</span><br><span class="line">  type:</span><br><span class="line">  - docker</span><br><span class="line">  - process</span><br><span class="line">  docker:</span><br><span class="line">    name:</span><br><span class="line">    - all</span><br><span class="line">  process:</span><br><span class="line">  - command: node</span><br><span class="line">    arguments: local-client.js</span><br><span class="line">    multiOutput: avg</span><br><span class="line">  interval: 1</span><br></pre></td></tr></table></figure>
+<ul>
+<li>修改<code>set.js</code></li>
+</ul>
+<p><code>cd caliper-benchmarks/benchmarks/scenario/hello</code></p>
+<p><code>vi set.js</code>修改hello目录下<code>set.js</code>文件内容如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br></pre></td><td class="code"><pre><span class="line">&apos;use strict&apos;;</span><br><span class="line"></span><br><span class="line">module.exports.info = &apos;set data&apos;;</span><br><span class="line"></span><br><span class="line">let account_array = [];</span><br><span class="line">let txnPerBatch;</span><br><span class="line">let initData;</span><br><span class="line">let bc, contx;</span><br><span class="line">module.exports.init = function(blockchain, context, args) &#123;</span><br><span class="line">    if(!args.hasOwnProperty(&apos;data&apos;))&#123;</span><br><span class="line">        return Promise.reject(new Error(&apos;hello.set - \&apos;data\&apos; is missed in the arguments&apos;));</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    if(!args.hasOwnProperty(&apos;txnPerBatch&apos;)) &#123;</span><br><span class="line">        args.txnPerBatch = 10;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    initData = args.data;</span><br><span class="line">    txnPerBatch = args.txnPerBatch;</span><br><span class="line">    bc = blockchain;</span><br><span class="line">    contx = context;</span><br><span class="line"></span><br><span class="line">    return Promise.resolve();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">const dic = &apos;abcdefghijklmnopqrstuvwxyz&apos;;</span><br><span class="line">function get26Num(number)&#123;</span><br><span class="line">    let result = &apos;&apos;;</span><br><span class="line">    while(number &gt; 0) &#123;</span><br><span class="line">        result += dic.charAt(number % 26);</span><br><span class="line">        number = parseInt(number/26);</span><br><span class="line">    &#125;</span><br><span class="line">    return result;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">let prefix;</span><br><span class="line">function generateAccount() &#123;</span><br><span class="line">    // should be [a-z]&#123;1,9&#125;</span><br><span class="line">    if(typeof prefix === &apos;undefined&apos;) &#123;</span><br><span class="line">        prefix = get26Num(process.pid);</span><br><span class="line">    &#125;</span><br><span class="line">    return prefix + get26Num(account_array.length+1);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">function generateWorkload() &#123;</span><br><span class="line">    let workload = [];</span><br><span class="line">    for(let i= 0; i &lt; txnPerBatch; i++) &#123;</span><br><span class="line">        let acc_id = generateAccount();</span><br><span class="line">        account_array.push(acc_id);</span><br><span class="line"></span><br><span class="line">        workload.push(&#123;</span><br><span class="line">            chaincodeFunction: &apos;set&apos;,</span><br><span class="line">            chaincodeArguments: [acc_id, initData],</span><br><span class="line">        &#125;);</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">    return workload;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">module.exports.run = function() &#123;</span><br><span class="line">    let args = generateWorkload();</span><br><span class="line">    return bc.invokeSmartContract(contx, &apos;hello&apos;, &apos;v0&apos;, args, 100);</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">module.exports.end = function() &#123;</span><br><span class="line">    return Promise.resolve();</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">module.exports.account_array = account_array;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>修改<code>get.js</code></li>
+</ul>
+<p><code>cd caliper-benchmarks/benchmarks/scenario/hello</code></p>
+<p><code>vi get.js</code>修改hello目录下<code>get.js</code>文件内容如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">&apos;use strict&apos;;</span><br><span class="line"></span><br><span class="line">module.exports.info  = &apos;get data&apos;;</span><br><span class="line"></span><br><span class="line">let bc, contx;</span><br><span class="line">let account_array;</span><br><span class="line"></span><br><span class="line">module.exports.init = function(blockchain, context, args) &#123;</span><br><span class="line">    const set = require(&apos;./set.js&apos;);</span><br><span class="line">    bc       = blockchain;</span><br><span class="line">    contx    = context;</span><br><span class="line">    account_array = set.account_array;</span><br><span class="line"></span><br><span class="line">    return Promise.resolve();</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">module.exports.run = function() &#123;</span><br><span class="line">    const acc  = account_array[Math.floor(Math.random()*(account_array.length))];</span><br><span class="line"></span><br><span class="line">    let args = &#123;</span><br><span class="line">        chaincodeFunction: &apos;get&apos;,</span><br><span class="line">        chaincodeArguments: [acc],</span><br><span class="line">    &#125;;</span><br><span class="line"></span><br><span class="line">    return bc.bcObj.querySmartContract(contx, &apos;hello&apos;, &apos;v0&apos;, args, 10);</span><br><span class="line"></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">module.exports.end = function() &#123;</span><br><span class="line">    // do nothing</span><br><span class="line">    return Promise.resolve();</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>修改链码</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">cd caliper-benchmarks/src/fabric/scenario/</span><br><span class="line">mkdir hello</span><br><span class="line">mkdir go</span><br></pre></td></tr></table></figure>
+<p><code>vi hello.go</code>修改go文件内容如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">/*</span><br><span class="line"> * Copyright IBM Corp All Rights Reserved</span><br><span class="line"> *</span><br><span class="line"> * SPDX-License-Identifier: Apache-2.0</span><br><span class="line"> */</span><br><span class="line"></span><br><span class="line">package main</span><br><span class="line"></span><br><span class="line">import (</span><br><span class="line">	&quot;fmt&quot;</span><br><span class="line"></span><br><span class="line">	&quot;github.com/hyperledger/fabric-protos-go/peer&quot;</span><br><span class="line">	&quot;github.com/hyperledger/fabric/core/chaincode/shim&quot;</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">// SimpleAsset implements a simple chaincode to manage an asset</span><br><span class="line">type SimpleAsset struct &#123;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// Init is called during chaincode instantiation to initialize any</span><br><span class="line">// data. Note that chaincode upgrade also calls this function to reset</span><br><span class="line">// or to migrate data.</span><br><span class="line">func (t *SimpleAsset) Init(stub shim.ChaincodeStubInterface) peer.Response &#123;</span><br><span class="line">	// nothing to do</span><br><span class="line">	return shim.Success(nil)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// Invoke is called per transaction on the chaincode. Each transaction is</span><br><span class="line">// either a &apos;get&apos; or a &apos;set&apos; on the asset created by Init function. The Set</span><br><span class="line">// method may create a new asset by specifying a new key-value pair.</span><br><span class="line">func (t *SimpleAsset) Invoke(stub shim.ChaincodeStubInterface) peer.Response &#123;</span><br><span class="line">	// Extract the function and args from the transaction proposal</span><br><span class="line">	fn, args := stub.GetFunctionAndParameters()</span><br><span class="line"></span><br><span class="line">	var result string</span><br><span class="line">	var err error</span><br><span class="line">	if fn == &quot;set&quot; &#123;</span><br><span class="line">		result, err = set(stub, args)</span><br><span class="line">	&#125; else &#123; // assume &apos;get&apos; even if fn is nil</span><br><span class="line">		result, err = get(stub, args)</span><br><span class="line">	&#125;</span><br><span class="line">	if err != nil &#123;</span><br><span class="line">		return shim.Error(err.Error())</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	// Return the result as success payload</span><br><span class="line">	return shim.Success([]byte(result))</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// Set stores the asset (both key and value) on the ledger. If the key exists,</span><br><span class="line">// it will override the value with the new one</span><br><span class="line">func set(stub shim.ChaincodeStubInterface, args []string) (string, error) &#123;</span><br><span class="line">	if len(args) != 2 &#123;</span><br><span class="line">		return &quot;&quot;, fmt.Errorf(&quot;Incorrect arguments. Expecting a key and a value&quot;)</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	err := stub.PutState(args[0], []byte(args[1]))</span><br><span class="line">	if err != nil &#123;</span><br><span class="line">		return &quot;&quot;, fmt.Errorf(&quot;Failed to set asset: %s&quot;, args[0])</span><br><span class="line">	&#125;</span><br><span class="line">	return args[1], nil</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// Get returns the value of the specified asset key</span><br><span class="line">func get(stub shim.ChaincodeStubInterface, args []string) (string, error) &#123;</span><br><span class="line">	if len(args) != 1 &#123;</span><br><span class="line">		return &quot;&quot;, fmt.Errorf(&quot;Incorrect arguments. Expecting a key&quot;)</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	value, err := stub.GetState(args[0])</span><br><span class="line">	if err != nil &#123;</span><br><span class="line">		return &quot;&quot;, fmt.Errorf(&quot;Failed to get asset: %s with error: %s&quot;, args[0], err)</span><br><span class="line">	&#125;</span><br><span class="line">	if value == nil &#123;</span><br><span class="line">		return &quot;&quot;, fmt.Errorf(&quot;Asset not found: %s&quot;, args[0])</span><br><span class="line">	&#125;</span><br><span class="line">	return string(value), nil</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// main function starts up the chaincode in the container during instantiate</span><br><span class="line">func main() &#123;</span><br><span class="line">	if err := shim.Start(new(SimpleAsset)); err != nil &#123;</span><br><span class="line">		fmt.Printf(&quot;Error starting SimpleAsset chaincode: %s&quot;, err)</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>修改执行的链码文件（只执行<code>hello.go</code>）</li>
+</ul>
+<p><code>cd networks/fabric/fabric-v1.4.1/2org1peergoleveldb</code></p>
+<p><code>vi fabric-go.yaml</code>内容如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">    chaincodes:</span><br><span class="line">#    - id: marbles</span><br><span class="line">#      version: v0</span><br><span class="line">#      language: golang</span><br><span class="line">#      path: fabric/samples/marbles/go</span><br><span class="line">#      metadataPath: src/fabric/samples/marbles/go/metadata</span><br><span class="line">    # - id: drm</span><br><span class="line">    #   version: v0</span><br><span class="line">    #   language: golang</span><br><span class="line">    #   path: fabric/scenario/drm/go</span><br><span class="line">    # - id: simple</span><br><span class="line">    #   version: v0</span><br><span class="line">    #   language: golang</span><br><span class="line">    #   path: fabric/scenario/simple/go</span><br><span class="line">    # - id: smallbank</span><br><span class="line">    #   version: v0</span><br><span class="line">    #   language: golang</span><br><span class="line">    #   path: fabric/scenario/smallbank/go</span><br><span class="line">    - id: hello</span><br><span class="line">      version: v0</span><br><span class="line">      language: golang</span><br><span class="line">      path: fabric/scenario/hello/go</span><br></pre></td></tr></table></figure>
+<ul>
+<li>开始测试</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">npx caliper benchmark run  \</span><br><span class="line">	--caliper-workspace .  \</span><br><span class="line">	--caliper-benchconfig  benchmarks/scenario/hello/config.yaml \</span><br><span class="line">	--caliper-networkconfig networks/  fabric/fabric-v1.4.1/2org1peergoleveldb/fabric-go.yaml</span><br><span class="line"></span><br><span class="line">```      </span><br><span class="line"></span><br><span class="line">如果出现如下错误，执行`sudo systemctl restart docker`重启docker。</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">```  	</span><br><span class="line"> error [caliper] [caliper-flow] 	Error: Error: Couldn&apos;t create Channel </span><br><span class="line"> &apos;mychannel&apos;: Orderer response indicated unsuccessful Channel &apos;mychannel&apos; </span><br><span class="line"> creation: BAD_REQUEST</span><br></pre></td></tr></table></figure>
+<p>该报告将详细介绍每一轮基准测试的以下信息：</p>
+<p>Name – 轮次名称，这与基准测试配置文件中的测试轮次标签相关</p>
+<p>Succ/Fail – 成功/失败事务的数量</p>
+<p>Send Rate – Caliper 发出事务的速率</p>
+<p>Latency (max/min/avg) – 关于发出事务到收到响应之间所用秒数的统计信息</p>
+<p>Throughput – 平均每秒处理的事务数</p>
+<h1 id="在IBM-Blockchain-Platform-Extension-for-VS-Code使用Caliper"><a href="#在IBM-Blockchain-Platform-Extension-for-VS-Code使用Caliper" class="headerlink" title="在IBM Blockchain Platform Extension for VS Code使用Caliper"></a>在IBM Blockchain Platform Extension for VS Code使用Caliper</h1><p><a href="https://www.ibm.com/developerworks/cn/cloud/library/blockchain-performance-testing-smart-contracts-vscode-caliper/index.html" target="_blank" rel="noopener">https://www.ibm.com/developerworks/cn/cloud/library/blockchain-performance-testing-smart-contracts-vscode-caliper/index.html</a>  </p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">2020</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/study.github.io/2020/04/29/caliper-deploy-sacc/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-fabric-chaincode-write" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -689,7 +811,7 @@
 <p>cd networks/fabric/fabric-v1.4.1/2org1peergoleveldb<br>vi fabric-go.yaml</p>
 <p>#注释chaincodes:下面这部分</p>
 <p>#- id: smallbank</p>
-<h1 id="version-v0"><a href="#version-v0" class="headerlink" title="version: v0"></a>version: v0</h1><h1 id="language-golang"><a href="#language-golang" class="headerlink" title="language: golang"></a>language: golang</h1><h1 id="path-fabric-scenario-smallbank-go"><a href="#path-fabric-scenario-smallbank-go" class="headerlink" title="path: fabric/scenario/smallbank/go"></a>path: fabric/scenario/smallbank/go</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">   </span><br><span class="line">若出现以下错误，重新运行上述命令即可</span><br><span class="line">    </span><br><span class="line">&gt;error: [FabricCAClientService.js]: Failed to enroll admin, error:%o message=Calling enrollment endpoint failed with error [Error: connect ECONNREFUSED 127.0.0.1:7054], stack=Error: Calling enrollment endpoint failed with error [Error: connect ECONNREFUSED 127.0.0.1:7054]</span><br><span class="line">    at ClientRequest.request.on (/root/caliper-benchmarks/node_modules/fabric-ca-client/lib/FabricCAClient.js:487:12)</span><br><span class="line">    at emitOne (events.js:116:13)</span><br><span class="line">    at ClientRequest.emit (events.js:211:7)</span><br><span class="line">    at Socket.socketErrorListener (_http_client.js:401:9)</span><br><span class="line">    at emitOne (events.js:116:13)</span><br><span class="line">    at Socket.emit (events.js:211:7)</span><br><span class="line">    at emitErrorNT (internal/streams/destroy.js:73:8)</span><br><span class="line">    at _combinedTickCallback (internal/process/next_tick.js:139:11)</span><br><span class="line">    at process._tickCallback (internal/process/next_tick.js:181:9)</span><br><span class="line">2020.04.06-16:21:18.565 error [caliper] [caliper-flow] 	Error: Error: Couldn&apos;t enroll Org1&apos;s registrar or set it as user context: Calling enrollment endpoint failed with error [Error: connect ECONNREFUSED 127.0.0.1:7054]</span><br><span class="line">    at Fabric._setUserContextByEnrollment (/root/caliper-benchmarks/node_modules/@hyperledger/caliper-fabric/lib/fabric.js:1688:19)</span><br><span class="line">    at &lt;anonymous&gt;</span><br><span class="line">    at process._tickCallback (internal/process/next_tick.js:189:7)</span><br><span class="line">    </span><br><span class="line">- mac上设置ssh不断掉，并且session保持</span><br><span class="line"></span><br><span class="line">`sudo vi ~/.ssh/config`，输入如下内容，对所有服务器保持不断开（也可针对特定服务器，请搜索）</span><br></pre></td></tr></table></figure>
+<h1 id="version-v0"><a href="#version-v0" class="headerlink" title="version: v0"></a>version: v0</h1><h1 id="language-golang"><a href="#language-golang" class="headerlink" title="language: golang"></a>language: golang</h1><h1 id="path-fabric-scenario-smallbank-go"><a href="#path-fabric-scenario-smallbank-go" class="headerlink" title="path: fabric/scenario/smallbank/go"></a>path: fabric/scenario/smallbank/go</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">   </span><br><span class="line">若出现以下错误，重新运行上述命令即可</span><br><span class="line">    </span><br><span class="line">&gt;error: [FabricCAClientService.js]: Failed to enroll admin, error:%o message=Calling enrollment endpoint failed with error [Error: connect ECONNREFUSED 127.0.0.1:7054], stack=Error: Calling enrollment endpoint failed with error [Error: connect ECONNREFUSED 127.0.0.1:7054]</span><br><span class="line">    at ClientRequest.request.on (/root/caliper-benchmarks/node_modules/fabric-ca-client/lib/FabricCAClient.js:487:12)</span><br><span class="line">    at emitOne (events.js:116:13)</span><br><span class="line">    at ClientRequest.emit (events.js:211:7)</span><br><span class="line">    at Socket.socketErrorListener (_http_client.js:401:9)</span><br><span class="line">    at emitOne (events.js:116:13)</span><br><span class="line">    at Socket.emit (events.js:211:7)</span><br><span class="line">    at emitErrorNT (internal/streams/destroy.js:73:8)</span><br><span class="line">    at _combinedTickCallback (internal/process/next_tick.js:139:11)</span><br><span class="line">    at process._tickCallback (internal/process/next_tick.js:181:9)</span><br><span class="line">2020.04.06-16:21:18.565 error [caliper] [caliper-flow] 	Error: Error: Couldn&apos;t enroll Org1&apos;s registrar or set it as user context: Calling enrollment endpoint failed with error [Error: connect ECONNREFUSED 127.0.0.1:7054]</span><br><span class="line">    at Fabric._setUserContextByEnrollment (/root/caliper-benchmarks/node_modules/@hyperledger/caliper-fabric/lib/fabric.js:1688:19)</span><br><span class="line">    at &lt;anonymous&gt;</span><br><span class="line">    at process._tickCallback (internal/process/next_tick.js:189:7)</span><br><span class="line">    </span><br><span class="line">    error [caliper] [caliper-flow] 	Error: Error: Invalid endorsement for marbles@v0 in mychannel from peer0.org1.example.com: error starting container: error starting container: Failed to generate platform-specific docker build: Error uploading input to container: API error (404): Could not find the file /chaincode/input in container dce3a0382841131e79617e553058d164bee0749f55f6f7fe5b471e8716062ed2</span><br><span class="line">    </span><br><span class="line">- mac上设置ssh不断掉，并且session保持</span><br><span class="line"></span><br><span class="line">`sudo vi ~/.ssh/config`，输入如下内容，对所有服务器保持不断开（也可针对特定服务器，请搜索）</span><br></pre></td></tr></table></figure>
 <p>Host *<br>    ServerAliveInterval 60<br>    ControlMaster auto<br>    ControlPath ~/.ssh/%h-%p-%r<br>    ControlPersist yes<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">    </span><br><span class="line"></span><br><span class="line">编辑服务器 `cd /etc/ssh/sshd_config`，最后增加</span><br></pre></td></tr></table></figure></p>
 <p>ClientAliveInterval 60<br>ClientAliveCountMax 1<br><code>`</code><br>这 样，SSH Server 每 60 秒就会自动发送一个信号给 Client，而等待 Client 回应</p>
 
@@ -1135,92 +1257,6 @@
 
 
   
-    <article id="post-basic-knowledge" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/study.github.io/2020/03/15/basic-knowledge/">basic knowledge</a>
-    </h1>
-  
-
-        
-        <a href="/study.github.io/2020/03/15/basic-knowledge/" class="archive-article-date">
-  	<time datetime="2020-03-15T08:22:07.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-03-15</time>
-</a>
-        
-      </header>
-    
-<!-- 目录内容 -->
-
-<!-- 目录内容结束 -->
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>区块链基础知识：</p>
-<p>解决了区块链去中心化网络中两个关键的问题：<strong>谁来记账（创建区块）以及如何维护全网数据的一致性</strong>。它的目标就是让网络中的各个节点形成一致的区块链结构，也就是说需要满足以下属性：</p>
-<ul>
-<li><strong>一致性：所有诚实节点保存的区块链的前缀部分完全相同</strong></li>
-<li><strong>有效性：由某个诚实节点发布的信息终将被其他所有节点记录在自己的区块链中</strong></li>
-</ul>
-<p>为什么需要共识？区块链中每个矿工由于网络的问题收到的交易顺序不一样，该打包哪些交易由挖到矿的矿工决定，也是共识协议规定的，最后大家存储共识协议选出来的那个矿工打包的区块。同时通过共识协议中的挖矿难题difficult to solve， easy to verify进行验证，已达成挖矿成功的共识。最长合法链原则同样保证一致性。</p>
-<p>查看加密货币市场：</p>
-<p><a href="https://coinmarketcap.com/all/views/all/" target="_blank" rel="noopener">https://coinmarketcap.com/all/views/all/</a></p>
-<p>截止2020年3月，全球共有5201种加密货币，加密货币市值达到1519亿美元。</p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">2020</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/study.github.io/2020/03/15/basic-knowledge/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
   
     <nav id="page-nav">
       <span class="page-number current">1</span><a class="page-number" href="/study.github.io/page/2/">2</a><a class="page-number" href="/study.github.io/page/3/">3</a><a class="extend next" rel="next" href="/study.github.io/page/2/">Next &raquo;</a>
@@ -1337,15 +1373,15 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">2020</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">Heroku</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">Hadoop</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">2020</a>
               </li>
              
               <li class="article-tag-list-item">
