@@ -153,6 +153,131 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-ubuntu-shadowsocks-config" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/study.github.io/2020/04/05/ubuntu-shadowsocks-config/">ubuntu-shadowsocks-config</a>
+    </h1>
+  
+
+        
+        <a href="/study.github.io/2020/04/05/ubuntu-shadowsocks-config/" class="archive-article-date">
+  	<time datetime="2020-04-05T13:32:15.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-04-05</time>
+</a>
+        
+      </header>
+    
+<!-- 目录内容 -->
+
+<!-- 目录内容结束 -->
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="ubuntu-shadowsocks代理配置"><a href="#ubuntu-shadowsocks代理配置" class="headerlink" title="ubuntu shadowsocks代理配置"></a>ubuntu shadowsocks代理配置</h1><ul>
+<li>更新Ubuntu依赖到最新</li>
+</ul>
+<p><code>sudo apt-get update</code></p>
+<ul>
+<li>安装python的包管理工具</li>
+</ul>
+<p><code>apt install python3-pip</code></p>
+<ul>
+<li>安装shadowsocks<br><code>pip3 install shadowsocks</code></li>
+</ul>
+<blockquote>
+<p>Traceback (most recent call last):<br>  File “/usr/bin/pip3”, line 11, in <module><br>    sys.exit(main())<br>  File “/usr/lib/python3/dist-packages/pip/<strong>init</strong>.py”, line 215, in main<br>    locale.setlocale(locale.LC_ALL, ‘’)<br>  File “/usr/lib/python3.5/locale.py”, line 594, in setlocale<br>    return _setlocale(category, locale)<br>locale.Error: unsupported locale setting</module></p>
+</blockquote>
+<p>语言设置的问题</p>
+<p><code>export LC_ALL=C</code></p>
+<ul>
+<li>安装</li>
+</ul>
+<p><code>sudo apt-get -y install python-m2crypto</code></p>
+<ul>
+<li>给服务增加一个配置文件：shadowsocks.json</li>
+</ul>
+<p><code>sudo vi /etc/shadowsocks.json</code></p>
+<blockquote>
+</blockquote>
+<p>{“server”:”xxxxxxxxxxx”,”server_port”:2443,”local_address”:”127.0.0.1”,”password”:”xxxxxxxxx”,”timeout”:300,”method”:”aes-256-cfb”,”fast_open”:false,”workers”:1}</p>
+<p>点<code>esc</code>退出，输出<code>:!wq</code>保存</p>
+<ul>
+<li>启动服务</li>
+</ul>
+<p><code>sslocal -c /etc/shadowsocks.json</code></p>
+<blockquote>
+<p>Traceback (most recent call last):<br>  File “/usr/local/bin/sslocal”, line 11, in <module><br>    sys.exit(main())<br>  File “/usr/local/lib/python3.6/dist-packages/shadowsocks/local.py”, line 39, in main<br>    config = shell.get_config(True)<br>  File “/usr/local/lib/python3.6/dist-packages/shadowsocks/shell.py”, line 262, in get_config<br>    check_config(config, is_local)<br>  File “/usr/local/lib/python3.6/dist-packages/shadowsocks/shell.py”, line 124, in check_config<br>    encrypt.try_cipher(config[‘password’], config[‘method’])<br>  File “/usr/local/lib/python3.6/dist-packages/shadowsocks/encrypt.py”, line 44, in try_cipher<br>    Encryptor(key, method)<br>  File “/usr/local/lib/python3.6/dist-packages/shadowsocks/encrypt.py”, line 83, in <strong>init</strong><br>    random_string(self._method_info[1]))<br>  File “/usr/local/lib/python3.6/dist-packages/shadowsocks/encrypt.py”, line 109, in get_cipher<br>    return m<a href="method, key, iv, op">2</a><br>  File “/usr/local/lib/python3.6/dist-packages/shadowsocks/crypto/openssl.py”, line 76, in <strong>init</strong><br>    load_openssl()<br>  File “/usr/local/lib/python3.6/dist-packages/shadowsocks/crypto/openssl.py”, line 52, in load_openssl<br>    libcrypto.EVP_CIPHER_CTX_cleanup.argtypes = (c_void_p,)<br>  File “/usr/lib/python3.6/ctypes/<strong>init</strong>.py”, line 361, in <strong>getattr</strong><br>    func = self.<strong>getitem</strong>(name)<br>  File “/usr/lib/python3.6/ctypes/<strong>init</strong>.py”, line 366, in <strong>getitem</strong><br>    func = self._FuncPtr((name_or_ordinal, self))<br>AttributeError: /usr/lib/x86_64-linux-gnu/libcrypto.so.1.1: undefined symbol: EVP_CIPHER_CTX_cleanup</module></p>
+</blockquote>
+<p>这个问题是由于在openssl1.1.0版本中，废弃了EVP_CIPHER_CTX_cleanup函数。<br>修改方法：</p>
+<p>find / -name openssl.py<br>用vim打开文件：sudo vi /usr/local/lib/python3.6/dist-packages/shadowsocks/crypto/openssl.py(路径即为find返回结果)<br>点击esc进入命令模式，输入:52,跳转到52行（shadowsocks2.8.2版本，其他版本搜索一下cleanup）<br>点击i进入编辑模式<br>将第52行libcrypto.EVP_CIPHER_CTX_cleanup.argtypes = (c_void_p,)<br>改为libcrypto.EVP_CIPHER_CTX_reset.argtypes = (c_void_p,)</p>
+<p>点esc进入命令模式，输入/cleanup回车，搜索cleanup，（全文件共2处，此处位于111行），将libcrypto.EVP_CIPHER_CTX_cleanup(self._ctx)<br>改为libcrypto.EVP_CIPHER_CTX_reset(self._ctx)<br>保存并退出<br>启动shadowsocks服务：sslocal -c /etc/shadowsocks.json</p>
+<ul>
+<li>开机后自动运行<br>在/home下新建个文件叫做shadow.sh，sudo vi shadow.sh在里面写上启动ss客户端需要的命令，然后保存即可。</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">#！/bin/bash</span><br><span class="line">#shadow.sh</span><br><span class="line">sslocal -c /etc/shadowsocks.json</span><br></pre></td></tr></table></figure>
+<p>终端执行命令 <code>sh /home/shadow.sh</code></p>
+<ul>
+<li><p>在后台运行<br><code>nohup sh /home/shadow.sh</code></p>
+</li>
+<li><p>加入开机运行<br><code>sudo vi /etc/rc.local</code>编辑，输入<code>nohup bash /home/shadow.sh&gt;/home/d.txt &amp;</code>保存</p>
+</li>
+</ul>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">2020</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/study.github.io/2020/04/05/ubuntu-shadowsocks-config/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-basic-knowledge" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -1315,89 +1440,6 @@
 
 
   
-    <article id="post-Heroku搭建自己的服务器教程" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/study.github.io/2019/06/22/Heroku搭建自己的服务器教程/">Heroku搭建自己的服务器教程</a>
-    </h1>
-  
-
-        
-        <a href="/study.github.io/2019/06/22/Heroku搭建自己的服务器教程/" class="archive-article-date">
-  	<time datetime="2019-06-22T07:48:39.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-06-22</time>
-</a>
-        
-      </header>
-    
-<!-- 目录内容 -->
-
-<!-- 目录内容结束 -->
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>转载自：<a href="https://ixs.im/fun/Heroku_ssh/" target="_blank" rel="noopener">https://ixs.im/fun/Heroku_ssh/</a></p>
-        
-          <a class="article-more-a" href="/study.github.io/2019/06/22/Heroku搭建自己的服务器教程/#more">more >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">2019</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">Heroku</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/study.github.io/2019/06/22/Heroku搭建自己的服务器教程/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
   
     <nav id="page-nav">
       <a class="extend prev" rel="prev" href="/study.github.io/">&laquo; Prev</a><a class="page-number" href="/study.github.io/">1</a><span class="page-number current">2</span><a class="page-number" href="/study.github.io/page/3/">3</a><a class="extend next" rel="next" href="/study.github.io/page/3/">Next &raquo;</a>
@@ -1510,15 +1552,15 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">codewar</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">2020</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">Heroku</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">codewar</a>
               </li>
              
               <li class="article-tag-list-item">
