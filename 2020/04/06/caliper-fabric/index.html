@@ -8,18 +8,18 @@
   <link rel="dns-prefetch" href="https://github.com/RookieLinLucy666/study.github.io">
   <title>caliper-fabric 0.2.0 测试及错误解决 | 散财童子小林</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="ubuntu换源  https://blog.csdn.net/u012308586/article/details/102953882  安装nodeJS、Docker、Docker Compose  https://rookielinlucy666.github.io/study.github.io/2020/04/05/ubuntu-nodejs-docker/  下载caliper-be">
+  <meta name="description" content="ubuntu换源  https://blog.csdn.net/u012308586/article/details/102953882  npm换源  https://www.cnblogs.com/cythia/p/10985080.html  安装nodeJS、Docker、Docker Compose  https://rookielinlucy666.github.io/study.g">
 <meta name="keywords" content="2020">
 <meta property="og:type" content="article">
 <meta property="og:title" content="caliper-fabric 0.2.0 测试及错误解决">
 <meta property="og:url" content="https://github.com/RookieLinLucy666/study.github.io/2020/04/06/caliper-fabric/index.html">
 <meta property="og:site_name" content="散财童子小林">
-<meta property="og:description" content="ubuntu换源  https://blog.csdn.net/u012308586/article/details/102953882  安装nodeJS、Docker、Docker Compose  https://rookielinlucy666.github.io/study.github.io/2020/04/05/ubuntu-nodejs-docker/  下载caliper-be">
+<meta property="og:description" content="ubuntu换源  https://blog.csdn.net/u012308586/article/details/102953882  npm换源  https://www.cnblogs.com/cythia/p/10985080.html  安装nodeJS、Docker、Docker Compose  https://rookielinlucy666.github.io/study.g">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2020-04-21T06:50:34.516Z">
+<meta property="og:updated_time" content="2020-05-01T16:22:36.660Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="caliper-fabric 0.2.0 测试及错误解决">
-<meta name="twitter:description" content="ubuntu换源  https://blog.csdn.net/u012308586/article/details/102953882  安装nodeJS、Docker、Docker Compose  https://rookielinlucy666.github.io/study.github.io/2020/04/05/ubuntu-nodejs-docker/  下载caliper-be">
+<meta name="twitter:description" content="ubuntu换源  https://blog.csdn.net/u012308586/article/details/102953882  npm换源  https://www.cnblogs.com/cythia/p/10985080.html  安装nodeJS、Docker、Docker Compose  https://rookielinlucy666.github.io/study.g">
   
     <link rel="alternative" href="/atom.xml" title="散财童子小林" type="application/atom+xml">
   
@@ -181,6 +181,10 @@
 </ul>
 <p><a href="https://blog.csdn.net/u012308586/article/details/102953882" target="_blank" rel="noopener">https://blog.csdn.net/u012308586/article/details/102953882</a></p>
 <ul>
+<li>npm换源</li>
+</ul>
+<p><a href="https://www.cnblogs.com/cythia/p/10985080.html" target="_blank" rel="noopener">https://www.cnblogs.com/cythia/p/10985080.html</a></p>
+<ul>
 <li>安装nodeJS、Docker、Docker Compose</li>
 </ul>
 <p><a href="https://rookielinlucy666.github.io/study.github.io/2020/04/05/ubuntu-nodejs-docker/" target="_blank" rel="noopener">https://rookielinlucy666.github.io/study.github.io/2020/04/05/ubuntu-nodejs-docker/</a></p>
@@ -188,7 +192,7 @@
 <li>下载caliper-benchmark仓库</li>
 </ul>
 <p><code>git clone https://github.com/hyperledger/caliper-benchmarks.git</code></p>
-<p><code>cd caliper-benckmarks</code></p>
+<p><code>cd caliper-benchmarks</code></p>
 <ul>
 <li>切换benchmark版本</li>
 </ul>
@@ -214,7 +218,7 @@
 <p>由于Caliper采用了轻量级的部署方式，因此需要显式的绑定步骤指定要测试的平台及适配器版本，caliper-cli会自动进行相应依赖项的安装。使用npx caliper bind命令进行绑定，命令所需的各项参数可以通过如下命令查看：–caliper-bind-sut ：用于指定需要测试的区块链平台，即受测系统(如fabric等)；–caliper-bind-sdk：用于指定适配器版本(如1.4.1)； –caliper-bind-cwd：用于绑定caliper-cli的工作目录，caliper-cli在加载配置文件等场合时均是使用相对于工作目录的相对路径； caliper-bind-args：用于指定caliper-cli在安装依赖项时传递给npm的参数，如用于全局安装的-g。</p>
 </blockquote>
 <p>为绑定fabric，采用如下命令</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npx caliper bind --caliper-bind-sut fabric --caliper-bind-sdk 1.4.1</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">npx caliper bind --caliper-bind-sut fabric --caliper-bind-sdk 1.4.1</span><br><span class="line"></span><br><span class="line"># 若出现 stack Error: not found: make</span><br><span class="line">sudo apt-get install build-essential</span><br><span class="line"></span><br><span class="line"># 若出现 Error: The gRPC binary module was not installed. This may be fixed by running &quot;npm rebuild&quot;</span><br><span class="line">npm rebuild</span><br></pre></td></tr></table></figure>
 <p>若直接在caliper2.0/3.0和benchmark latest的基础上运行benchmarks会出现如下错误</p>
 <blockquote>
 <p>Error [caliper] [caliper-flow]     Error: TypeError: Cannot read property ‘hasOwnProperty’ of undefined<br>at ClientOrchestrator.init (~/caliper-benchmarks/node_modules/@hyperledger/caliper-core/lib/client/client-orchestrator.js:41:24)<br>    at Object.module.exports.run (~/caliper-benchmarks/node_modules/@hyperledger/caliper-core/lib/caliper-flow.js:106:60)<br>    at <anonymous><br>    at process._tickCallback (internal/process/next_tick.js:189:7)</anonymous></p>
@@ -228,6 +232,10 @@
 <blockquote>
 <p>Job for docker.service failed because the control process exited with error code.<br>则是daemon.json文件配置错误，请检查分隔符等。</p>
 </blockquote>
+<ul>
+<li>或手动拉取镜像</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">docker pull hyperledger/fabric-ca:1.4.1</span><br><span class="line">docker pull hyperledger/fabric-orderer:1.4.1</span><br><span class="line">docker pull hyperledger/fabric-peer:1.4.1</span><br></pre></td></tr></table></figure>
 <ul>
 <li>运行benchmark</li>
 </ul>
@@ -247,9 +255,11 @@
 <p>cd networks/fabric/fabric-v1.4.1/2org1peergoleveldb<br>vi fabric-go.yaml</p>
 <p>#注释chaincodes:下面这部分</p>
 <p>#- id: smallbank</p>
-<h1 id="version-v0"><a href="#version-v0" class="headerlink" title="version: v0"></a>version: v0</h1><h1 id="language-golang"><a href="#language-golang" class="headerlink" title="language: golang"></a>language: golang</h1><h1 id="path-fabric-scenario-smallbank-go"><a href="#path-fabric-scenario-smallbank-go" class="headerlink" title="path: fabric/scenario/smallbank/go"></a>path: fabric/scenario/smallbank/go</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">   </span><br><span class="line">若出现以下错误，重新运行上述命令即可</span><br><span class="line">    </span><br><span class="line">&gt;error: [FabricCAClientService.js]: Failed to enroll admin, error:%o message=Calling enrollment endpoint failed with error [Error: connect ECONNREFUSED 127.0.0.1:7054], stack=Error: Calling enrollment endpoint failed with error [Error: connect ECONNREFUSED 127.0.0.1:7054]</span><br><span class="line">    at ClientRequest.request.on (/root/caliper-benchmarks/node_modules/fabric-ca-client/lib/FabricCAClient.js:487:12)</span><br><span class="line">    at emitOne (events.js:116:13)</span><br><span class="line">    at ClientRequest.emit (events.js:211:7)</span><br><span class="line">    at Socket.socketErrorListener (_http_client.js:401:9)</span><br><span class="line">    at emitOne (events.js:116:13)</span><br><span class="line">    at Socket.emit (events.js:211:7)</span><br><span class="line">    at emitErrorNT (internal/streams/destroy.js:73:8)</span><br><span class="line">    at _combinedTickCallback (internal/process/next_tick.js:139:11)</span><br><span class="line">    at process._tickCallback (internal/process/next_tick.js:181:9)</span><br><span class="line">2020.04.06-16:21:18.565 error [caliper] [caliper-flow] 	Error: Error: Couldn&apos;t enroll Org1&apos;s registrar or set it as user context: Calling enrollment endpoint failed with error [Error: connect ECONNREFUSED 127.0.0.1:7054]</span><br><span class="line">    at Fabric._setUserContextByEnrollment (/root/caliper-benchmarks/node_modules/@hyperledger/caliper-fabric/lib/fabric.js:1688:19)</span><br><span class="line">    at &lt;anonymous&gt;</span><br><span class="line">    at process._tickCallback (internal/process/next_tick.js:189:7)</span><br><span class="line">    </span><br><span class="line">    error [caliper] [caliper-flow] 	Error: Error: Invalid endorsement for marbles@v0 in mychannel from peer0.org1.example.com: error starting container: error starting container: Failed to generate platform-specific docker build: Error uploading input to container: API error (404): Could not find the file /chaincode/input in container dce3a0382841131e79617e553058d164bee0749f55f6f7fe5b471e8716062ed2</span><br><span class="line">    </span><br><span class="line">- mac上设置ssh不断掉，并且session保持</span><br><span class="line"></span><br><span class="line">`sudo vi ~/.ssh/config`，输入如下内容，对所有服务器保持不断开（也可针对特定服务器，请搜索）</span><br></pre></td></tr></table></figure>
-<p>Host *<br>    ServerAliveInterval 60<br>    ControlMaster auto<br>    ControlPath ~/.ssh/%h-%p-%r<br>    ControlPersist yes<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">    </span><br><span class="line"></span><br><span class="line">编辑服务器 `cd /etc/ssh/sshd_config`，最后增加</span><br></pre></td></tr></table></figure></p>
-<p>ClientAliveInterval 60<br>ClientAliveCountMax 1<br><code>`</code><br>这 样，SSH Server 每 60 秒就会自动发送一个信号给 Client，而等待 Client 回应</p>
+<h1 id="version-v0"><a href="#version-v0" class="headerlink" title="version: v0"></a>version: v0</h1><h1 id="language-golang"><a href="#language-golang" class="headerlink" title="language: golang"></a>language: golang</h1><h1 id="path-fabric-scenario-smallbank-go"><a href="#path-fabric-scenario-smallbank-go" class="headerlink" title="path: fabric/scenario/smallbank/go"></a>path: fabric/scenario/smallbank/go</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">   </span><br><span class="line">若出现以下错误，重新运行上述命令即可</span><br><span class="line">    </span><br><span class="line">&gt;error: [FabricCAClientService.js]: Failed to enroll admin, error:%o message=Calling enrollment endpoint failed with error [Error: connect ECONNREFUSED 127.0.0.1:7054], stack=Error: Calling enrollment endpoint failed with error [Error: connect ECONNREFUSED 127.0.0.1:7054]</span><br><span class="line">    at ClientRequest.request.on (/root/caliper-benchmarks/node_modules/fabric-ca-client/lib/FabricCAClient.js:487:12)</span><br><span class="line">    at emitOne (events.js:116:13)</span><br><span class="line">    at ClientRequest.emit (events.js:211:7)</span><br><span class="line">    at Socket.socketErrorListener (_http_client.js:401:9)</span><br><span class="line">    at emitOne (events.js:116:13)</span><br><span class="line">    at Socket.emit (events.js:211:7)</span><br><span class="line">    at emitErrorNT (internal/streams/destroy.js:73:8)</span><br><span class="line">    at _combinedTickCallback (internal/process/next_tick.js:139:11)</span><br><span class="line">    at process._tickCallback (internal/process/next_tick.js:181:9)</span><br><span class="line">2020.04.06-16:21:18.565 error [caliper] [caliper-flow] 	Error: Error: Couldn&apos;t enroll Org1&apos;s registrar or set it as user context: Calling enrollment endpoint failed with error [Error: connect ECONNREFUSED 127.0.0.1:7054]</span><br><span class="line">    at Fabric._setUserContextByEnrollment (/root/caliper-benchmarks/node_modules/@hyperledger/caliper-fabric/lib/fabric.js:1688:19)</span><br><span class="line">    at &lt;anonymous&gt;</span><br><span class="line">    at process._tickCallback (internal/process/next_tick.js:189:7)</span><br><span class="line">    </span><br><span class="line">    </span><br><span class="line">&gt;error [caliper] [caliper-flow] 	Error: Error: Invalid endorsement for marbles@v0 in mychannel from peer0.org1.example.com: error starting container: error starting container: Failed to generate platform-specific docker build: Error uploading input to container: API error (404): Could not find the file /chaincode/input in container dce3a0382841131e79617e553058d164bee0749f55f6f7fe5b471e8716062ed2</span><br><span class="line">    </span><br><span class="line">    </span><br><span class="line">    </span><br><span class="line">- mac上设置ssh不断掉，并且session保持</span><br><span class="line"></span><br><span class="line">`sudo vi ~/.ssh/config`，输入如下内容，对所有服务器保持不断开（也可针对特定服务器，请搜索）</span><br></pre></td></tr></table></figure>
+<p>Host *<br>    ServerAliveInterval 60<br>    ControlMaster auto<br>    ControlPath ~/.ssh/%h-%p-%r<br>    ControlPersist yes</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">    </span><br><span class="line"></span><br><span class="line">编辑服务器 `cd /etc/ssh/sshd_config`，最后增加</span><br></pre></td></tr></table></figure>
+<p>ClientAliveInterval 60<br>ClientAliveCountMax 1</p>
+<p><code>`</code><br>这 样，SSH Server 每 60 秒就会自动发送一个信号给 Client，而等待 Client 回应</p>
 
       
 
@@ -536,15 +546,15 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">codewar</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">2020</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">Heroku</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">codewar</a>
               </li>
              
               <li class="article-tag-list-item">
