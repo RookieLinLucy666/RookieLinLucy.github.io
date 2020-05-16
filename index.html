@@ -153,6 +153,116 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-fabric-2-0-sdk" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/study.github.io/2020/05/16/fabric-2-0-sdk/">fabric-2.0-sdk</a>
+    </h1>
+  
+
+        
+        <a href="/study.github.io/2020/05/16/fabric-2-0-sdk/" class="archive-article-date">
+  	<time datetime="2020-05-16T09:11:26.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-05-16</time>
+</a>
+        
+      </header>
+    
+<!-- 目录内容 -->
+
+<!-- 目录内容结束 -->
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>参考：<a href="https://ifican.top/2019/12/28/blog/fabric/TLS_SDK%E8%B0%83%E7%94%A8/" target="_blank" rel="noopener">https://ifican.top/2019/12/28/blog/fabric/TLS_SDK%E8%B0%83%E7%94%A8/</a></p>
+<ul>
+<li>搭建Hyperledger Fabric v2.0.0</li>
+</ul>
+<p><a href="https://rookielinlucy666.github.io/study.github.io/2020/04/08/fabric-v0-2-0/" target="_blank" rel="noopener">https://rookielinlucy666.github.io/study.github.io/2020/04/08/fabric-v0-2-0/</a></p>
+<ul>
+<li>导包</li>
+</ul>
+<p>利用Gradle搭建SDK环境，在build.gradle中修改源并添加SDK</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">repositories &#123;</span><br><span class="line">    maven&#123; url &apos;http://maven.aliyun.com/nexus/content/groups/public/&apos;&#125;</span><br><span class="line">    maven &#123; url &quot;https://dl.bintray.com/ethereum/maven/&quot; &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">dependencies &#123;</span><br><span class="line">    implementation &apos;org.hyperledger.fabric:fabric-gateway-java:2.1.0&apos;</span><br><span class="line">    testCompile group: &apos;junit&apos;, name: &apos;junit&apos;, version: &apos;4.12&apos;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>生成证书</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cd fabric-samples/first-network</span><br><span class="line">./byfn.sh -m generate</span><br></pre></td></tr></table></figure>
+<ul>
+<li>复制证书</li>
+</ul>
+<p>将<code>first-network</code>文件夹内的刚生产的<code>crypto-config</code>文件夹拷贝到项目的<code>resources</code>目录下</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">cd fabric-samples/firstnetwork</span><br><span class="line">cp -r crypto-config project/src/main/resources</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">├── src</span><br><span class="line">│   ├── main</span><br><span class="line">│   │   ├── java</span><br><span class="line">│   │   │   ├── *.java  #这里是将要写的代码</span><br><span class="line">│   │   └── resources</span><br><span class="line">│   │       └── crypto-config   #直接拷贝整个文件夹到这里</span><br></pre></td></tr></table></figure>
+<ul>
+<li>调用SDK</li>
+</ul>
+<p>下述完整代码来自：<a href="https://github.com/newonexd/fabric-sdk-demo">https://github.com/newonexd/fabric-sdk-demo</a></p>
+<p>1.配置参数文件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line">package org.fabric.demo;</span><br><span class="line"></span><br><span class="line">public final class Const &#123;</span><br><span class="line">    public static String BASE_PATH = &quot;project/src/main/&quot;; #改成项目的绝对路径</span><br><span class="line">    public static final String PEER0_ORG1_DOMAIN_NAME = &quot;peer0.org1.example.com&quot;;</span><br><span class="line"></span><br><span class="line">    public static final String PEER0_ORG2_DOMAIN_NAME = &quot;peer0.org2.example.com&quot;;</span><br><span class="line"></span><br><span class="line">    public static final String PEER0_ORG1_HOST = &quot;grpcs://localhost:7051&quot;;</span><br><span class="line"></span><br><span class="line">    public static final String PEER0_ORG2_HOST = &quot;grpcs://localhost:9051&quot;;</span><br><span class="line"></span><br><span class="line">    public static final String PEER0_ORG1_TLS_DIR = &quot;resources/crypto-config/peerOrganizations/org1.example.com/tlsca/tlsca.org1.example.com-cert.pem&quot;;</span><br><span class="line"></span><br><span class="line">    public static final String PEER0_ORG2_TLS_DIR = &quot;resources/crypto-config/peerOrganizations/org2.example.com/tlsca/tlsca.org2.example.com-cert.pem&quot;;</span><br><span class="line"></span><br><span class="line">    public static final String ORDERER_DOMAIN_NAME = &quot;orderer.example.com&quot;;</span><br><span class="line"></span><br><span class="line">    public static final String ORDERER_TLS_DIR = &quot;resources/crypto-config/ordererOrganizations/example.com/orderers/orderer.example.com/tls/ca.crt&quot;;</span><br><span class="line"></span><br><span class="line">    public static final String ORDERER_HOST = &quot;grpcs://localhost:7050&quot;;</span><br><span class="line"></span><br><span class="line">    public static final String CHANNEL_NAME = &quot;mychannel&quot;;</span><br><span class="line"></span><br><span class="line">    public static final String CHAINCODE_NAME = &quot;mycc&quot;;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    public static final String USER_MSP_ID=&quot;Org1MSP&quot;;</span><br><span class="line"></span><br><span class="line">    public static final String USER_AFFILIATION=&quot;org1&quot;;</span><br><span class="line"></span><br><span class="line">    public static final String USER_KEY_FILE = &quot;resources/crypto-config/peerOrganizations/org1.example.com/users/Admin@org1.example.com/msp/keystore/priv_sk&quot;;</span><br><span class="line"></span><br><span class="line">    public static final String USER_CERT_FILE = &quot;resources/crypto-config/peerOrganizations/org1.example.com/users/Admin@org1.example.com/msp/signcerts/Admin@org1.example.com-cert.pem&quot;;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>2.创建用户</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br></pre></td><td class="code"><pre><span class="line">	package org.fabric.demo;</span><br><span class="line"></span><br><span class="line">import org.hyperledger.fabric.sdk.Enrollment;</span><br><span class="line">import org.hyperledger.fabric.sdk.User;</span><br><span class="line">import org.hyperledger.fabric.sdk.exception.CryptoException;</span><br><span class="line">import org.hyperledger.fabric.sdk.identity.X509Enrollment;</span><br><span class="line">import org.hyperledger.fabric.sdk.security.CryptoPrimitives;</span><br><span class="line"></span><br><span class="line">import java.io.IOException;</span><br><span class="line">import java.nio.file.Files;</span><br><span class="line">import java.nio.file.Paths;</span><br><span class="line">import java.security.PrivateKey;</span><br><span class="line">import java.util.Set;</span><br><span class="line"></span><br><span class="line">public class FabUser implements User &#123;</span><br><span class="line"></span><br><span class="line">    private FabUser() &#123;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">     * 创建用户实例</span><br><span class="line">     * @param name</span><br><span class="line">     * @param mspId</span><br><span class="line">     * @param keyFile  当前用户秘钥文件路径</span><br><span class="line">     * @param certFile 当前用户证书文件路径</span><br><span class="line">     */</span><br><span class="line">    FabUser(String name, String mspId, String keyFile, String certFile) &#123;</span><br><span class="line">        if ((this.enrollment = loadKeyAndCert(keyFile, certFile)) != null) &#123;</span><br><span class="line">            this.name = name;</span><br><span class="line">            this.mspId = mspId;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    private String name;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    public void setAccount(String account) &#123;</span><br><span class="line">        this.account = account;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public void setAffiliation(String affiliation) &#123;</span><br><span class="line">        this.affiliation = affiliation;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    public void setRoles(Set&lt;String&gt; roles) &#123;</span><br><span class="line">        this.roles = roles;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public void setEnrollment(Enrollment enrollment) &#123;</span><br><span class="line">        this.enrollment = enrollment;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    private String account;</span><br><span class="line">    private String affiliation;</span><br><span class="line">    private String mspId;</span><br><span class="line">    private Set&lt;String&gt; roles;</span><br><span class="line">    private Enrollment enrollment;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    public String getName() &#123;</span><br><span class="line">        return this.name;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    public Set&lt;String&gt; getRoles() &#123;</span><br><span class="line">        return this.roles;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    public String getAccount() &#123;</span><br><span class="line">        return this.account;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    public String getAffiliation() &#123;</span><br><span class="line">        return this.affiliation;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    public Enrollment getEnrollment() &#123;</span><br><span class="line">        return this.enrollment;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    public String getMspId() &#123;</span><br><span class="line">        return this.mspId;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">     * 从文件系统中加载秘钥与证书</span><br><span class="line">     * @param keyFile</span><br><span class="line">     * @param certFile</span><br><span class="line">     * @return</span><br><span class="line">     */</span><br><span class="line">    private Enrollment loadKeyAndCert(String keyFile, String certFile) &#123;</span><br><span class="line">        byte[] keyPem;</span><br><span class="line">        try &#123;</span><br><span class="line">            keyPem = Files.readAllBytes(Paths.get(Const.BASE_PATH + keyFile));</span><br><span class="line">            byte[] certPem = Files.readAllBytes(Paths.get(Const.BASE_PATH + certFile));</span><br><span class="line">            CryptoPrimitives primitives = new CryptoPrimitives();</span><br><span class="line">            PrivateKey privateKey = primitives.bytesToPrivateKey(keyPem);</span><br><span class="line">            return new X509Enrollment(privateKey, new String(certPem));</span><br><span class="line">        &#125; catch (IOException | IllegalAccessException | InstantiationException | CryptoException | ClassNotFoundException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">        return null;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>3.实现简单SDK调用</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br></pre></td><td class="code"><pre><span class="line">package org.fabric.demo;</span><br><span class="line"></span><br><span class="line">import org.hyperledger.fabric.sdk.*;</span><br><span class="line">import org.hyperledger.fabric.sdk.exception.InvalidArgumentException;</span><br><span class="line">import org.hyperledger.fabric.sdk.exception.ProposalException;</span><br><span class="line">import org.hyperledger.fabric.sdk.security.CryptoSuite;</span><br><span class="line"></span><br><span class="line">import java.io.IOException;</span><br><span class="line">import java.nio.file.Files;</span><br><span class="line">import java.nio.file.Paths;</span><br><span class="line">import java.util.Collection;</span><br><span class="line">import java.util.Properties;</span><br><span class="line">import java.util.concurrent.ExecutionException;</span><br><span class="line"></span><br><span class="line">public class Demo &#123;</span><br><span class="line"></span><br><span class="line">    public static void main(String[] args) throws Exception &#123;</span><br><span class="line"></span><br><span class="line">        //*****************************************************</span><br><span class="line">        //*********Hyperledger Fabric客户端初始化配置************</span><br><span class="line">        //*****************************************************</span><br><span class="line">        System.out.println(Const.class.getClassLoader().getResource(&quot;./&quot;));</span><br><span class="line"></span><br><span class="line">        //创建默认的加密套件</span><br><span class="line">        CryptoSuite suite = CryptoSuite.Factory.getCryptoSuite();</span><br><span class="line">        //Hyperledger Fabric 客户端</span><br><span class="line">        HFClient hfClient = HFClient.createNewInstance();</span><br><span class="line">        hfClient.setCryptoSuite(suite);</span><br><span class="line"></span><br><span class="line">        //创建一个用户并加载证书与秘钥文件</span><br><span class="line">        FabUser fabUser = new FabUser(&quot;admin&quot;, Const.USER_MSP_ID, Const.USER_KEY_FILE, Const.USER_CERT_FILE);</span><br><span class="line">        hfClient.setUserContext(fabUser);</span><br><span class="line"></span><br><span class="line">        //创建通道实例</span><br><span class="line">        Channel channel = hfClient.newChannel(Const.CHANNEL_NAME);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        //*****************************************************</span><br><span class="line">        //******************配置Peer节点*********************</span><br><span class="line">        //*****************************************************</span><br><span class="line"></span><br><span class="line">        /**</span><br><span class="line">         * 添加peer节点信息，客户端可以向该peer节点发送查询与调用链码的请求</span><br><span class="line">         * 需配置peer节点域名，peer节点主机地址+端口号(主机地址需要与Fabric网络中peer节点对应)</span><br><span class="line">         * 如果开启TLS的话需配置TLS根证书</span><br><span class="line">         */</span><br><span class="line">        Peer peer = hfClient.newPeer(</span><br><span class="line">                Const.PEER0_ORG1_DOMAIN_NAME, Const.PEER0_ORG1_HOST,</span><br><span class="line">                loadTLSFile(Const.PEER0_ORG1_TLS_DIR, Const.PEER0_ORG1_DOMAIN_NAME));</span><br><span class="line">        Peer peer1 = hfClient.newPeer(</span><br><span class="line">                Const.PEER0_ORG2_DOMAIN_NAME, Const.PEER0_ORG2_HOST,</span><br><span class="line">                loadTLSFile(Const.PEER0_ORG2_TLS_DIR, Const.PEER0_ORG2_DOMAIN_NAME));</span><br><span class="line">        channel.addPeer(peer1);</span><br><span class="line">        channel.addPeer(peer);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        //*****************************************************</span><br><span class="line">        //******************配置Orderer节点*********************</span><br><span class="line">        //*****************************************************</span><br><span class="line"></span><br><span class="line">        /**</span><br><span class="line">         * 添加orderer节点信息，客户端接受到peer节点的背书响应后发送到该orderer节点</span><br><span class="line">         * 需配置orderer节点域名，orderer节点主机地址+端口号(主机地址需要与Fabric网络中orderer节点对应)</span><br><span class="line">         * 如果开启TLS的话需配置TLS根证书</span><br><span class="line">         */</span><br><span class="line">        Orderer orderer = hfClient.newOrderer(</span><br><span class="line">                Const.ORDERER_DOMAIN_NAME, Const.ORDERER_HOST,</span><br><span class="line">                loadTLSFile(Const.ORDERER_TLS_DIR, Const.ORDERER_DOMAIN_NAME));</span><br><span class="line">        channel.addOrderer(orderer);</span><br><span class="line">        //通道初始化</span><br><span class="line">        channel.initialize();</span><br><span class="line">        //创建与Fabric中链码对应的实例</span><br><span class="line">        ChaincodeID chaincodeID = ChaincodeID.newBuilder().setName(Const.CHAINCODE_NAME).build();</span><br><span class="line"></span><br><span class="line">        //*****************************************************</span><br><span class="line">        //******************查询或者调用链码功能******************</span><br><span class="line">        //*****************************************************</span><br><span class="line"></span><br><span class="line">        String queryFunc = &quot;query&quot;;</span><br><span class="line">        String[] queryArgs = &#123;&quot;a&quot;&#125;;</span><br><span class="line">        query(hfClient, channel, chaincodeID, queryFunc, queryArgs);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        String invokeFunc = &quot;invoke&quot;;</span><br><span class="line">        String[] invokeArgs = &#123;&quot;a&quot;, &quot;b&quot;, &quot;10&quot;&#125;;</span><br><span class="line">        invoke(hfClient, channel, chaincodeID, invokeFunc, invokeArgs);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        query(hfClient, channel, chaincodeID, queryFunc, queryArgs);</span><br><span class="line">    &#125;</span><br><span class="line">    //********************************************************************************************************************************************************************</span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">     * 为Fabric网络中节点配置TLS根证书</span><br><span class="line">     *</span><br><span class="line">     * @param rootTLSCert 根证书路径</span><br><span class="line">     * @param hostName    节点域名</span><br><span class="line">     * @return</span><br><span class="line">     * @throws IOException</span><br><span class="line">     */</span><br><span class="line">    private static Properties loadTLSFile(String rootTLSCert, String hostName) throws IOException &#123;</span><br><span class="line">        Properties properties = new Properties();</span><br><span class="line">        properties.put(&quot;pemBytes&quot;, Files.readAllBytes(Paths.get(Const.BASE_PATH + rootTLSCert)));</span><br><span class="line">        properties.setProperty(&quot;sslProvider&quot;, &quot;openSSL&quot;);</span><br><span class="line">        properties.setProperty(&quot;negotiationType&quot;, &quot;TLS&quot;);</span><br><span class="line">        properties.setProperty(&quot;trustServerCertificate&quot;, &quot;true&quot;);</span><br><span class="line">        properties.setProperty(&quot;hostnameOverride&quot;, hostName);</span><br><span class="line">        return properties;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">     * @param hfClient    Hyperledger Fabric 客户端实例</span><br><span class="line">     * @param channel     通道实例</span><br><span class="line">     * @param chaincodeID 链码ID</span><br><span class="line">     * @param func        查询功能名称</span><br><span class="line">     * @param args        查询功能需要的参数</span><br><span class="line">     * @throws ProposalException</span><br><span class="line">     * @throws InvalidArgumentException</span><br><span class="line">     */</span><br><span class="line">    private static void query(HFClient hfClient, Channel channel, ChaincodeID chaincodeID, String func, String[] args) throws ProposalException, InvalidArgumentException &#123;</span><br><span class="line">        QueryByChaincodeRequest req = hfClient.newQueryProposalRequest();</span><br><span class="line">        req.setChaincodeID(chaincodeID);</span><br><span class="line">        req.setFcn(func);</span><br><span class="line">        req.setArgs(args);</span><br><span class="line">        // 向peer节点发送调用链码的提案并等待返回查询响应集合</span><br><span class="line">        Collection&lt;ProposalResponse&gt; queryResponse = channel.queryByChaincode(req);</span><br><span class="line">        for (ProposalResponse pres : queryResponse) &#123;</span><br><span class="line">            System.out.println(pres.getProposalResponse().getResponse().getPayload().toStringUtf8());</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">     * @param hfClient    Hyperledger Fabric 客户端实例</span><br><span class="line">     * @param channel     通道实例</span><br><span class="line">     * @param chaincodeID 链码ID</span><br><span class="line">     * @param func        查询功能名称</span><br><span class="line">     * @param args        查询功能需要的参数</span><br><span class="line">     * @throws InvalidArgumentException</span><br><span class="line">     * @throws ProposalException</span><br><span class="line">     * @throws ExecutionException</span><br><span class="line">     * @throws InterruptedException</span><br><span class="line">     */</span><br><span class="line">    private static void invoke(HFClient hfClient, Channel channel, ChaincodeID chaincodeID, String func, String[] args) throws InvalidArgumentException, ProposalException, ExecutionException, InterruptedException &#123;</span><br><span class="line">        //提交链码交易</span><br><span class="line">        TransactionProposalRequest req2 = hfClient.newTransactionProposalRequest();</span><br><span class="line">        req2.setChaincodeID(chaincodeID);</span><br><span class="line">        req2.setFcn(func);</span><br><span class="line">        req2.setArgs(args);</span><br><span class="line">        //配置提案等待时间</span><br><span class="line">        req2.setProposalWaitTime(3000);</span><br><span class="line">        // 向peer节点发送调用链码的提案并等待返回背书响应集合</span><br><span class="line">        Collection&lt;ProposalResponse&gt; rsp2 = channel.sendTransactionProposal(req2);</span><br><span class="line">        for (ProposalResponse pres : rsp2) &#123;</span><br><span class="line">            System.out.println(pres.getProposalResponse().getResponse().getPayload().toStringUtf8());</span><br><span class="line">        &#125;</span><br><span class="line">        //将背书响应集合发送到Orderer节点</span><br><span class="line">        BlockEvent.TransactionEvent event = channel.sendTransaction(rsp2).get();</span><br><span class="line">        System.out.println(&quot;区块是否有效：&quot; + event.isValid());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>关闭网络</li>
+</ul>
+<p><code>./byfn -m down</code></p>
+<p>下次开启时需要重新复制证书即<code>crypto-config</code>文件</p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">2020</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/study.github.io/2020/05/16/fabric-2-0-sdk/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-planUML" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -1181,91 +1291,6 @@
 
 
   
-    <article id="post-ubuntu-nodejs-docker" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/study.github.io/2020/04/05/ubuntu-nodejs-docker/">ubuntu-nodejs-docker</a>
-    </h1>
-  
-
-        
-        <a href="/study.github.io/2020/04/05/ubuntu-nodejs-docker/" class="archive-article-date">
-  	<time datetime="2020-04-05T13:46:52.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-04-05</time>
-</a>
-        
-      </header>
-    
-<!-- 目录内容 -->
-
-<!-- 目录内容结束 -->
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="ubuntu16-04-国内安装NodeJS、Docker、Docker-Compose（2020-04-05）"><a href="#ubuntu16-04-国内安装NodeJS、Docker、Docker-Compose（2020-04-05）" class="headerlink" title="ubuntu16.04 国内安装NodeJS、Docker、Docker Compose（2020-04-05）"></a>ubuntu16.04 国内安装NodeJS、Docker、Docker Compose（2020-04-05）</h1><h2 id="NodeJS"><a href="#NodeJS" class="headerlink" title="NodeJS"></a>NodeJS</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"># 安装nvm</span><br><span class="line">curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.2/install.sh | bash</span><br><span class="line"># 加载nvm配置</span><br><span class="line">source ~/.$(basename $SHELL)rc</span><br><span class="line"># npm换国内镜像源</span><br><span class="line">sudo vi ~/.npmrc</span><br><span class="line"># 写入配置</span><br><span class="line">registry=https://registry.npm.taobao.org</span><br><span class="line"># 安装Node.js 8</span><br><span class="line">nvm install 8</span><br><span class="line"># 使用Node.js 8</span><br><span class="line">nvm use 8</span><br></pre></td></tr></table></figure>
-<h2 id="Docker"><a href="#Docker" class="headerlink" title="Docker"></a>Docker</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"># 更新包索引</span><br><span class="line">sudo apt-get update</span><br><span class="line"># 安装基础依赖库</span><br><span class="line">sudo apt-get install \</span><br><span class="line">    apt-transport-https \</span><br><span class="line">    ca-certificates \</span><br><span class="line">    curl \</span><br><span class="line">    gnupg-agent \</span><br><span class="line">    software-properties-common</span><br><span class="line"># 添加Docker官方GPG key</span><br><span class="line">curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -</span><br><span class="line"># 添加docker仓库</span><br><span class="line">sudo add-apt-repository \</span><br><span class="line">&quot;deb [arch=amd64] https://download.docker.com/linux/ubuntu \</span><br><span class="line">$(lsb_release -cs) \</span><br><span class="line">stable&quot;</span><br><span class="line"># 更新包索引</span><br><span class="line">sudo apt-get update</span><br><span class="line"># 安装Docker</span><br><span class="line">sudo apt-get install docker-ce docker-ce-cli containerd.io</span><br><span class="line">#加入Docker用户组</span><br><span class="line">sudo groupadd docker</span><br><span class="line">sudo usermod -aG docker $USER</span><br></pre></td></tr></table></figure>
-<h2 id="Docker-Compose"><a href="#Docker-Compose" class="headerlink" title="Docker Compose"></a>Docker Compose</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo curl -L https://get.daocloud.io/docker/compose/releases/download/1.22.0/docker-compose-`uname -s`-`uname -m` &gt; /usr/local/bin/docker-compose</span><br></pre></td></tr></table></figure>
-<p>若出现下述错误，则</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">首先执行sudo -i，提示输入用户密码，输入密码后进入超级用户（root）模式，重新执行上述命令，一切正常。</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>-bash: /usr/local/bin/docker-compose: Permission denied</p>
-</blockquote>
-<p>最后执行<br><code>sudo chmod +x /usr/local/bin/docker-compose</code></p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">2020</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/study.github.io/2020/04/05/ubuntu-nodejs-docker/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
   
     <nav id="page-nav">
       <span class="page-number current">1</span><a class="page-number" href="/study.github.io/page/2/">2</a><a class="page-number" href="/study.github.io/page/3/">3</a><a class="page-number" href="/study.github.io/page/4/">4</a><a class="extend next" rel="next" href="/study.github.io/page/2/">Next &raquo;</a>
@@ -1374,6 +1399,10 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">2020</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">2019</a>
               </li>
              
@@ -1382,15 +1411,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">Heroku</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">2020</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">Hadoop</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">Heroku</a>
               </li>
              
               <li class="article-tag-list-item">
