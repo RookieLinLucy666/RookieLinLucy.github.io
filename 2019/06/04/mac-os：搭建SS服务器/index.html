@@ -6,19 +6,19 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <link rel="dns-prefetch" href="https://github.com/RookieLinLucy666/study.github.io">
-  <title>mac os：搭建SS服务器 | 散财童子小林</title>
+  <title>搭建SS/SSR服务器 | 散财童子小林</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="本文适用于没有一键安装SS脚本的套餐。 [TOC]">
 <meta name="keywords" content="2019">
 <meta property="og:type" content="article">
-<meta property="og:title" content="mac os：搭建SS服务器">
+<meta property="og:title" content="搭建SS&#x2F;SSR服务器">
 <meta property="og:url" content="https://github.com/RookieLinLucy666/study.github.io/2019/06/04/mac-os：搭建SS服务器/index.html">
 <meta property="og:site_name" content="散财童子小林">
 <meta property="og:description" content="本文适用于没有一键安装SS脚本的套餐。 [TOC]">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2020-03-03T12:08:28.214Z">
+<meta property="og:updated_time" content="2020-05-15T03:03:52.491Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="mac os：搭建SS服务器">
+<meta name="twitter:title" content="搭建SS&#x2F;SSR服务器">
 <meta name="twitter:description" content="本文适用于没有一键安装SS脚本的套餐。 [TOC]">
   
     <link rel="alternative" href="/atom.xml" title="散财童子小林" type="application/atom+xml">
@@ -160,7 +160,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      mac os：搭建SS服务器
+      搭建SS/SSR服务器
     </h1>
   
 
@@ -179,29 +179,32 @@
         <p>本文适用于没有一键安装SS脚本的套餐。</p>
 <p>[TOC]</p>
 <a id="more"></a>
-<p>#查看服务器信息</p>
-<p>1.登录<a href="https://bwh88.net/clientarea.php?action=products" target="_blank" rel="noopener">搬瓦工个人中心</a>，查看已购买产品，点击KiwiVM Control Panel，进入<a href="服务器管理界面">服务器管理界面</a></p>
+<h1 id="Shadowsocks"><a href="#Shadowsocks" class="headerlink" title="Shadowsocks"></a>Shadowsocks</h1><h2 id="查看服务器信息"><a href="#查看服务器信息" class="headerlink" title="查看服务器信息"></a>查看服务器信息</h2><p>1.登录<a href="https://bwh88.net/clientarea.php?action=products" target="_blank" rel="noopener">搬瓦工个人中心</a>，查看已购买产品，点击KiwiVM Control Panel，进入<a href="服务器管理界面">服务器管理界面</a></p>
 <p>2.点击Main controls，查看SSH Port</p>
-<h1 id="远程登录"><a href="#远程登录" class="headerlink" title="远程登录"></a>远程登录</h1><p>1.打开终端或iterm2</p>
+<h2 id="远程登录"><a href="#远程登录" class="headerlink" title="远程登录"></a>远程登录</h2><p>1.打开终端或iterm2</p>
 <p>2.输入<code>ssh -p yourSSHport root@ipAddress</code>,将yourSSHport替换为上述SSH Port，ipAddress替换为vps的ip地址</p>
 <p>3.命令行出现选项，点击yes</p>
 <p>当命令行出现<code>[root@host~]#</code>开始操作</p>
-<p>#开始操作</p>
-<p>1.命令行输入<code>wget — no-check-certificate -O shadowsocks.sh https://raw.githubusercontent.com/teddysun/shadowsocks_install/master/shadowsocks.sh</code>，若出现<code>bash:wget:command not fund</code>，则输入<code>yum install wget</code>，按照提示输入”y”确认。随后再执行上一条命令</p>
+<h2 id="开始操作"><a href="#开始操作" class="headerlink" title="开始操作"></a>开始操作</h2><p>1.命令行输入<code>wget — no-check-certificate -O shadowsocks.sh https://raw.githubusercontent.com/teddysun/shadowsocks_install/master/shadowsocks.sh</code>，若出现<code>bash:wget:command not fund</code>，则输入<code>yum install wget</code>，按照提示输入”y”确认。随后再执行上一条命令</p>
 <p>2.<code>chomod +x shadowsocks.sh</code></p>
 <p>3.<code>./shadowsocks.sh 2&gt;&amp;1 | tee shadowsocks.log</code></p>
 <p>看见”please enter password for shadowsocks-python(Default password:teddysun.com)”，输入你想设置的密码，此时若按enter，则密码为teddysun.com</p>
 <p>看见”please enter a port for shadowsocks-python(Default port:12906)”，输入你想设置的端口号，若按enter，则端口号默认为12906</p>
 <p>看见”please select stream cipher for shadowsocks-python”，输入7</p>
 <p>最后需要几分钟时间安装，最后屏幕出现”Enjoy it！”则表示服务安装成功，可以上网啦。</p>
-<h1 id="修改密码"><a href="#修改密码" class="headerlink" title="修改密码"></a>修改密码</h1><h2 id="查看当前密码"><a href="#查看当前密码" class="headerlink" title="查看当前密码"></a>查看当前密码</h2><p><code>cat /etc/shadowsocks.json</code></p>
-<h2 id="修改ss密码"><a href="#修改ss密码" class="headerlink" title="修改ss密码"></a>修改ss密码</h2><p><code>vi /etc/shadowsocks.json</code></p>
+<h2 id="修改密码"><a href="#修改密码" class="headerlink" title="修改密码"></a>修改密码</h2><h3 id="查看当前密码"><a href="#查看当前密码" class="headerlink" title="查看当前密码"></a>查看当前密码</h3><p><code>cat /etc/shadowsocks.json</code></p>
+<h3 id="修改ss密码"><a href="#修改ss密码" class="headerlink" title="修改ss密码"></a>修改ss密码</h3><p><code>vi /etc/shadowsocks.json</code></p>
 <p>按i键进入编辑模式，修改密码为123456</p>
 <p><code>&quot;password&quot;:&quot;123456&quot;</code></p>
 <p>然后按ESC，再输入:wq!保存退出</p>
 <p>重启ss即可<code>service shadowsocks restart</code></p>
-<h1 id="ping通，且端口号没有被封"><a href="#ping通，且端口号没有被封" class="headerlink" title="ping通，且端口号没有被封"></a>ping通，且端口号没有被封</h1><p>重新安装shadowsocks服务</p>
-<h1 id="ping不通，且ip地址被封"><a href="#ping不通，且ip地址被封" class="headerlink" title="ping不通，且ip地址被封"></a>ping不通，且ip地址被封</h1><p>搜索搬瓦工解封，支付8美元更换ip地址。(当前无免费更换ip服务)</p>
+<h2 id="ping通，且端口号没有被封"><a href="#ping通，且端口号没有被封" class="headerlink" title="ping通，且端口号没有被封"></a>ping通，且端口号没有被封</h2><p>重新安装shadowsocks服务</p>
+<h2 id="ping不通，且ip地址被封"><a href="#ping不通，且ip地址被封" class="headerlink" title="ping不通，且ip地址被封"></a>ping不通，且ip地址被封</h2><p>搜索搬瓦工解封，支付8美元更换ip地址。(当前无免费更换ip服务)</p>
+<h1 id="SSR"><a href="#SSR" class="headerlink" title="SSR"></a>SSR</h1><p>wget <a href="http://www.djangoz.com/ssr" target="_blank" rel="noopener">http://www.djangoz.com/ssr</a><br>sudo mv ssr /usr/local/bin<br>chmod 766 /usr/local/bin/ssr<br>ssr install</p>
+<p>配置<br>ssr config</p>
+<p>“server”:”0.0.0.0”,        //服务器ip<br>“server_port”:8388,        //端口<br>“password”:”m”,            //密码<br>“protocol”:”origin”,       //协议插件<br>“obfs”:”http_simple”,      //混淆插件<br>“method”:”aes-256-cfb”,    //加密方式</p>
+<p>启动<br>ssr start</p>
+<p>停止<br>ssr start</p>
 
       
 
@@ -492,11 +495,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">2020</a>
+                <a href="javascript:void(0)" class="js-tag color2">Heroku</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">Heroku</a>
+                <a href="javascript:void(0)" class="js-tag color5">2020</a>
               </li>
              
               <li class="article-tag-list-item">

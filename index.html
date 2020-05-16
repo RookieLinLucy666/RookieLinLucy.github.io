@@ -153,6 +153,87 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-planUML" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/study.github.io/2020/05/16/planUML/">Mac-VSCODE-plantUML</a>
+    </h1>
+  
+
+        
+        <a href="/study.github.io/2020/05/16/planUML/" class="archive-article-date">
+  	<time datetime="2020-05-16T03:40:59.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-05-16</time>
+</a>
+        
+      </header>
+    
+<!-- 目录内容 -->
+
+<!-- 目录内容结束 -->
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>VSCODE的Extension中搜索PlantUML，进行安装。</p>
+<p>新建test.puml文件，在文件中写入相应脚本。可以在官网中找到文档和在线服务。</p>
+<p>链接：<a href="https://plantuml.com/" target="_blank" rel="noopener">https://plantuml.com/</a></p>
+<p>编写好脚本后，按<code>alt+D</code>生成preview。</p>
+<p>若想保存，则在脚本中右键<code>Export Current Diagram</code>，并在弹出的边框中选择图片类型，如png/svg/eps等。</p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">2020</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/study.github.io/2020/05/16/planUML/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-python-matplotlib-accumulative" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -197,6 +278,10 @@
 <li>matplotlib点、线形状及颜色</li>
 </ul>
 <p><a href="https://www.biaodianfu.com/matplotlib-plot.html" target="_blank" rel="noopener">https://www.biaodianfu.com/matplotlib-plot.html</a></p>
+<ul>
+<li>折线堆积图</li>
+</ul>
+<p><a href="https://www.cnblogs.com/czz0508/p/10458455.html" target="_blank" rel="noopener">https://www.cnblogs.com/czz0508/p/10458455.html</a></p>
 
       
 
@@ -648,8 +733,8 @@
 <ul>
 <li>配置GOPATH</li>
 </ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">#查看环境变量</span><br><span class="line">go env</span><br><span class="line"></span><br><span class="line">#vim ~/.bash_profile</span><br><span class="line">GOROOT=/usr/local/go</span><br><span class="line">export GOROOT</span><br><span class="line">export PATH=$PATH:$GOROOT/bin</span><br><span class="line"></span><br><span class="line">GOPATH=/root/go/</span><br><span class="line">export PATH=$PATH:$GOPATH</span><br><span class="line"></span><br><span class="line">GOBIN=$GOPATH/bin</span><br><span class="line">export PATH=$PATH:$GOBIN</span><br></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">#zsh环境变量设置有点不一样,bash的是~/.bash_profile,zsh的是~/.zshrc</span><br><span class="line"></span><br><span class="line"># vim ~/.zshrc</span><br><span class="line">export GOROOT=/usr/local/go</span><br><span class="line">export GOPATH=/Users/username/go</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">#查看环境变量</span><br><span class="line">go env</span><br><span class="line"></span><br><span class="line">vim ~/.bash_profile</span><br><span class="line">GOROOT=/usr/local/go</span><br><span class="line">export GOROOT</span><br><span class="line">export PATH=$PATH:$GOROOT/bin</span><br><span class="line"></span><br><span class="line">GOPATH=/root/go/</span><br><span class="line">export PATH=$PATH:$GOPATH</span><br><span class="line"></span><br><span class="line">GOBIN=$GOPATH/bin</span><br><span class="line">export PATH=$PATH:$GOBIN</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">#zsh环境变量设置有点不一样,bash的是~/.bash_profile,zsh的是~/.zshrc</span><br><span class="line"></span><br><span class="line">vim ~/.zshrc</span><br><span class="line">export GOROOT=/usr/local/go</span><br><span class="line">export GOPATH=/Users/username/go</span><br></pre></td></tr></table></figure>
 <ul>
 <li>说明<br>GOROOT：安装目录（go语言安装目录）</li>
 </ul>
@@ -661,16 +746,16 @@
 <p>pkg目录：编译好的库文件，主要是*.a文件</p>
 <p>bin目录：可执行文件</p>
 <p>注意：千万不要把GOPATH设置成go的安装路径。</p>
-<h1 id="Fabric安装"><a href="#Fabric安装" class="headerlink" title="Fabric安装"></a>Fabric安装</h1><p>将fabric-samples下载到$GOPATH/src/github.com/hyperledger目录中<br>mkdir -p $GOPATH/src/github.com/hyperledger<br>cd $GOPATH/src/github.com/hyperledger</p>
-<h1 id="克隆fabric-samples项目并切换到v2-0-0"><a href="#克隆fabric-samples项目并切换到v2-0-0" class="headerlink" title="克隆fabric-samples项目并切换到v2.0.0"></a>克隆fabric-samples项目并切换到v2.0.0</h1><p>git clone <a href="https://github.com/hyperledger/fabric-samples.git">https://github.com/hyperledger/fabric-samples.git</a><br>cd fabric-samples<br>git checkout v2.0.0</p>
-<p>安装Fabric Binaries和Fabric相关的Docker镜像<br>cd $GOPATH/src/github.com/hyperledger/fabric-samples/scripts</p>
-<h1 id="安装Fabric、Fabric-ca以及第三方Docker镜像"><a href="#安装Fabric、Fabric-ca以及第三方Docker镜像" class="headerlink" title="安装Fabric、Fabric-ca以及第三方Docker镜像"></a>安装Fabric、Fabric-ca以及第三方Docker镜像</h1><p>进入hyperledger目录，利用bootstrap脚本安装<br><code>wget https://raw.githubusercontent.com/hyperledger/fabric/master/scripts/bootstrap.sh</code></p>
+<h1 id="Fabric安装"><a href="#Fabric安装" class="headerlink" title="Fabric安装"></a>Fabric安装</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">将fabric-samples下载到$GOPATH/src/github.com/hyperledger目录中</span><br><span class="line">mkdir -p $GOPATH/src/github.com/hyperledger</span><br><span class="line">cd $GOPATH/src/github.com/hyperledger</span><br><span class="line"># 克隆fabric-samples项目并切换到v2.0.0</span><br><span class="line">git clone https://github.com/hyperledger/fabric-samples.git</span><br><span class="line">cd fabric-samples</span><br><span class="line">git checkout v2.0.0</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"># 安装Fabric Binaries和Fabric相关的Docker镜像</span><br><span class="line"># cd $GOPATH/src/github.com/hyperledger/fabric-samples/scripts</span><br><span class="line"># 安装Fabric、Fabric-ca以及第三方Docker镜像</span><br><span class="line">进入hyperledger目录，利用bootstrap脚本安装</span><br><span class="line">`wget https://raw.githubusercontent.com/hyperledger/fabric/master/scripts/bootstrap.sh`</span><br></pre></td></tr></table></figure>
+<p>修改权限</p>
+<p><code>chmod +x bootstrap.sh</code></p>
 <p>指定安装版本<br><code>./bootstrap.sh 2.0.0 1.4.4 0.4.18</code></p>
 <p>注意，如果由于网络问题，如果哪些包没有下载成功的话，此时需要进行手动安装。安装步骤如下：</p>
 <p>如以下二进制文件未下载完成，则人工执行命令</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">wget https://github.com/hyperledger/fabric/releases/download/v2.0.1/hyperledger-fabric-darwin-amd64-2.0.1.tar.gz</span><br><span class="line">wget https://github.com/hyperledger/fabric-ca/releases/download/v1.4.6/hyperledger-fabric-ca-darwin-amd64-1.4.6.tar.gz</span><br><span class="line"></span><br><span class="line">tar xzvf hyperledger-fabric-darwin-amd64-2.0.1.tar.gz -C $GOPATH/src/github.com/hyperledger/fabric-samples/</span><br><span class="line">tar xzvf hyperledger-fabric-ca-darwin-amd64-1.4.6.tar.gz -C $GOPATH/src/github.com/hyperledger/fabric-samples/</span><br><span class="line"></span><br><span class="line">向/etc/profile中写入环境变量</span><br><span class="line">sudo echo &apos;export PATH=$GOPATH/src/github.com/hyperledger/fabric-samples/bin:$PATH&apos; &gt;&gt; sudo /etc/profile</span><br><span class="line">source /etc/profile</span><br><span class="line"></span><br><span class="line">用zsh配置环境变量</span><br><span class="line">sudo echo &apos;export PATH=$GOPATH/src/github.com/hyperledger/fabric-samples/bin:$PATH&apos; &gt;&gt; sudo /.zshrc</span><br><span class="line">source ~/.zshrc</span><br></pre></td></tr></table></figure>
 <p>如docker相关镜像未下载完成则执行如下命令下载相关镜像</p>
- <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">#下载Fabric相关镜像（fabric-peer、fabric-orderer、fabric-ccenv、fabric-tools、fabric-nodeenv、fabric-baseos、fabric-javaenv）</span><br><span class="line">docker pull hyperledger/fabric-peer:2.0.0</span><br><span class="line">docker tag hyperledger/fabric-peer:2.0.0 hyperledger/fabric-peer:latest</span><br><span class="line"> </span><br><span class="line">docker pull hyperledger/fabric-orderer:2.0.0</span><br><span class="line">docker tag hyperledger/fabric-orderer:2.0.0 hyperledger/fabric-orderer:latest</span><br><span class="line"> </span><br><span class="line">docker pull hyperledger/fabric-ccenv:2.0.0</span><br><span class="line">docker tag hyperledger/fabric-ccenv:2.0.0 hyperledger/fabric-ccenv:latest</span><br><span class="line"> </span><br><span class="line">docker pull hyperledger/fabric-tools:2.0.0</span><br><span class="line">docker tag hyperledger/fabric-tools:2.0.0 hyperledger/fabric-ccenv:latest</span><br><span class="line"> </span><br><span class="line">#下载Fabric第三方镜像（fabric-couchdb、fabric-kafka、fabric-zookeeper）</span><br><span class="line">docker pull hyperledger/fabric-couchdb:0.4.18</span><br><span class="line">docker tag hyperledger/fabric-couchdb:0.4.18 hyperledger/fabric-couchdb:latest</span><br><span class="line"> </span><br><span class="line">docker pull hyperledger/fabric-kafka:0.4.18</span><br><span class="line">docker tag hyperledger/fabric-kafka:0.4.18 hyperledger/fabric-kafka:latest</span><br><span class="line"> </span><br><span class="line">docker pull hyperledger/fabric-zookeeper:0.4.18</span><br><span class="line">docker tag hyperledger/fabric-zookeeper:0.4.18 hyperledger/fabric-zookeeper:latest</span><br><span class="line"> </span><br><span class="line">#下载Fabric CA镜像</span><br><span class="line">docker pull hyperledger/fabric-ca:1.4.4</span><br><span class="line">docker tag hyperledger/fabric-ca:1.4.4 hyperledger/fabric-ca:latest</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">#下载Fabric相关镜像（fabric-peer、fabric-orderer、fabric-ccenv、fabric-tools、fabric-nodeenv、fabric-baseos、fabric-javaenv）</span><br><span class="line">docker pull hyperledger/fabric-peer:2.0.0</span><br><span class="line">docker tag hyperledger/fabric-peer:2.0.0 hyperledger/fabric-peer:latest</span><br><span class="line"> </span><br><span class="line">docker pull hyperledger/fabric-orderer:2.0.0</span><br><span class="line">docker tag hyperledger/fabric-orderer:2.0.0 hyperledger/fabric-orderer:latest</span><br><span class="line"> </span><br><span class="line">docker pull hyperledger/fabric-ccenv:2.0.0</span><br><span class="line">docker tag hyperledger/fabric-ccenv:2.0.0 hyperledger/fabric-ccenv:latest</span><br><span class="line"> </span><br><span class="line">docker pull hyperledger/fabric-tools:2.0.0</span><br><span class="line">docker tag hyperledger/fabric-tools:2.0.0 hyperledger/fabric-ccenv:latest</span><br><span class="line"> </span><br><span class="line">#下载Fabric第三方镜像（fabric-couchdb、fabric-kafka、fabric-zookeeper）</span><br><span class="line">docker pull hyperledger/fabric-couchdb:0.4.18</span><br><span class="line">docker tag hyperledger/fabric-couchdb:0.4.18 hyperledger/fabric-couchdb:latest</span><br><span class="line"> </span><br><span class="line">docker pull hyperledger/fabric-kafka:0.4.18</span><br><span class="line">docker tag hyperledger/fabric-kafka:0.4.18 hyperledger/fabric-kafka:latest</span><br><span class="line"> </span><br><span class="line">docker pull hyperledger/fabric-zookeeper:0.4.18</span><br><span class="line">docker tag hyperledger/fabric-zookeeper:0.4.18 hyperledger/fabric-zookeeper:latest</span><br><span class="line"> </span><br><span class="line">#下载Fabric CA镜像</span><br><span class="line">docker pull hyperledger/fabric-ca:1.4.4</span><br><span class="line">docker tag hyperledger/fabric-ca:1.4.4 hyperledger/fabric-ca:latest</span><br></pre></td></tr></table></figure>
 <p>通过运行Build your first network样例来进行测试</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">cd $GOPATH/src/github.com/hyperledger/fabric-samples/first-network</span><br><span class="line">./byfn.sh -m generate</span><br><span class="line">./byfn.sh -m down</span><br><span class="line">./byfn.sh -m up</span><br></pre></td></tr></table></figure>
 <p>运行./byfn.sh -m up出现下面错误</p>
@@ -685,6 +770,28 @@
 </blockquote>
 <p>原因可能是之前已经启动过orderer结点,导致端口被占用。先关闭在重启</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">./byfn.sh -m down</span><br><span class="line">./byfn.sh -m up</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>ERROR: for peer0.org1.example.com  Cannot create container for service peer0.org1.example.com: Conflict. The container name “/peer0.org1.example.com” is already in use by container “3f2c6d0279ae5f170fdf5684ade8d892251c26eb130888c5a30a8b1b5e7caf9a”. You have to remove (or rename) that container to be able to reuse that name.</p>
+</blockquote>
+<p>因为先前的操作中docker容器没清理</p>
+<p><code>docker ps -qa | xargs docker stop</code></p>
+<p><code>docker ps -qa | xargs docker rm</code></p>
+<p>然后重启</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">./byfn.sh -m down</span><br><span class="line">./byfn.sh -m up</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>Error:SERVICE_UNAVAILABLE – no Raft leader</p>
+</blockquote>
+<p>You only have one commit incorrectly signed off! To fix, head to your local branch and run:</p>
+<p>git commit –amend –signoff<br>Now your commits will have your sign off. Next run</p>
+<p>git push –force-with-lease origin patch-2</p>
+<p>或者强行覆盖本地代码与origin/master一致<br>git fetch –all &amp;&amp; git reset –hard origin/master &amp;&amp; git pull</p>
+<blockquote>
+<p>cryptogen tool not found. exiting</p>
+</blockquote>
+<p>缺少cryptogen以及configtxgen文件</p>
+<p>下载并解压configtxgen文件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">wget https://github.com/hyperledger/fabric/releases/download/v2.0.1/hyperledger-fabric-darwin-amd64-2.0.1.tar.gz</span><br><span class="line">wget https://github.com/hyperledger/fabric-ca/releases/download/v1.4.6/hyperledger-fabric-ca-darwin-amd64-1.4.6.tar.gz</span><br><span class="line"></span><br><span class="line">tar xzvf hyperledger-fabric-darwin-amd64-2.0.1.tar.gz -C $GOPATH/src/github.com/hyperledger/fabric-samples/</span><br><span class="line">tar xzvf hyperledger-fabric-ca-darwin-amd64-1.4.6.tar.gz -C $GOPATH/src/github.com/hyperledger/fabric-samples/</span><br><span class="line"></span><br><span class="line">向/etc/profile中写入环境变量</span><br><span class="line">sudo echo &apos;export PATH=$GOPATH/src/github.com/hyperledger/fabric-samples/bin:$PATH&apos; &gt;&gt; sudo /etc/profile</span><br><span class="line">source /etc/profile</span><br><span class="line"></span><br><span class="line">用zsh配置环境变量</span><br><span class="line">sudo echo &apos;export PATH=$GOPATH/src/github.com/hyperledger/fabric-samples/bin:$PATH&apos; &gt;&gt; sudo /.zshrc</span><br><span class="line">source ~/.zshrc</span><br></pre></td></tr></table></figure>
+
       
 
       
@@ -1159,101 +1266,9 @@
 
 
   
-    <article id="post-git-proxy" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/study.github.io/2020/04/05/git-proxy/">git-proxy</a>
-    </h1>
-  
-
-        
-        <a href="/study.github.io/2020/04/05/git-proxy/" class="archive-article-date">
-  	<time datetime="2020-04-05T13:36:36.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-04-05</time>
-</a>
-        
-      </header>
-    
-<!-- 目录内容 -->
-
-<!-- 目录内容结束 -->
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="git设置、查看、取消代理"><a href="#git设置、查看、取消代理" class="headerlink" title="git设置、查看、取消代理"></a>git设置、查看、取消代理</h1><ul>
-<li>设置代理：</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git config --global http.proxy &apos;socks5://127.0.0.1:1080&apos; </span><br><span class="line">git config --global https.proxy &apos;socks5://127.0.0.1:1080&apos;</span><br></pre></td></tr></table></figure>
-<ul>
-<li>查看代理：</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git config --global --get http.proxy</span><br><span class="line">git config --global --get https.proxy</span><br></pre></td></tr></table></figure>
-<ul>
-<li>取消代理：</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git config --global --unset http.proxy</span><br><span class="line">git config --global --unset https.proxy</span><br></pre></td></tr></table></figure>
-<ul>
-<li>针对docker容器的代理配置：</li>
-</ul>
-<p>在创建(run)容器的时候，加上 <code>--net=host</code>选项</p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">2020</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/study.github.io/2020/04/05/git-proxy/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
   
     <nav id="page-nav">
-      <span class="page-number current">1</span><a class="page-number" href="/study.github.io/page/2/">2</a><a class="page-number" href="/study.github.io/page/3/">3</a><a class="extend next" rel="next" href="/study.github.io/page/2/">Next &raquo;</a>
+      <span class="page-number current">1</span><a class="page-number" href="/study.github.io/page/2/">2</a><a class="page-number" href="/study.github.io/page/3/">3</a><a class="page-number" href="/study.github.io/page/4/">4</a><a class="extend next" rel="next" href="/study.github.io/page/2/">Next &raquo;</a>
     </nav>
   
 
@@ -1367,11 +1382,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">2020</a>
+                <a href="javascript:void(0)" class="js-tag color2">Heroku</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">Heroku</a>
+                <a href="javascript:void(0)" class="js-tag color5">2020</a>
               </li>
              
               <li class="article-tag-list-item">
