@@ -153,6 +153,94 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-git-clone-error-gnutls" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/study.github.io/2020/04/05/git-clone-error-gnutls/">git-clone-error-gnutls</a>
+    </h1>
+  
+
+        
+        <a href="/study.github.io/2020/04/05/git-clone-error-gnutls/" class="archive-article-date">
+  	<time datetime="2020-04-05T13:48:15.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-04-05</time>
+</a>
+        
+      </header>
+    
+<!-- 目录内容 -->
+
+<!-- 目录内容结束 -->
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="git-clone-error：gnutls-handshake-failed"><a href="#git-clone-error：gnutls-handshake-failed" class="headerlink" title="git clone error：gnutls_handshake() failed"></a>git clone error：gnutls_handshake() failed</h1><blockquote>
+<p>fatal: unable to access ‘<a href="https://github.com/hyperledger/caliper-benchmarks.git/&#39;">https://github.com/hyperledger/caliper-benchmarks.git/&#39;</a>: gnutls_handshake() failed: The TLS connection was non-properly terminated.</p>
+</blockquote>
+<p>需要使用libcurl4-openssl-dev替换gnutls对git进行编译</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install build-essential fakeroot dpkg-dev</span><br><span class="line">mkdir ~/git-openssl</span><br><span class="line">cd ~/git-openssl</span><br><span class="line">sudo apt-get source git</span><br><span class="line">sudo apt-get build-dep git</span><br></pre></td></tr></table></figure>
+<p>如果出现找不到源代码的报错，使用命令<code>sudo vim /etc/apt/sources.list</code>，打开文件并取消带deb_src那一行的注释，保存后运行<code>sudo apt update</code>，然后再执行上面最后一条命令<br>然后运行</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install libcurl4-openssl-dev</span><br><span class="line">ls#查看版本</span><br><span class="line">sudo dpkg-source -x git_2.7.4-0ubuntu1.7.dsc#版本可能不同</span><br><span class="line">cd git_2.7.4 #实际版本可能不同</span><br></pre></td></tr></table></figure>
+<p>然后编辑文件debian/control，使用命令<code>sudo vim debian/control</code><br>将全部的libcurl4-gnutls-dev改为libcurl4-openssl-dev，即运行<code>:1,$s/libcurl4-gnutls-dev/libcurl4-openssl-dev/g</code></p>
+<p>然后运行<code>sudo dpkg-buildpackage -rfakeroot -b</code></p>
+<p>如果test失败，<code>sudo vi debian/rules</code>删去TEST=test，然后重新运行上述命令</p>
+<p>最后</p>
+<p><code>`</code><br>sudo  dpkg -i  ../git_2.17.0-1_amd64.deb<br>cd ..<br>ls #查看deb文件名<br>sudo dpkg -i ./git_2.7.4-0ubuntu1.7_amd64.deb #版本可能不同</p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">2020</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/study.github.io/2020/04/05/git-clone-error-gnutls/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-ubuntu-nodejs-docker" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -1260,176 +1348,6 @@
 
 
   
-    <article id="post-什么是比特币，它如何运作以及什么影响它的价格" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/study.github.io/2020/03/03/什么是比特币，它如何运作以及什么影响它的价格/">什么是比特币，它如何运作以及什么影响它的价格</a>
-    </h1>
-  
-
-        
-        <a href="/study.github.io/2020/03/03/什么是比特币，它如何运作以及什么影响它的价格/" class="archive-article-date">
-  	<time datetime="2020-03-03T14:20:55.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-03-03</time>
-</a>
-        
-      </header>
-    
-<!-- 目录内容 -->
-
-<!-- 目录内容结束 -->
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="What-is-bitcoin-how-does-it-work-and-what-affects-its-price"><a href="#What-is-bitcoin-how-does-it-work-and-what-affects-its-price" class="headerlink" title="What is bitcoin, how does it work and what affects its price?"></a>What is bitcoin, how does it work and what affects its price?</h1><p>原文链接：<a href="https://www.telegraph.co.uk/technology/0/what-is-bitcoin-everything-need-know-about-the-cryptocurrency/" target="_blank" rel="noopener">https://www.telegraph.co.uk/technology/0/what-is-bitcoin-everything-need-know-about-the-cryptocurrency/</a></p>
-<p>来源：The Telegraph</p>
-<blockquote>
-<p>Few technologies have the ability to stir passionate online debate and baffle the vast majority of the population as <a href="https://www.telegraph.co.uk/technology/2017/08/01/bitcoin-cash-everything-need-know-bitcoins-hard-fork/" target="_blank" rel="noopener">bitcoin</a>. The virtual currency rocketed in value last year before crashing at the start of 2018.</p>
-</blockquote>
-<p>很少有技术像比特币一样能够引起激烈的在线辩论，并使绝大多数人感到困惑。 去年虚拟货币的价格猛涨，然后在2018年初崩溃。</p>
-<blockquote>
-<p>But bitcoin appears here to stay, at least for the time being. Although the <a href="https://www.telegraph.co.uk/technology/0/cryptocurrency-calculator-much-could-have-made-lost-buying-bitcoin/" target="_blank" rel="noopener">price </a>has fallen since the start of the year to around $6,400 (£4,900), well below its peak of $20,000, it is still above its price a year ago and interest in it continues.</p>
-</blockquote>
-<p>但是，至少暂时而言，比特币似乎在这里存在。 尽管价格自今年年初以来已下跌至约6,400美元（4,900英镑），远低于其20,000美元的峰值，但仍高于一年前的价格，并且人们对该市场的兴趣持续。</p>
-<blockquote>
-<p>There have been spikes along the way, possibly caused by mass computer trading or <a href="https://www.telegraph.co.uk/business/2018/04/12/stocks-struggle-oil-rally-continues-markets-brace-war-syria/#update-20180412-1512" target="_blank" rel="noopener">short sellers</a> jumping ship and encouraging buyers to flood back in.</p>
-</blockquote>
-<p>比特币价格一路飙升，可能是由于大规模计算机交易或卖空者跳船并鼓励买主大量涌入造成的。</p>
-<blockquote>
-<p>It all leaves investors with a slew of questions. Is Bitcoin the future of currency? Is it currency at all? What is it for? And should I buy some? Read on to have your questions answered.</p>
-</blockquote>
-<p>这给投资者带来了很多问题。 比特币是货币的未来吗？ 它是货币吗？ 它有什么用？我应该买比特币吗？ 请继续阅读以回答您的问题。</p>
-<h1 id="What-is-Bitcoin"><a href="#What-is-Bitcoin" class="headerlink" title="What is Bitcoin?"></a>What is Bitcoin?</h1><blockquote>
-<p><a href="https://www.telegraph.co.uk/technology/2017/09/06/bitcoin-ethereum-price-rises-cryptocurrencies-make-recovery/" target="_blank" rel="noopener">Bitcoin </a>is a digital currency created in 2009 that uses decentralised technology for secure payments and storing money that doesn’t require banks or people’s names. It was announced on an email circular as a way to liberate money in a similar way to how the internet made information free. </p>
-</blockquote>
-<p>比特币是2009年创建的一种数字货币，它使用去中心化技术进行安全支付并存储，不需要银行或人名的货币。 它是在一封电子邮件通函中宣布的，以一种类似于互联网使信息免费的方式来释放金钱的方式。</p>
-<h1 id="How-does-it-work"><a href="#How-does-it-work" class="headerlink" title="How does it work?"></a>How does it work?</h1><blockquote>
-<p>Bitcoin works on a public ledger called a blockchain, which holds a decentralised record of all transactions that is updated and held by all users of the network.</p>
-</blockquote>
-<p>比特币在被称为区块链的公共账本上运行，该账本保存了网络所有用户更新和持有的所有交易的去中心化记录。</p>
-<blockquote>
-<p>To create bitcoins, users must generate blocks on the network. Each block is created cryptographically by harnessing users’ computer power and is then added to the blockchain, letting users earn by keeping the network running. </p>
-</blockquote>
-<p>要创建比特币，用户必须在网络上生成区块。 利用用户的算力资源以加密的方式创建每个区块，然后将其添加到区块链中，让用户通过维护网络运行来获取比特币。</p>
-<blockquote>
-<p>A limit for how many bitcoins can be created is built into the system so the value can’t be diluted.  The maximum amount is just under 21 million bitcoin. There are currently just over 17 million in circulation, each of which was worth around $6,400 (£4,900) at the time of writing. That puts its total value at around $108.8 billion.</p>
-</blockquote>
-<p>系统内置了比特币总量的限制，因此比特币的价值不会被稀释。 比特币的最大总量为2100万。 目前有超过1700万的流通量，在撰写本文时，每个比特币的价值约为6,400美元（4,900英镑）。 这使其总价值约为1088亿美元。</p>
-<blockquote>
-<p>While at first ordinary people could mine thousands of bitcoins, potentially now worth millions of pounds, bitcoin mining now requires a huge amount of computer power to achieve. You can read our guide to bitcoin mining here.</p>
-</blockquote>
-<p>最初，普通人可以开采成千上万的比特币，这些比特币现在可能价值数百万英镑，而比特币挖矿现在需要大量的算力才能实现。 您可以在此处阅读我们的比特币采矿指南。</p>
-<h1 id="What-affects-its-price"><a href="#What-affects-its-price" class="headerlink" title="What affects its price?"></a>What affects its price?</h1><blockquote>
-<p>The price of a<a href="https://www.telegraph.co.uk/technology/2017/09/05/bitcoin-price-drops-20pc-three-days/" target="_blank" rel="noopener"> Bitcoin has jumped up and down</a> since it first entered the mainstream consciousness in 2013. That year prices rose by almost 10,000 per cent before the collapse of Mt Gox, the biggest online bitcoin exchange at the time, sent it crashing.</p>
-</blockquote>
-<p>自从2013年首次进入主流视线以来，比特币的价格经历了暴涨和暴跌。在当时最大的在线比特币交易所Mt Gox崩溃之前比特币的价格上涨了将近10,000％。</p>
-<blockquote>
-<p>Prices slowly crept up after that but surged again in 2017. This is largely put down to regulators appearing to warm to bitcoin and the rise of initial coin offerings - a way for projects to raise money by selling cryptographic tokens similar to bitcoins. Sceptics believed we were in the middle of a Bitcoin bubble while advocates say we are just beginning to see the rise starting.</p>
-</blockquote>
-<p>之后价格缓慢攀升，但在2017年再次飙升。这在很大程度上归因于监管机构似乎对比特币感到热心，以及初始代币发行的兴起-项目通过出售类似于比特币的加密代币来筹集资金的一种方式。 怀疑论者认为我们正处于比特币泡沫，而拥护者则表示我们才刚刚开始看到上升的开始。</p>
-<blockquote>
-<p>Prices have fallen in 2018 amid fears of a regulatory crackdown.</p>
-</blockquote>
-<p>由于担心会受到监管，价格在2018年下跌。</p>
-<h1 id="Who-is-Satoshi-Nakamoto"><a href="#Who-is-Satoshi-Nakamoto" class="headerlink" title="Who is Satoshi Nakamoto?"></a>Who is Satoshi Nakamoto?</h1><blockquote>
-<p>Satoshi Nakamoto is the mysterious creator of Bitcoin and blockchain. Despite countless attempts to unmask the person or people behind the name, their identity has remained elusive. </p>
-</blockquote>
-<p>中本聪（Satoshi Nakamoto）是比特币和区块链的神秘创造者。 尽管无数次尝试揭露姓名背后的人，但他们的身份仍然成谜。</p>
-<blockquote>
-<p>There have been numerous unsuccessful attempts by journalists to reveal the Bitcoin founder. In a high-profile incident in 2014, Newsweek magazine relaunched with a feature outing Dorian Nakamoto, a 64-year-old Japanese-American man, as the creator. The affair, having fallen apart under scrutiny, ended with a car chase and the real Nakamoto refuting the allegations. </p>
-</blockquote>
-<p>记者曾多次尝试揭露比特币创始人，但均未成功。 在2014年的一次备受关注的事件中，《新闻周刊》（Newsweek）杂志重新推出了专题报道，推测其中一位是64岁的日裔美国人多里安·中本（Dorian Nakamoto）为比特币创始人。 此事在经过仔细审查后分崩离析，以否认和真正的中本聪驳斥了指控而告终。</p>
-<blockquote>
-<p>The most recent candidate was Craig Wright, a former Australian academic, who claimed to be the bitcoin inventor. Wright wrote blog posts and gave interviews to Wired, BBC and the Economist in 2015 and 2016 saying he was behind bitcoin.</p>
-</blockquote>
-<p>最近的候选人是前澳大利亚学者克雷格·赖特（Craig Steven Wright），他声称自己是比特币的发明者。 赖特（Wright）在2015年和2016年撰写了博客文章，并对《连线》，BBC和《经济学人》进行了采访，称他支持比特币。</p>
-<blockquote>
-<p>After failing to provide unquestionable proof, Wright posted an apology message that said: “I believed that I could put the years of anonymity and hiding behind me. But, as the events of this week unfolded and I prepared to publish the proof of access to the earliest keys, I broke. I do not have the courage. I cannot.”  </p>
-</blockquote>
-<p>在无法提供确凿的证据之后，赖特发表道歉消息，说：“我相信我可以把多年的匿名性和躲藏在我身后。但是，随着本周事件的发展，我本准备发布私钥的证据。我没有勇气。我不能。”</p>
-<h1 id="How-many-people-use-bitcoin"><a href="#How-many-people-use-bitcoin" class="headerlink" title="How many people use bitcoin?"></a>How many people use bitcoin?</h1><blockquote>
-<p>One of the largest Bitcoin storage platforms, Blockchain.info, claims it has more than 25 million cryptocurrency wallet holders. This has almost doubled from 10 million at the start of 2017.</p>
-</blockquote>
-<p>最大的比特币存储平台之一Blockchain.info声称，它拥有超过2500万加密货币钱包持有者。 这比2017年初的1000万几乎翻了一番。</p>
-<h1 id="What-is-it-used-for"><a href="#What-is-it-used-for" class="headerlink" title="What is it used for?"></a>What is it used for?</h1><blockquote>
-<p>Bitcoin has a range of uses, including funding companies, investing cash and transferring money without fees. It is commonly associated with criminal activity such as drug dealing, cyber crime and money laundering, since it can be near-impossible to tie a bitcoin wallet to any one individual.</p>
-</blockquote>
-<p>比特币有多种用途，包括成立公司，投资现金和免费转移资金。 它通常与毒品交易，网络犯罪和洗钱等犯罪活动相关联，因为将比特币钱包绑定到任何个人几乎是不可能的。</p>
-<blockquote>
-<p>Bitcoin can be spent online and at select retailers in the UK. They include CEX stores, some pubs and stores like e-cigarette shops and YourSushi restaurants. A full list of online and offline businesses that accept bitcoin is available <a href="http://www.wheretospendbitcoins.co.uk/search" target="_blank" rel="noopener">here</a>. They can also be withdrawn at a couple of dozen bitcoin ATMs, which can be found <a href="https://coinatmradar.com/country/225/bitcoin-atm-united-kingdom/" target="_blank" rel="noopener">here</a>.</p>
-</blockquote>
-<p>比特币可以在网上和英国的特定零售商处消费。 它们包括CEX商店，一些酒吧和商店，例如电子烟商店和YourSushi餐厅。 此处提供接受比特币的在线和离线业务的完整列表。 也可以在几十个比特币自动柜员机上取款，可以在此处找到。</p>
-<blockquote>
-<p>However, a surge of network activity has meant transaction fees spiking, meaning some retailers have lost enthusiasm. Computer maker Dell, for example, ended its pilot of accepting Bitcoins, as did online gaming store Steam.</p>
-</blockquote>
-<p>但是，网络活动的激增意味着交易费用飙升，使得一些零售商失去了热情。 例如，计算机制造商戴尔和在线游戏商店Steam都结束了接受比特币的试验。</p>
-<blockquote>
-<p>Others simply hold their Bitcoins, hoping they will accumulate in value and prove to be a lucrative investment. Its price is notoriously volatile, and early investors are now sitting on massive gains.</p>
-</blockquote>
-<p>其他人只是持有比特币，希望它们积累价值并证明是一笔有利可图的投资。 众所周知，它的价格波动很大，早期投资者现在正坐享巨额收益。</p>
-<h1 id="Should-I-invest-in-Bitcoin"><a href="#Should-I-invest-in-Bitcoin" class="headerlink" title="Should I invest in Bitcoin?"></a>Should I invest in Bitcoin?</h1><blockquote>
-<p>Bitcoin is safeguarded against fraud and theft through independent and decentralised set up, as well as being free from transaction fees. It has also given great returns to some investors, with the price jumping from a few dollars at the beginning of 2013 to $1,100 by November. People who invested £2,000 five years ago would now be very wealthy. </p>
-</blockquote>
-<p>比特币通过独立和去中心化的设置来保护其免受欺诈和盗窃，并且免收交易费。 它也为一些投资者带来了丰厚的回报，其价格从2013年初的几美元跃升至11月的1100美元。 五年前投资2,000英镑的人现在将变得非常有钱。</p>
-<blockquote>
-<p>After a few level years, its<a href="https://www.telegraph.co.uk/technology/2017/05/28/bitcoin-bubble-back-investors-should-avoid/" target="_blank" rel="noopener"> dollar price soared during 2017</a>, and it peaked at more than $20,000. But the price has plunged since then, leaving investors to ponder whether its bubble has burst or the best is yet to come.</p>
-</blockquote>
-<p>经过几年的发展，其美元价格在2017年飙升，最高达到20,000美元以上。 但此后价格一直暴跌，让投资者思考其泡沫是否破裂或最好的时刻尚未到来。</p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">2020</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/study.github.io/2020/03/03/什么是比特币，它如何运作以及什么影响它的价格/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
   
     <nav id="page-nav">
       <a class="extend prev" rel="prev" href="/study.github.io/">&laquo; Prev</a><a class="page-number" href="/study.github.io/">1</a><span class="page-number current">2</span><a class="page-number" href="/study.github.io/page/3/">3</a><a class="page-number" href="/study.github.io/page/4/">4</a><a class="extend next" rel="next" href="/study.github.io/page/3/">Next &raquo;</a>
@@ -1538,11 +1456,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">2020</a>
+                <a href="javascript:void(0)" class="js-tag color5">2019</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">2019</a>
+                <a href="javascript:void(0)" class="js-tag color2">Heroku</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1550,11 +1468,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">Hadoop</a>
+                <a href="javascript:void(0)" class="js-tag color5">2020</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">Heroku</a>
+                <a href="javascript:void(0)" class="js-tag color2">Hadoop</a>
               </li>
              
               <li class="article-tag-list-item">

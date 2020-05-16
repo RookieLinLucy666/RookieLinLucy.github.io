@@ -153,6 +153,107 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-fisco-2-0-sdk" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/study.github.io/2020/05/16/fisco-2-0-sdk/">fisco-2.0-sdk</a>
+    </h1>
+  
+
+        
+        <a href="/study.github.io/2020/05/16/fisco-2-0-sdk/" class="archive-article-date">
+  	<time datetime="2020-05-16T10:08:39.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-05-16</time>
+</a>
+        
+      </header>
+    
+<!-- 目录内容 -->
+
+<!-- 目录内容结束 -->
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>参考文档：<a href="https://fisco-bcos-documentation.readthedocs.io/zh_CN/latest/docs/sdk/java_sdk.html#id1" target="_blank" rel="noopener">https://fisco-bcos-documentation.readthedocs.io/zh_CN/latest/docs/sdk/java_sdk.html#id1</a></p>
+<ul>
+<li>导包</li>
+</ul>
+<p><code>compile (&#39;org.fisco-bcos:web3sdk:2.1.0&#39;)</code></p>
+<ul>
+<li>添加库和依赖</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">repositories &#123;</span><br><span class="line">    maven&#123; url &apos;http://maven.aliyun.com/nexus/content/groups/public/&apos;&#125;</span><br><span class="line">    maven &#123; url &quot;https://dl.bintray.com/ethereum/maven/&quot; &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">dependencies &#123;</span><br><span class="line">    compile (&apos;org.fisco-bcos:web3sdk:2.1.0&apos;)</span><br><span class="line">    implementation &apos;org.hyperledger.fabric:fabric-gateway-java:2.1.0&apos;</span><br><span class="line">    testCompile group: &apos;junit&apos;, name: &apos;junit&apos;, version: &apos;4.12&apos;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>搭建fiscobcos</li>
+</ul>
+<p><code>https://fisco-bcos-documentation.readthedocs.io/zh_CN/latest/docs/installation.html</code></p>
+<ul>
+<li>启动链</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">cd fisco</span><br><span class="line">bash nodes/127.0.0.1/start_all.sh</span><br><span class="line"></span><br><span class="line">try to start node0</span><br><span class="line">try to start node1</span><br><span class="line">try to start node2</span><br><span class="line">try to start node3</span><br><span class="line"> node1 start successfully</span><br><span class="line"> node2 start successfully</span><br><span class="line"> node0 start successfully</span><br><span class="line"> node3 start successfully</span><br><span class="line"> </span><br><span class="line"> cd ~/fisco/console &amp;&amp; bash start.sh</span><br><span class="line"> </span><br><span class="line">=============================================================================================</span><br><span class="line">Welcome to FISCO BCOS console(1.0.3)！</span><br><span class="line">Type &apos;help&apos; or &apos;h&apos; for help. Type &apos;quit&apos; or &apos;q&apos; to quit console.</span><br><span class="line"> ________  ______   ______    ______    ______         _______    ______    ______    ______</span><br><span class="line">|        \|      \ /      \  /      \  /      \       |       \  /      \  /      \  /      \</span><br><span class="line">| $$$$$$$$ \$$$$$$|  $$$$$$\|  $$$$$$\|  $$$$$$\      | $$$$$$$\|  $$$$$$\|  $$$$$$\|  $$$$$$\</span><br><span class="line">| $$__      | $$  | $$___\$$| $$   \$$| $$  | $$      | $$__/ $$| $$   \$$| $$  | $$| $$___\$$</span><br><span class="line">| $$  \     | $$   \$$    \ | $$      | $$  | $$      | $$    $$| $$      | $$  | $$ \$$    \</span><br><span class="line">| $$$$$     | $$   _\$$$$$$\| $$   __ | $$  | $$      | $$$$$$$\| $$   __ | $$  | $$ _\$$$$$$\</span><br><span class="line">| $$       _| $$_ |  \__| $$| $$__/  \| $$__/ $$      | $$__/ $$| $$__/  \| $$__/ $$|  \__| $$</span><br><span class="line">| $$      |   $$ \ \$$    $$ \$$    $$ \$$    $$      | $$    $$ \$$    $$ \$$    $$ \$$    $$</span><br><span class="line"> \$$       \$$$$$$  \$$$$$$   \$$$$$$   \$$$$$$        \$$$$$$$   \$$$$$$   \$$$$$$   \$$$$$$</span><br><span class="line"></span><br><span class="line">=============================================================================================</span><br></pre></td></tr></table></figure>
+<ul>
+<li>下载并解压资产业务示例</li>
+</ul>
+<p><code>curl -LO https://github.com/FISCO-BCOS/LargeFiles/raw/master/tools/asset-app.tar.gz</code></p>
+<ul>
+<li>导入证书到resource</li>
+</ul>
+<p><code>cp -r nodes/127.0.0.1/sdk/* ~/Desktop/cross-chain/oracle/src/main/resources</code></p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">2020</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/study.github.io/2020/05/16/fisco-2-0-sdk/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-fabric-2-0-sdk" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -1203,94 +1304,6 @@
 
 
   
-    <article id="post-git-clone-error-gnutls" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/study.github.io/2020/04/05/git-clone-error-gnutls/">git-clone-error-gnutls</a>
-    </h1>
-  
-
-        
-        <a href="/study.github.io/2020/04/05/git-clone-error-gnutls/" class="archive-article-date">
-  	<time datetime="2020-04-05T13:48:15.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-04-05</time>
-</a>
-        
-      </header>
-    
-<!-- 目录内容 -->
-
-<!-- 目录内容结束 -->
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="git-clone-error：gnutls-handshake-failed"><a href="#git-clone-error：gnutls-handshake-failed" class="headerlink" title="git clone error：gnutls_handshake() failed"></a>git clone error：gnutls_handshake() failed</h1><blockquote>
-<p>fatal: unable to access ‘<a href="https://github.com/hyperledger/caliper-benchmarks.git/&#39;">https://github.com/hyperledger/caliper-benchmarks.git/&#39;</a>: gnutls_handshake() failed: The TLS connection was non-properly terminated.</p>
-</blockquote>
-<p>需要使用libcurl4-openssl-dev替换gnutls对git进行编译</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install build-essential fakeroot dpkg-dev</span><br><span class="line">mkdir ~/git-openssl</span><br><span class="line">cd ~/git-openssl</span><br><span class="line">sudo apt-get source git</span><br><span class="line">sudo apt-get build-dep git</span><br></pre></td></tr></table></figure>
-<p>如果出现找不到源代码的报错，使用命令<code>sudo vim /etc/apt/sources.list</code>，打开文件并取消带deb_src那一行的注释，保存后运行<code>sudo apt update</code>，然后再执行上面最后一条命令<br>然后运行</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install libcurl4-openssl-dev</span><br><span class="line">ls#查看版本</span><br><span class="line">sudo dpkg-source -x git_2.7.4-0ubuntu1.7.dsc#版本可能不同</span><br><span class="line">cd git_2.7.4 #实际版本可能不同</span><br></pre></td></tr></table></figure>
-<p>然后编辑文件debian/control，使用命令<code>sudo vim debian/control</code><br>将全部的libcurl4-gnutls-dev改为libcurl4-openssl-dev，即运行<code>:1,$s/libcurl4-gnutls-dev/libcurl4-openssl-dev/g</code></p>
-<p>然后运行<code>sudo dpkg-buildpackage -rfakeroot -b</code></p>
-<p>如果test失败，<code>sudo vi debian/rules</code>删去TEST=test，然后重新运行上述命令</p>
-<p>最后</p>
-<p><code>`</code><br>sudo  dpkg -i  ../git_2.17.0-1_amd64.deb<br>cd ..<br>ls #查看deb文件名<br>sudo dpkg -i ./git_2.7.4-0ubuntu1.7_amd64.deb #版本可能不同</p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">2020</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/study.github.io/2020/04/05/git-clone-error-gnutls/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
   
     <nav id="page-nav">
       <span class="page-number current">1</span><a class="page-number" href="/study.github.io/page/2/">2</a><a class="page-number" href="/study.github.io/page/3/">3</a><a class="page-number" href="/study.github.io/page/4/">4</a><a class="extend next" rel="next" href="/study.github.io/page/2/">Next &raquo;</a>
@@ -1399,11 +1412,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">2020</a>
+                <a href="javascript:void(0)" class="js-tag color5">2019</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">2019</a>
+                <a href="javascript:void(0)" class="js-tag color2">Heroku</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1411,11 +1424,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">Hadoop</a>
+                <a href="javascript:void(0)" class="js-tag color5">2020</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">Heroku</a>
+                <a href="javascript:void(0)" class="js-tag color2">Hadoop</a>
               </li>
              
               <li class="article-tag-list-item">
