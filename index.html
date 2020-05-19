@@ -153,6 +153,158 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-fabric-contract-api-tutorial" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/study.github.io/2020/05/19/fabric-contract-api-tutorial/">fabric-contract-api-tutorial</a>
+    </h1>
+  
+
+        
+        <a href="/study.github.io/2020/05/19/fabric-contract-api-tutorial/" class="archive-article-date">
+  	<time datetime="2020-05-19T11:54:29.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-05-19</time>
+</a>
+        
+      </header>
+    
+<!-- 目录内容 -->
+
+<!-- 目录内容结束 -->
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>调用fabric-contract-api-go并在开发者模式中测试</p>
+<p>翻译自：<a href="https://github.com/hyperledger/fabric-contract-api-go/blob/master/tutorials/getting-started.md">https://github.com/hyperledger/fabric-contract-api-go/blob/master/tutorials/getting-started.md</a></p>
+<ul>
+<li>前提</li>
+</ul>
+<p>在Go路径下克隆仓库fabric-samples<br>Go 1.13x<br>Docker<br>Docker compose</p>
+<ul>
+<li>管理</li>
+</ul>
+<p>本文将<code>使用fabric-sample</code>中的开发者模式<code>chaincode-docker-devmode</code>建立网络，因此需要将编写好的链码复制到<code>fabric-samples/chaincode</code>中。在<code>fabric-samples/chaincode</code>中创建目录<code>contract-tutorial</code>，并在该目录下执行<code>go mod init github.com/hyperledger/fabric-samples/chaincode/contract-tutorial</code>来创建<code>go modules</code>，随后执行<code>go get -u github.com/hyperledger/fabric-contract-api-go</code>获取最新的<code>fabric-contract-api-go</code>代码</p>
+<ul>
+<li>声明</li>
+</ul>
+<p><code>contractapi</code>通过将一个或多个智能合约打包到正在运行的链码中。首先需要做的就是声明一个将在链码中使用的智能合约。这个智能合约仅完成对世界状态的读写。在链码中使用的是能合约需要实现<code>contractapi.ContractInterface</code>接口。通过在结构体中插入<code>contractapi.Contract</code>将获得该接口的默认函数。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">package main</span><br><span class="line"></span><br><span class="line">import (</span><br><span class="line">    &quot;errors&quot;</span><br><span class="line">    &quot;fmt&quot;</span><br><span class="line"></span><br><span class="line">    &quot;github.com/hyperledger/fabric-contract-api-go/contractapi&quot;</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">// SimpleContract contract for handling writing and reading from the world state</span><br><span class="line">type SimpleContract struct &#123;</span><br><span class="line">    contractapi.Contract</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>编写合约函数</li>
+</ul>
+<p>合约函数的参数类型只能包括：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">string</span><br><span class="line">bool</span><br><span class="line">int (including int8, int16, int32 and int64)</span><br><span class="line">uint (including uint8, uint16, uint32 and uint64)</span><br><span class="line">float32</span><br><span class="line">float64</span><br><span class="line">time.Time</span><br><span class="line">Arrays/slices of any allowable type</span><br><span class="line">Structs (whose public fields are all of the allowable types or another struct)</span><br><span class="line">Pointers to structs</span><br><span class="line">Maps with a key of type string and values of any of the allowable types</span><br><span class="line">interface&#123;&#125; (Only allowed when directly taken in, will receive a string type when called via a transaction)</span><br></pre></td></tr></table></figure>
+<p>合约函数需要将提供的交易内容作为：</p>
+<ul>
+<li><p>第一个参数</p>
+</li>
+<li><p>以下两种都可以：<code>*contractapi.TransactionContext</code>或将要在合约中使用的自定义交易内容；交易内容类型的接口如<code>contractapi.TransactionContextInterface</code></p>
+</li>
+</ul>
+<p>合约函数只能返回0，1，2个值</p>
+<ul>
+<li><p>如果返回0个值，则对所有调用该合约函数返回<code>success response</code></p>
+</li>
+<li><p>如果返回1个值，则值类型必须是上述参数类型之一（除了<code>interface{}</code>）或者<code>error</code></p>
+</li>
+<li><p>如果返回2个值，则第一个必须是上述参数类型之一（除了<code>interface{}</code>），第二个值必须是<code>error</code></p>
+</li>
+</ul>
+<p><code>simple-contract.go</code>文件如下</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br></pre></td><td class="code"><pre><span class="line">package main</span><br><span class="line"></span><br><span class="line">import (</span><br><span class="line">    &quot;errors&quot;</span><br><span class="line">    &quot;fmt&quot;</span><br><span class="line"></span><br><span class="line">    &quot;github.com/hyperledger/fabric-contract-api-go/contractapi&quot;</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">// SimpleContract contract for handling writing and reading from the world state</span><br><span class="line">type SimpleContract struct &#123;</span><br><span class="line">    contractapi.Contract</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// Create adds a new key with value to the world state</span><br><span class="line">func (sc *SimpleContract) Create(ctx contractapi.TransactionContextInterface, key string, value string) error &#123;</span><br><span class="line">    existing, err := ctx.GetStub().GetState(key)</span><br><span class="line"></span><br><span class="line">    if err != nil &#123;</span><br><span class="line">        return errors.New(&quot;Unable to interact with world state&quot;)</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    if existing != nil &#123;</span><br><span class="line">        return fmt.Errorf(&quot;Cannot create world state pair with key %s. Already exists&quot;, key)</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    err = ctx.GetStub().PutState(key, []byte(value))</span><br><span class="line"></span><br><span class="line">    if err != nil &#123;</span><br><span class="line">        return errors.New(&quot;Unable to interact with world state&quot;)</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    return nil</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// Update changes the value with key in the world state</span><br><span class="line">func (sc *SimpleContract) Update(ctx contractapi.TransactionContextInterface, key string, value string) error &#123;</span><br><span class="line">    existing, err := ctx.GetStub().GetState(key)</span><br><span class="line"></span><br><span class="line">    if err != nil &#123;</span><br><span class="line">        return errors.New(&quot;Unable to interact with world state&quot;)</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    if existing == nil &#123;</span><br><span class="line">        return fmt.Errorf(&quot;Cannot update world state pair with key %s. Does not exist&quot;, key)</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    err = ctx.GetStub().PutState(key, []byte(value))</span><br><span class="line"></span><br><span class="line">    if err != nil &#123;</span><br><span class="line">        return errors.New(&quot;Unable to interact with world state&quot;)</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    return nil</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// Read returns the value at key in the world state</span><br><span class="line">func (sc *SimpleContract) Read(ctx contractapi.TransactionContextInterface, key string) (string, error) &#123;</span><br><span class="line">    existing, err := ctx.GetStub().GetState(key)</span><br><span class="line"></span><br><span class="line">    if err != nil &#123;</span><br><span class="line">        return &quot;&quot;, errors.New(&quot;Unable to interact with world state&quot;)</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    if existing == nil &#123;</span><br><span class="line">        return &quot;&quot;, fmt.Errorf(&quot;Cannot read world state pair with key %s. Does not exist&quot;, key)</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    return string(existing), nil</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>在链码中使用合约</li>
+</ul>
+<p>在<code>simple-contract.go</code>相同的路径中创建<code>main.go</code>，并添加main函数。链码中需要实现<code>shim.ChaincodeInterface</code>接口，该接口需要两个函数<code>Init</code>和<code>Invoke</code>。而<code>contractapi</code>已经将这两个函数封装使得只需要提供合约名即可创建新合约。</p>
+<p><code>main.go</code>文件内容如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">package main</span><br><span class="line"></span><br><span class="line">import (</span><br><span class="line">    &quot;github.com/hyperledger/fabric-contract-api-go/contractapi&quot;</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">func main() &#123;</span><br><span class="line">    simpleContract := new(SimpleContract)</span><br><span class="line"></span><br><span class="line">    cc, err := contractapi.NewChaincode(simpleContract)</span><br><span class="line"></span><br><span class="line">    if err != nil &#123;</span><br><span class="line">        panic(err.Error())</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    if err := cc.Start(); err != nil &#123;</span><br><span class="line">        panic(err.Error())</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>在开发者模式中测试合约</li>
+</ul>
+<p>打开第一个终端，<code>cd $GOPATH/src/github.com/hyperledger/fabric-samples/chaincode-docker-devmode</code>，该目录中提供简易的fabric网络供调试。在该目录下启动网络，<code>docker-compose -f docker-compose-simple.yaml up</code>，该命令会一直打印输出并且不会退出。</p>
+<ul>
+<li>运行链码</li>
+</ul>
+<p>打开第二个终端(始终在<code>chaincode-docker-devmode</code>目录下)，通过该命令进入链码docker容器，<code>docker exec -it chaincode sh</code>。</p>
+<p>随后docker-compose将在链码容器中创建<code>fabric-samples/chaincode</code>目录的镜像。通过<code>cd contract-tutorial</code>进入链码所在目录。</p>
+<p>一旦进入该目录，需要对链码进行编译。通过<code>vendor</code>导入代码中确实的包。注意：确保使用的fabric docker images版本是2.0.0以上否则<code>go build</code>将会失败；确保<code>contract-tutorial</code>目录有正确的权限配置使得docker能够在该目录下创建文件，运行<code>chmod -R 766</code>可以设置正确的权限。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">go mod vendor</span><br><span class="line">go build</span><br></pre></td></tr></table></figure>
+<p>运行链码，注意该命令不会退出。</p>
+<p><code>CORE_CHAINCODE_ID_NAME=mycc:0 CORE_PEER_TLS_ENABLED=false ./contract-tutorial -peer.address peer:7052</code></p>
+<ul>
+<li>和链码交互</li>
+</ul>
+<p>打开第三个终端，进入docker容器，<code>docker exec -it cli sh</code></p>
+<ul>
+<li>安装链码</li>
+</ul>
+<p><code>peer chaincode install -p chaincodedev/chaincode/contract-tutorial -n mycc -v 0</code></p>
+<ul>
+<li>实例化链码，在实例化时没有传入任何参数意味着没有合约的函数被调用</li>
+</ul>
+<p><code>peer chaincode instantiate -n mycc -v 0 -c &#39;{&quot;Args&quot;:[]}&#39; -C myc</code></p>
+<ul>
+<li>调用链码，在世界状态中创建一个新的键值对</li>
+</ul>
+<p><code>peer chaincode invoke -n mycc -c &#39;{&quot;Args&quot;:[&quot;Create&quot;, &quot;KEY_1&quot;, &quot;VALUE_1&quot;]}&#39; -C myc</code></p>
+<p>第一个参数是调用的函数名，当链码中只有一个合约时可以只传入函数名。后面的参数是要传入函数的参数，fabric中传入的参数永远是<code>strings</code>类型，但是通过合约参数的封装可以传入非<code>strings</code>类型。</p>
+<p>查询链码，通过key值查询</p>
+<p><code>peer chaincode query -n mycc -c &#39;{&quot;Args&quot;:[&quot;Read&quot;, &quot;KEY_1&quot;]}&#39; -C myc</code></p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">2020</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/study.github.io/2020/05/19/fabric-contract-api-tutorial/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-fisco-2-0-sdk" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -392,6 +544,8 @@
 <p>链接：<a href="https://plantuml.com/" target="_blank" rel="noopener">https://plantuml.com/</a></p>
 <p>编写好脚本后，按<code>alt+D</code>生成preview。</p>
 <p>若想保存，则在脚本中右键<code>Export Current Diagram</code>，并在弹出的边框中选择图片类型，如png/svg/eps等。</p>
+<p>调整大小字体<br>转自：<a href="https://blog.csdn.net/zh_weir/article/details/72675013" target="_blank" rel="noopener">https://blog.csdn.net/zh_weir/article/details/72675013</a></p>
+<p>可以使用Creole和HTML格式，通过<code>**&lt;size:20&gt;我要还钱&lt;/size&gt;**</code>对消息进行加粗并定义字体大小，同时结合<code>skinparam MaxMessageSize 280</code>可控制图片大小。</p>
 
       
 
@@ -1144,166 +1298,6 @@
 
 
   
-    <article id="post-caliper-fabric" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/study.github.io/2020/04/06/caliper-fabric/">caliper-fabric 0.2.0 测试及错误解决</a>
-    </h1>
-  
-
-        
-        <a href="/study.github.io/2020/04/06/caliper-fabric/" class="archive-article-date">
-  	<time datetime="2020-04-05T17:37:16.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-04-06</time>
-</a>
-        
-      </header>
-    
-<!-- 目录内容 -->
-
-<!-- 目录内容结束 -->
-    <div class="article-entry" itemprop="articleBody">
-      
-        <ul>
-<li>ubuntu换源</li>
-</ul>
-<p><a href="https://blog.csdn.net/u012308586/article/details/102953882" target="_blank" rel="noopener">https://blog.csdn.net/u012308586/article/details/102953882</a></p>
-<ul>
-<li>npm换源</li>
-</ul>
-<p><a href="https://www.cnblogs.com/cythia/p/10985080.html" target="_blank" rel="noopener">https://www.cnblogs.com/cythia/p/10985080.html</a></p>
-<ul>
-<li>安装nodeJS、Docker、Docker Compose</li>
-</ul>
-<p><a href="https://rookielinlucy666.github.io/study.github.io/2020/04/05/ubuntu-nodejs-docker/" target="_blank" rel="noopener">https://rookielinlucy666.github.io/study.github.io/2020/04/05/ubuntu-nodejs-docker/</a></p>
-<ul>
-<li>下载caliper-benchmark仓库</li>
-</ul>
-<p><code>git clone https://github.com/hyperledger/caliper-benchmarks.git</code></p>
-<p><code>cd caliper-benchmarks</code></p>
-<ul>
-<li>切换benchmark版本</li>
-</ul>
-<p><code>git checkout v0.2.0</code></p>
-<p>以下命令均在caliper-benchmarks目录下操作</p>
-<ul>
-<li>npm项目初始化</li>
-</ul>
-<p><code>npm init -y</code></p>
-<ul>
-<li>安装caliper-cli</li>
-</ul>
-<p><code>npm install --only=prod @hyperledger/caliper-cli@0.2.0</code></p>
-<ul>
-<li>验证安装成功</li>
-</ul>
-<p><code>npx caliper --version</code></p>
-<p>输出v0.2.0</p>
-<ul>
-<li>caliper部署</li>
-</ul>
-<blockquote>
-<p>由于Caliper采用了轻量级的部署方式，因此需要显式的绑定步骤指定要测试的平台及适配器版本，caliper-cli会自动进行相应依赖项的安装。使用npx caliper bind命令进行绑定，命令所需的各项参数可以通过如下命令查看：–caliper-bind-sut ：用于指定需要测试的区块链平台，即受测系统(如fabric等)；–caliper-bind-sdk：用于指定适配器版本(如1.4.1)； –caliper-bind-cwd：用于绑定caliper-cli的工作目录，caliper-cli在加载配置文件等场合时均是使用相对于工作目录的相对路径； caliper-bind-args：用于指定caliper-cli在安装依赖项时传递给npm的参数，如用于全局安装的-g。</p>
-</blockquote>
-<p>为绑定fabric，采用如下命令</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">npx caliper bind --caliper-bind-sut fabric --caliper-bind-sdk 1.4.1</span><br><span class="line"></span><br><span class="line"># 若出现 stack Error: not found: make</span><br><span class="line">sudo apt-get install build-essential</span><br><span class="line"></span><br><span class="line"># 若出现 Error: The gRPC binary module was not installed. This may be fixed by running &quot;npm rebuild&quot;</span><br><span class="line">npm rebuild</span><br></pre></td></tr></table></figure>
-<p>若直接在caliper2.0/3.0和benchmark latest的基础上运行benchmarks会出现如下错误</p>
-<blockquote>
-<p>Error [caliper] [caliper-flow]     Error: TypeError: Cannot read property ‘hasOwnProperty’ of undefined<br>at ClientOrchestrator.init (~/caliper-benchmarks/node_modules/@hyperledger/caliper-core/lib/client/client-orchestrator.js:41:24)<br>    at Object.module.exports.run (~/caliper-benchmarks/node_modules/@hyperledger/caliper-core/lib/caliper-flow.js:106:60)<br>    at <anonymous><br>    at process._tickCallback (internal/process/next_tick.js:189:7)</anonymous></p>
-</blockquote>
-<ul>
-<li>docker换源</li>
-</ul>
-<p>初次运行benchmark会出现镜像拉取缓慢，因此需要对docker换源</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">cd  /etc/docker/</span><br><span class="line"># 新建daemon文件</span><br><span class="line"></span><br><span class="line">sudo vi daemon.json</span><br><span class="line">#  编辑daemon.json内容</span><br><span class="line">&#123;</span><br><span class="line">  &quot;registry-mirrors&quot;: [&quot;https://docker.mirrors.ustc.edu.cn&quot;] </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>重启服务<br><code>sudo systemctl daemon-reload</code><br><code>sudo systemctl restart docker</code><br>若出现下述错误</p>
-<blockquote>
-<p>Job for docker.service failed because the control process exited with error code.<br>则是daemon.json文件配置错误，请检查分隔符等。</p>
-</blockquote>
-<ul>
-<li>或手动拉取镜像</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">docker pull hyperledger/fabric-ca:1.4.1</span><br><span class="line">docker pull hyperledger/fabric-orderer:1.4.1</span><br><span class="line">docker pull hyperledger/fabric-peer:1.4.1</span><br></pre></td></tr></table></figure>
-<ul>
-<li>运行benchmark</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">npx caliper benchmark run \</span><br><span class="line">    --caliper-workspace . \</span><br><span class="line">    --caliper-benchconfig benchmarks/scenario/simple/config.yaml \</span><br><span class="line">    --caliper-networkconfig networks/fabric/fabric-v1.4.1/2org1peergoleveldb/fabric-go.yaml</span><br></pre></td></tr></table></figure>
-<p>该命令仅适用于caliper0.2.0</p>
-<p>若出现下述错误，则更改权限<code>sudo chmod +x /usr/local/bin/docker-compose</code></p>
-<blockquote>
-<p>/bin/sh: 1: docker-compose: Permission denied</p>
-</blockquote>
-<p>若出现如下错误，则</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">cd networks/fabric/docker-compose/2org1peergoleveldb</span><br><span class="line">vi docker-compose.yaml</span><br><span class="line">#找到environment，输入如下内容与上面对齐</span><br><span class="line">- CORE_CHAINCODE_EXECUTETIMEOUT=30s</span><br><span class="line">- CORE_CHAINCODE_STARTUPTIMEOUT=600s</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>error [caliper] [caliper-flow]     Error: Error: Invalid endorsement for simple@v0 in mychannel from peer0.org2.example.com: error starting container: error starting container: Failed to generate platform-specific docker build: Error returned from build: 1 “/opt/go/pkg/tool/linux_amd64/link: signal: killed<br>“<br>    at proposalResponses.forEach (/home/ubuntu/caliper-benchmarks/node_modules/@hyperledger/caliper-fabric/lib/fabric.js:1358:31)<br>    at Array.forEach (<anonymous>)<br>    at Fabric._instantiateChaincodes (/home/ubuntu/caliper-benchmarks/node_modules/@hyperledger/caliper-fabric/lib/fabric.js:1354:35)<br>    at <anonymous></anonymous></anonymous></p>
-</blockquote>
-<p>然后返回工作目录caliper-benckmarks下面，接着运行benchmark</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">npx caliper benchmark run \</span><br><span class="line">    --caliper-workspace . \</span><br><span class="line">    --caliper-benchconfig benchmarks/scenario/simple/config.yaml \</span><br><span class="line">    --caliper-networkconfig networks/fabric/fabric-v1.4.1/2org1peergoleveldb/fabric-go.yaml</span><br><span class="line">``` </span><br><span class="line"></span><br><span class="line">如果还是出现该错误，则运行benchmark</span><br></pre></td></tr></table></figure>
-<p>cd networks/fabric/fabric-v1.4.1/2org1peergoleveldb<br>vi fabric-go.yaml</p>
-<p>#注释chaincodes:下面这部分</p>
-<p>#- id: smallbank</p>
-<h1 id="version-v0"><a href="#version-v0" class="headerlink" title="version: v0"></a>version: v0</h1><h1 id="language-golang"><a href="#language-golang" class="headerlink" title="language: golang"></a>language: golang</h1><h1 id="path-fabric-scenario-smallbank-go"><a href="#path-fabric-scenario-smallbank-go" class="headerlink" title="path: fabric/scenario/smallbank/go"></a>path: fabric/scenario/smallbank/go</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">   </span><br><span class="line">若出现以下错误，重新运行上述命令即可</span><br><span class="line">    </span><br><span class="line">&gt;error: [FabricCAClientService.js]: Failed to enroll admin, error:%o message=Calling enrollment endpoint failed with error [Error: connect ECONNREFUSED 127.0.0.1:7054], stack=Error: Calling enrollment endpoint failed with error [Error: connect ECONNREFUSED 127.0.0.1:7054]</span><br><span class="line">    at ClientRequest.request.on (/root/caliper-benchmarks/node_modules/fabric-ca-client/lib/FabricCAClient.js:487:12)</span><br><span class="line">    at emitOne (events.js:116:13)</span><br><span class="line">    at ClientRequest.emit (events.js:211:7)</span><br><span class="line">    at Socket.socketErrorListener (_http_client.js:401:9)</span><br><span class="line">    at emitOne (events.js:116:13)</span><br><span class="line">    at Socket.emit (events.js:211:7)</span><br><span class="line">    at emitErrorNT (internal/streams/destroy.js:73:8)</span><br><span class="line">    at _combinedTickCallback (internal/process/next_tick.js:139:11)</span><br><span class="line">    at process._tickCallback (internal/process/next_tick.js:181:9)</span><br><span class="line">2020.04.06-16:21:18.565 error [caliper] [caliper-flow] 	Error: Error: Couldn&apos;t enroll Org1&apos;s registrar or set it as user context: Calling enrollment endpoint failed with error [Error: connect ECONNREFUSED 127.0.0.1:7054]</span><br><span class="line">    at Fabric._setUserContextByEnrollment (/root/caliper-benchmarks/node_modules/@hyperledger/caliper-fabric/lib/fabric.js:1688:19)</span><br><span class="line">    at &lt;anonymous&gt;</span><br><span class="line">    at process._tickCallback (internal/process/next_tick.js:189:7)</span><br><span class="line">    </span><br><span class="line">    </span><br><span class="line">&gt;error [caliper] [caliper-flow] 	Error: Error: Invalid endorsement for marbles@v0 in mychannel from peer0.org1.example.com: error starting container: error starting container: Failed to generate platform-specific docker build: Error uploading input to container: API error (404): Could not find the file /chaincode/input in container dce3a0382841131e79617e553058d164bee0749f55f6f7fe5b471e8716062ed2</span><br><span class="line">    </span><br><span class="line">    </span><br><span class="line">    </span><br><span class="line">- mac上设置ssh不断掉，并且session保持</span><br><span class="line"></span><br><span class="line">`sudo vi ~/.ssh/config`，输入如下内容，对所有服务器保持不断开（也可针对特定服务器，请搜索）</span><br></pre></td></tr></table></figure>
-<p>Host *<br>    ServerAliveInterval 60<br>    ControlMaster auto<br>    ControlPath ~/.ssh/%h-%p-%r<br>    ControlPersist yes</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">    </span><br><span class="line"></span><br><span class="line">编辑服务器 `cd /etc/ssh/sshd_config`，最后增加</span><br></pre></td></tr></table></figure>
-<p>ClientAliveInterval 60<br>ClientAliveCountMax 1</p>
-<p><code>`</code><br>这 样，SSH Server 每 60 秒就会自动发送一个信号给 Client，而等待 Client 回应</p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">2020</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/study.github.io/2020/04/06/caliper-fabric/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
   
     <nav id="page-nav">
       <span class="page-number current">1</span><a class="page-number" href="/study.github.io/page/2/">2</a><a class="page-number" href="/study.github.io/page/3/">3</a><a class="page-number" href="/study.github.io/page/4/">4</a><a class="extend next" rel="next" href="/study.github.io/page/2/">Next &raquo;</a>
@@ -1416,7 +1410,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">Heroku</a>
+                <a href="javascript:void(0)" class="js-tag color5">2020</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">Hadoop</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1424,11 +1422,7 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">2020</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">Hadoop</a>
+                <a href="javascript:void(0)" class="js-tag color2">Heroku</a>
               </li>
              
               <li class="article-tag-list-item">

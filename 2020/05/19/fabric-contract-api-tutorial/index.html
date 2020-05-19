@@ -6,18 +6,20 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <link rel="dns-prefetch" href="https://github.com/RookieLinLucy666/study.github.io">
-  <title>Tag: Hadoop | 散财童子小林</title>
+  <title>fabric-contract-api-tutorial | 散财童子小林</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="下岗工人">
-<meta property="og:type" content="website">
-<meta property="og:title" content="散财童子小林">
-<meta property="og:url" content="https://github.com/RookieLinLucy666/study.github.io/tags/Hadoop/index.html">
+  <meta name="description" content="调用fabric-contract-api-go并在开发者模式中测试 翻译自：https://github.com/hyperledger/fabric-contract-api-go/blob/master/tutorials/getting-started.md  前提  在Go路径下克隆仓库fabric-samplesGo 1.13xDockerDocker compose  管理  本文将">
+<meta name="keywords" content="2020">
+<meta property="og:type" content="article">
+<meta property="og:title" content="fabric-contract-api-tutorial">
+<meta property="og:url" content="https://github.com/RookieLinLucy666/study.github.io/2020/05/19/fabric-contract-api-tutorial/index.html">
 <meta property="og:site_name" content="散财童子小林">
-<meta property="og:description" content="下岗工人">
+<meta property="og:description" content="调用fabric-contract-api-go并在开发者模式中测试 翻译自：https://github.com/hyperledger/fabric-contract-api-go/blob/master/tutorials/getting-started.md  前提  在Go路径下克隆仓库fabric-samplesGo 1.13xDockerDocker compose  管理  本文将">
 <meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2020-05-19T11:54:55.099Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="散财童子小林">
-<meta name="twitter:description" content="下岗工人">
+<meta name="twitter:title" content="fabric-contract-api-tutorial">
+<meta name="twitter:description" content="调用fabric-contract-api-go并在开发者模式中测试 翻译自：https://github.com/hyperledger/fabric-contract-api-go/blob/master/tutorials/getting-started.md  前提  在Go路径下克隆仓库fabric-samplesGo 1.13xDockerDocker compose  管理  本文将">
   
     <link rel="alternative" href="/atom.xml" title="散财童子小林" type="application/atom+xml">
   
@@ -151,64 +153,275 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
-  
-  
+            <article id="post-fabric-contract-api-tutorial" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
     
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/study.github.io/archives/2019" class="archive-year">2019</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/study.github.io/2019/05/18/Mac-OS-X-安装Hadoop/" class="archive-article-date">
-  	<time datetime="2019-05-18T01:04:08.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-05-18</time>
-</a>
-        </div>
-    	 
+      <header class="article-header">
+        
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/study.github.io/2019/05/18/Mac-OS-X-安装Hadoop/">Mac OS X 安装Hadoop</a>
+    <h1 class="article-title" itemprop="name">
+      fabric-contract-api-tutorial
     </h1>
   
 
-        <div class="article-info info-on-right">
-          
+        
+        <a href="/study.github.io/2020/05/19/fabric-contract-api-tutorial/" class="archive-article-date">
+  	<time datetime="2020-05-19T11:54:29.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-05-19</time>
+</a>
+        
+      </header>
+    
+<!-- 目录内容 -->
+
+<!-- 目录内容结束 -->
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>调用fabric-contract-api-go并在开发者模式中测试</p>
+<p>翻译自：<a href="https://github.com/hyperledger/fabric-contract-api-go/blob/master/tutorials/getting-started.md">https://github.com/hyperledger/fabric-contract-api-go/blob/master/tutorials/getting-started.md</a></p>
+<ul>
+<li>前提</li>
+</ul>
+<p>在Go路径下克隆仓库fabric-samples<br>Go 1.13x<br>Docker<br>Docker compose</p>
+<ul>
+<li>管理</li>
+</ul>
+<p>本文将<code>使用fabric-sample</code>中的开发者模式<code>chaincode-docker-devmode</code>建立网络，因此需要将编写好的链码复制到<code>fabric-samples/chaincode</code>中。在<code>fabric-samples/chaincode</code>中创建目录<code>contract-tutorial</code>，并在该目录下执行<code>go mod init github.com/hyperledger/fabric-samples/chaincode/contract-tutorial</code>来创建<code>go modules</code>，随后执行<code>go get -u github.com/hyperledger/fabric-contract-api-go</code>获取最新的<code>fabric-contract-api-go</code>代码</p>
+<ul>
+<li>声明</li>
+</ul>
+<p><code>contractapi</code>通过将一个或多个智能合约打包到正在运行的链码中。首先需要做的就是声明一个将在链码中使用的智能合约。这个智能合约仅完成对世界状态的读写。在链码中使用的是能合约需要实现<code>contractapi.ContractInterface</code>接口。通过在结构体中插入<code>contractapi.Contract</code>将获得该接口的默认函数。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">package main</span><br><span class="line"></span><br><span class="line">import (</span><br><span class="line">    &quot;errors&quot;</span><br><span class="line">    &quot;fmt&quot;</span><br><span class="line"></span><br><span class="line">    &quot;github.com/hyperledger/fabric-contract-api-go/contractapi&quot;</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">// SimpleContract contract for handling writing and reading from the world state</span><br><span class="line">type SimpleContract struct &#123;</span><br><span class="line">    contractapi.Contract</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>编写合约函数</li>
+</ul>
+<p>合约函数的参数类型只能包括：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">string</span><br><span class="line">bool</span><br><span class="line">int (including int8, int16, int32 and int64)</span><br><span class="line">uint (including uint8, uint16, uint32 and uint64)</span><br><span class="line">float32</span><br><span class="line">float64</span><br><span class="line">time.Time</span><br><span class="line">Arrays/slices of any allowable type</span><br><span class="line">Structs (whose public fields are all of the allowable types or another struct)</span><br><span class="line">Pointers to structs</span><br><span class="line">Maps with a key of type string and values of any of the allowable types</span><br><span class="line">interface&#123;&#125; (Only allowed when directly taken in, will receive a string type when called via a transaction)</span><br></pre></td></tr></table></figure>
+<p>合约函数需要将提供的交易内容作为：</p>
+<ul>
+<li><p>第一个参数</p>
+</li>
+<li><p>以下两种都可以：<code>*contractapi.TransactionContext</code>或将要在合约中使用的自定义交易内容；交易内容类型的接口如<code>contractapi.TransactionContextInterface</code></p>
+</li>
+</ul>
+<p>合约函数只能返回0，1，2个值</p>
+<ul>
+<li><p>如果返回0个值，则对所有调用该合约函数返回<code>success response</code></p>
+</li>
+<li><p>如果返回1个值，则值类型必须是上述参数类型之一（除了<code>interface{}</code>）或者<code>error</code></p>
+</li>
+<li><p>如果返回2个值，则第一个必须是上述参数类型之一（除了<code>interface{}</code>），第二个值必须是<code>error</code></p>
+</li>
+</ul>
+<p><code>simple-contract.go</code>文件如下</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br></pre></td><td class="code"><pre><span class="line">package main</span><br><span class="line"></span><br><span class="line">import (</span><br><span class="line">    &quot;errors&quot;</span><br><span class="line">    &quot;fmt&quot;</span><br><span class="line"></span><br><span class="line">    &quot;github.com/hyperledger/fabric-contract-api-go/contractapi&quot;</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">// SimpleContract contract for handling writing and reading from the world state</span><br><span class="line">type SimpleContract struct &#123;</span><br><span class="line">    contractapi.Contract</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// Create adds a new key with value to the world state</span><br><span class="line">func (sc *SimpleContract) Create(ctx contractapi.TransactionContextInterface, key string, value string) error &#123;</span><br><span class="line">    existing, err := ctx.GetStub().GetState(key)</span><br><span class="line"></span><br><span class="line">    if err != nil &#123;</span><br><span class="line">        return errors.New(&quot;Unable to interact with world state&quot;)</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    if existing != nil &#123;</span><br><span class="line">        return fmt.Errorf(&quot;Cannot create world state pair with key %s. Already exists&quot;, key)</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    err = ctx.GetStub().PutState(key, []byte(value))</span><br><span class="line"></span><br><span class="line">    if err != nil &#123;</span><br><span class="line">        return errors.New(&quot;Unable to interact with world state&quot;)</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    return nil</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// Update changes the value with key in the world state</span><br><span class="line">func (sc *SimpleContract) Update(ctx contractapi.TransactionContextInterface, key string, value string) error &#123;</span><br><span class="line">    existing, err := ctx.GetStub().GetState(key)</span><br><span class="line"></span><br><span class="line">    if err != nil &#123;</span><br><span class="line">        return errors.New(&quot;Unable to interact with world state&quot;)</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    if existing == nil &#123;</span><br><span class="line">        return fmt.Errorf(&quot;Cannot update world state pair with key %s. Does not exist&quot;, key)</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    err = ctx.GetStub().PutState(key, []byte(value))</span><br><span class="line"></span><br><span class="line">    if err != nil &#123;</span><br><span class="line">        return errors.New(&quot;Unable to interact with world state&quot;)</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    return nil</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// Read returns the value at key in the world state</span><br><span class="line">func (sc *SimpleContract) Read(ctx contractapi.TransactionContextInterface, key string) (string, error) &#123;</span><br><span class="line">    existing, err := ctx.GetStub().GetState(key)</span><br><span class="line"></span><br><span class="line">    if err != nil &#123;</span><br><span class="line">        return &quot;&quot;, errors.New(&quot;Unable to interact with world state&quot;)</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    if existing == nil &#123;</span><br><span class="line">        return &quot;&quot;, fmt.Errorf(&quot;Cannot read world state pair with key %s. Does not exist&quot;, key)</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    return string(existing), nil</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>在链码中使用合约</li>
+</ul>
+<p>在<code>simple-contract.go</code>相同的路径中创建<code>main.go</code>，并添加main函数。链码中需要实现<code>shim.ChaincodeInterface</code>接口，该接口需要两个函数<code>Init</code>和<code>Invoke</code>。而<code>contractapi</code>已经将这两个函数封装使得只需要提供合约名即可创建新合约。</p>
+<p><code>main.go</code>文件内容如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">package main</span><br><span class="line"></span><br><span class="line">import (</span><br><span class="line">    &quot;github.com/hyperledger/fabric-contract-api-go/contractapi&quot;</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">func main() &#123;</span><br><span class="line">    simpleContract := new(SimpleContract)</span><br><span class="line"></span><br><span class="line">    cc, err := contractapi.NewChaincode(simpleContract)</span><br><span class="line"></span><br><span class="line">    if err != nil &#123;</span><br><span class="line">        panic(err.Error())</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    if err := cc.Start(); err != nil &#123;</span><br><span class="line">        panic(err.Error())</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>在开发者模式中测试合约</li>
+</ul>
+<p>打开第一个终端，<code>cd $GOPATH/src/github.com/hyperledger/fabric-samples/chaincode-docker-devmode</code>，该目录中提供简易的fabric网络供调试。在该目录下启动网络，<code>docker-compose -f docker-compose-simple.yaml up</code>，该命令会一直打印输出并且不会退出。</p>
+<ul>
+<li>运行链码</li>
+</ul>
+<p>打开第二个终端(始终在<code>chaincode-docker-devmode</code>目录下)，通过该命令进入链码docker容器，<code>docker exec -it chaincode sh</code>。</p>
+<p>随后docker-compose将在链码容器中创建<code>fabric-samples/chaincode</code>目录的镜像。通过<code>cd contract-tutorial</code>进入链码所在目录。</p>
+<p>一旦进入该目录，需要对链码进行编译。通过<code>vendor</code>导入代码中确实的包。注意：确保使用的fabric docker images版本是2.0.0以上否则<code>go build</code>将会失败；确保<code>contract-tutorial</code>目录有正确的权限配置使得docker能够在该目录下创建文件，运行<code>chmod -R 766</code>可以设置正确的权限。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">go mod vendor</span><br><span class="line">go build</span><br></pre></td></tr></table></figure>
+<p>运行链码，注意该命令不会退出。</p>
+<p><code>CORE_CHAINCODE_ID_NAME=mycc:0 CORE_PEER_TLS_ENABLED=false ./contract-tutorial -peer.address peer:7052</code></p>
+<ul>
+<li>和链码交互</li>
+</ul>
+<p>打开第三个终端，进入docker容器，<code>docker exec -it cli sh</code></p>
+<ul>
+<li>安装链码</li>
+</ul>
+<p><code>peer chaincode install -p chaincodedev/chaincode/contract-tutorial -n mycc -v 0</code></p>
+<ul>
+<li>实例化链码，在实例化时没有传入任何参数意味着没有合约的函数被调用</li>
+</ul>
+<p><code>peer chaincode instantiate -n mycc -v 0 -c &#39;{&quot;Args&quot;:[]}&#39; -C myc</code></p>
+<ul>
+<li>调用链码，在世界状态中创建一个新的键值对</li>
+</ul>
+<p><code>peer chaincode invoke -n mycc -c &#39;{&quot;Args&quot;:[&quot;Create&quot;, &quot;KEY_1&quot;, &quot;VALUE_1&quot;]}&#39; -C myc</code></p>
+<p>第一个参数是调用的函数名，当链码中只有一个合约时可以只传入函数名。后面的参数是要传入函数的参数，fabric中传入的参数永远是<code>strings</code>类型，但是通过合约参数的封装可以传入非<code>strings</code>类型。</p>
+<p>查询链码，通过key值查询</p>
+<p><code>peer chaincode query -n mycc -c &#39;{&quot;Args&quot;:[&quot;Read&quot;, &quot;KEY_1&quot;]}&#39; -C myc</code></p>
+
+      
+
+      
+        <div class="page-reward">
+          <a href="javascript:;" class="page-reward-btn tooltip-top">
+            <div class="tooltip tooltip-east">
+            <span class="tooltip-item">
+              赏
+            </span>
+            <span class="tooltip-content">
+              <span class="tooltip-text">
+                <span class="tooltip-inner">
+                  <p class="reward-p"><i class="icon icon-quo-left"></i>谢谢你请我喝咖啡<i class="icon icon-quo-right"></i></p>
+                  <div class="reward-box">
+                    
+                    <div class="reward-box-item">
+                      <img class="reward-img" src="/study.github.io/assets/img/alipay.jpeg">
+                      <span class="reward-type">支付宝</span>
+                    </div>
+                    
+                    
+                    <div class="reward-box-item">
+                      <img class="reward-img" src="/study.github.io/assets/img/weixinpay.jpeg">
+                      <span class="reward-type">微信</span>
+                    </div>
+                    
+                  </div>
+                </span>
+              </span>
+            </span>
+          </div>
+          </a>
+        </div>
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
 	<div class="article-tag tagcloud">
 		<i class="icon-price-tags icon"></i>
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">2019</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">Hadoop</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">2020</a>
         		</li>
       		
 		</ul>
 	</div>
 
-          
+      
 
+      
+
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
         </div>
-        <div class="clearfix"></div>
-    </header>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//pan.baidu.com/share/qrcode?url=https://github.com/RookieLinLucy666/study.github.io/2020/05/19/fabric-contract-api-tutorial/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+      
+      <div class="clearfix"></div>
+    </div>
   </div>
 </article>
+
+  
+<nav id="article-nav">
   
   
-    </div></section>
+    <a href="/study.github.io/2020/05/16/fisco-2-0-sdk/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">fisco-2.0-sdk</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+  
+  
   
 
-    
+  
+
+  
+  
+    <section id="comments" style="margin:10px;padding:10px;background:#fff;">
+      <div id="vcomment" class="comment"></div> 
+<script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+<script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+<script>
+   var notify = 'false' == true ? true : false;
+   var verify = 'false' == true ? true : false;
+    window.onload = function() {
+        new Valine({
+            el: '.comment',
+            notify: notify,
+            verify: verify,
+            app_id: "KOatHx97rx1usjL7LvbACcAp-gzGzoHsz",
+            app_key: "G2lD18ciRjNRTTtxwxq9HdhB",
+            placeholder: "Just go go",
+            avatar:"mm"
+        });
+    }
+</script>
+    </section>
+  
 
 
           </div>
@@ -241,9 +454,9 @@
 	var yiliaConfig = {
 		mathjax: false,
 		isHome: false,
-		isPost: false,
+		isPost: true,
 		isArchive: false,
-		isTag: true,
+		isTag: false,
 		isCategory: false,
 		open_in_new: false,
 		toc_hide_index: true,
