@@ -153,6 +153,136 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-精通以太坊阅读笔记" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/study.github.io/2020/03/05/精通以太坊阅读笔记/">精通以太坊阅读笔记-快速术语表</a>
+    </h1>
+  
+
+        
+        <a href="/study.github.io/2020/03/05/精通以太坊阅读笔记/" class="archive-article-date">
+  	<time datetime="2020-03-04T16:16:31.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-03-05</time>
+</a>
+        
+      </header>
+    
+<!-- 目录内容 -->
+
+<!-- 目录内容结束 -->
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>地址Address是ECDSA（椭圆曲线签名算法）公钥的Keccak（哈希算法）散列的最右边160位，为16进制的40个字符长度，“0x”开头</p>
+<p>断言Assert当assert()失败时，用尽所有剩余的gas，与require不同</p>
+<p>大端序Big-endian是最高有效位放在前面，对应小端序little-endian，最低有效位在前面</p>
+<p>以太坊区块链没有区块大小的限制，它改为使用gas费用限制</p>
+<p>共识Consensus是网络中的大多数节点在本地验证的最佳区块链中都有相同的区块的情况，与共识算法不同</p>
+<p>拜占庭分叉（Byzantine Fork）、君士坦丁堡（Constantinople）是大都会（Metropolis）发展阶段的两大分叉，前者包含EIP-49（大都会难度炸弹延迟和区块链奖励减少），后者预计切换到混合工作证明/权益证明共识算法等</p>
+<p>合约创建交易Contract creation transaction以零地址作为收件人，用于注册合约并将其记录在以太坊中</p>
+<p>去中心化组织Decentralised Autonomous Organization（DAO）。2016年4月30日发布的“The DAO”合约在2016年6月遭受黑客攻击，最终在1192000个区块激起硬分叉（代号DAO）恢复被攻击的DAO合约，导致以太坊和以太经典两个系统</p>
+<p>契约Deed，ERC721提案引入的不可替代的标记标准，与ERC20代币不同，契约证明所有权并且不可互换，还未有任何辖区承认其合法地位</p>
+<p>数字签名Digital Signature用私钥加密为文档生成称为“签名”的短字符串数据，验证该文件由特定私钥所有者签名以及该文件签名之后未被更改</p>
+<p>熵Entropy，表示可预测性的缺乏或随机性水平，在生成秘密信息（私钥等）时需要依赖高熵源确保输出不可预测</p>
+<p>Ethash 以太坊1.0的工作量证明算法</p>
+<p>Fallback function 缺少数据或声明时执行</p>
+<p>水龙头 Faucet 测试网testnet上为开发人员免费提供测试ether</p>
+<p>Ganache 私有以太坊区块链，可以测试</p>
+<p>gas 执行智能合约每条指令产生的计算单位</p>
+<p>gas limit 区块中允许消耗的最大gas</p>
+<p>Geth Go编写的最突出的以太坊协议实现之一</p>
+<p>硬分叉hard fork 硬分叉后的节点处理未硬分叉节点的交易视为无效</p>
+<p>软分叉soft fork 软分叉后的节点处理未软分叉节点的交易可以是有效的</p>
+<p>分层确定钱包HD wallet是使用分层确定密钥生成和传输协议的钱包（BIP32）</p>
+<p>分层确定钱包种子 HD wallet seed用作生成HD钱包的主私钥和主链码的种子。钱包种子可以用助记词表示，使人们更容易复制，备份和恢复私钥。</p>
+<p>家园 Homestead 以太坊的第二个发展阶段，于2016年3月在1,150,000区块启动。</p>
+<p>冰河时代 Ice Age 以太坊在200,000区块的硬分叉，提出难度指数级增长（又名难度炸弹），引发了到权益证明Proof-of-Stake的过渡。</p>
+<p>互换客户端地址协议 Inter exchange Client Address Protocol (ICAP) 以太坊地址编码，与国际银行帐号（IBAN）编码部分兼容，为以太坊地址提供多样的，校验和的，可互操作的编码。 ICAP地址可以编码以太坊地址或通过以太坊名称注册表注册的常用名称。他们总是以XE开始。其目的是引入一个新的IBAN国家代码：XE，X表示”extended”， 加上以太坊的E，用于非管辖货币（例如XBT，XRP，XCP）。</p>
+<p>内部交易（又称“消息”）Internal transaction (also “message”) 从一个合约地址发送到另一个合约地址或EOA的交易（合约内部调用）</p>
+<p>Keccak256 以太坊使用的加密哈希方法</p>
+<p>密钥推导方法 Key Derivation Function (KDF) 也称为密码扩展算法，它被keystore格式使用，以防止对密码加密的暴力破解，字典或彩虹表攻击。它重复对密码进行哈希。</p>
+<p>Keystore 文件 JSON 编码的文件，包含一个（随机生成的）私钥，被一个密码加密，以提供额外的安全性。</p>
+<p>LevelDB是一种开源的磁盘key-value存储系统</p>
+<p>库 Library 用作之前部署的代码，其他合约可以调用只读计算</p>
+<p>轻量级客户端 Lightweight client 不存储区块链的本地副本，也不验证块和事务。它提供了钱包的功能，可以创建和广播交易</p>
+<p>消息 Message 内部交易，从未被序列化，只在EVM中发送（合约间调用）</p>
+<p>大都会阶段 Metropolis Stage 是以太坊的第三个开发阶段，在2017年10月启动。第二阶段是家园 Homestead，于2016年3月在1,150,000区块启动</p>
+<p>Mist是以太坊基金会创建的第一个以太坊浏览器。它还包含一个基于浏览器的钱包，这是ERC20令牌标准的首次实施（Fabian Vogelsteller，ERC20的作者也是Mist的主要开发人员）。Mist也是第一个引入camelCase校验码（EIP-155）的钱包。Mist运行完整节点，提供完整的DApp浏览器，支持基于Swarm的存储和ENS地址</p>
+<p>随机数 Nonce，密码学中，随机数指代只可以用一次的数值。在以太坊中用到两类随机数。1.账户随机数 - 这只是一个账户的交易计数。2.工作量证明随机数- 用于获得工作证明的区块中的随机值（取决于当时的难度）。</p>
+<p>Ommer是祖父节点的子节点，但它本身并不是父节点。当矿工找到一个有效的区块时，另一个矿工可能已经发布了一个竞争的区块，并添加到区块链顶部。像比特币一样，以太坊中的孤儿区块可以被新的区块作为ommers包含，并获得部分奖励。术语 “ommer” 是对父节点的兄弟姐妹节点的性别中立的称呼，但也可以表示为“叔叔”。</p>
+<p>Parity 以太坊客户端软件最突出的支持共同操作（多重签名）的实现之一。</p>
+<p>权益证明 Proof-of-Stake (PoS)要求用户证明一定数量的加密货币的所有权，以便能够参与交易验证。</p>
+<p>收据 Receipt 以太坊客户端返回的数据，表示特定交易的结果，包括交易的哈希值，其区块编号，使用的燃气量，以及在部署智能合约时的合约地址。</p>
+<p>重入攻击 Re-entrancy Attack 当攻击者合约（Attacker contracts）调用受害者合约（Victim contracts）的方法时，可以重复这种攻击。让我们称它为victim.withdraw()，在对该合约函数的原始调用完成之前，再次调用victim.withdraw()方法，持续递归调用它自己。 递归调用可以通过攻击者合约的后备方法实现。 攻击者必须执行的唯一技巧是在用完燃气之前中断递归调用，并避免盗用的以太被还原。</p>
+<p>Require 在Solidity中，require（false）编译为 <strong>0xfd</strong>，它是 <strong>REVERT</strong> 操作码。REVERT指令提供了一种停止执行和恢复状态更改的方式，不消耗所有提供的燃气并且能够返回原因。 应使用require函数来确保满足有效条件，如输入或合同状态变量，或者验证调用外部合约的返回值。（与assert()耗尽所有燃料不同）</p>
+<p>Revert() 当需要处理与 require() 相同的情况，但使用更复杂的逻辑时，使用 revert()。 例如，如果你的代码有一些嵌套的 if/else 逻辑流程，你会发现使用revert() 而不是require（）是合理的</p>
+<p>递归长度前缀 Recursive Length Prefix (RLP)  一种编码标准，由以太坊开发人员设计用来编码和序列化任意复杂度和长度的对象（数据结构）</p>
+<p>SELFDESTRUCT 操作码。只要整个网络存在，智能合同就会存在并可执行。如果它们被编程为自毁的或使用委托调用（delegatecall）或调用代码（callcode）执行该操作，它们将从区块链中消失。 一旦执行自毁操作，存储在合同地址处的剩余Ether将被发送到另一个地址，并将存储和代码从状态中移除。 尽管这是预期的行为，但自毁合同的修剪可能或不会被以太坊客户实施。 SELFDESTRUCT 之前称作 SUICIDE, 在EIP6中, SUICIDE 重命名为 SELFDESTRUCT。</p>
+<p>宁静 Serenity，以太坊第四个也是最后一个开发阶段。宁静还没有计划发布的日期。</p>
+<p>Spurious Dragon，在＃2,675,00块的硬分叉，来解决更多的拒绝服务攻击向量，以及另一种状态清除。还有转播攻击保护机制。</p>
+<p>Swarm，一种去中心化（P2P）的存储网络。与 Web3 和 Whisper 共同使用来构建 DApps。</p>
+<p>Tangerine Whistle，在 #2,463,00 块的硬分叉，改变了某些 I/O 密集操作的燃气计算方式，并从拒绝服务攻击中清除累积状态，这种攻击利用了这些操作的低燃气成本。</p>
+<p>图灵完备 Turing Complete，在计算理论中，如果数据操纵规则（如计算机的指令集，程序设计语言或细胞自动机）可用于模拟任何图灵机，则它被称为图灵完备或计算上通用的。这个概念是以英国数学家和计算机科学家阿兰图灵命名的。</p>
+<p>钱包 Wallet，拥有你的所有密钥的软件。作为访问和控制以太坊账户并与智能合约交互的界面。请注意，密钥不需要存储在你的钱包中，并且可以从脱机存储（例如 USB 闪存驱动器或纸张）中检索以提高安全性。尽管名字为钱包，但它从不存储实际的硬币或代币。</p>
+<p>Wei，以太的最小单位，1018 wei = 1 ether.</p>
+<p>Whisper，一种去中心化（P2P）消息系统。与 Web3 和 Swarm 一起使用来构建 DApps。</p>
+<p>零地址 Zero address，特殊的以太坊地址，全部是由 <code>0</code> 组成（即 <code>0x0000000000000000000000000000000000000000</code>)，被指定为创建一个智能合约所发起的交易（Transaction）的目标地址（即 <code>to</code> 参数的值）。</p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">2020</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/study.github.io/2020/03/05/精通以太坊阅读笔记/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-Blockchain-The-revolution-that-hasn-t-quite-happened" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -1860,93 +1990,6 @@
 
 
   
-    <article id="post-python-Getting-along-with-Integer-Partitions" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/study.github.io/2019/05/22/python-Getting-along-with-Integer-Partitions/">python:Getting along with Integer Partitions</a>
-    </h1>
-  
-
-        
-        <a href="/study.github.io/2019/05/22/python-Getting-along-with-Integer-Partitions/" class="archive-article-date">
-  	<time datetime="2019-05-22T08:29:05.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-05-22</time>
-</a>
-        
-      </header>
-    
-<!-- 目录内容 -->
-
-<!-- 目录内容结束 -->
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="Getting-along-with-Integer-Partitions"><a href="#Getting-along-with-Integer-Partitions" class="headerlink" title="Getting along with Integer Partitions"></a>Getting along with Integer Partitions</h1>
-        
-          <a class="article-more-a" href="/study.github.io/2019/05/22/python-Getting-along-with-Integer-Partitions/#more">more >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">2019</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">python</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">algorithm</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/study.github.io/2019/05/22/python-Getting-along-with-Integer-Partitions/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
   
     <nav id="page-nav">
       <a class="extend prev" rel="prev" href="/study.github.io/page/2/">&laquo; Prev</a><a class="page-number" href="/study.github.io/">1</a><a class="page-number" href="/study.github.io/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/study.github.io/page/4/">4</a><a class="extend next" rel="next" href="/study.github.io/page/4/">Next &raquo;</a>
@@ -2067,11 +2110,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">Hadoop</a>
+                <a href="javascript:void(0)" class="js-tag color2">Heroku</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">Heroku</a>
+                <a href="javascript:void(0)" class="js-tag color2">Hadoop</a>
               </li>
              
               <li class="article-tag-list-item">
