@@ -153,6 +153,86 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-vscode-latex" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/study.github.io/2020/07/06/vscode-latex/">vscode-latex</a>
+    </h1>
+  
+
+        
+        <a href="/study.github.io/2020/07/06/vscode-latex/" class="archive-article-date">
+  	<time datetime="2020-07-06T12:15:13.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-07-06</time>
+</a>
+        
+      </header>
+    
+<!-- 目录内容 -->
+
+<!-- 目录内容结束 -->
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>VSCODE下的latex支持中文<br><a href="https://www.zhihu.com/question/266146760" target="_blank" rel="noopener">https://www.zhihu.com/question/266146760</a></p>
+<p>前提：通过vscode的extensions下载latex workshop</p>
+<p>在vscode设置中打开setting的json文件，插入如下内容<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">&quot;latex-workshop.latex.toolchain&quot;: [</span><br><span class="line">       &#123;</span><br><span class="line">&quot;command&quot;: &quot;latexmk&quot;,</span><br><span class="line">&quot;args&quot;: [</span><br><span class="line">&quot;-synctex=1&quot;,</span><br><span class="line">&quot;-interaction=nonstopmode&quot;,</span><br><span class="line">&quot;-file-line-error&quot;,</span><br><span class="line">&quot;-pdf&quot;,</span><br><span class="line">&quot;%DOC%&quot;</span><br><span class="line">         ]</span><br><span class="line">       &#125;</span><br><span class="line">     ],</span><br></pre></td></tr></table></figure></p>
+<p>下载好latex workshop后，左侧会出现tex图标，在进行<code>Build LaTex Project</code>中选中<code>Recipe: xelatex</code>，最后在文档中加上<code>\usepackage{ctex}</code>即可使用。</p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">2020</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/study.github.io/2020/07/06/vscode-latex/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-kafka-mac" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -1177,111 +1257,6 @@
 
 
   
-    <article id="post-fabric-app" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/study.github.io/2020/04/10/fabric-app/">fabric Nodejs 测试教程</a>
-    </h1>
-  
-
-        
-        <a href="/study.github.io/2020/04/10/fabric-app/" class="archive-article-date">
-  	<time datetime="2020-04-09T17:59:30.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-04-10</time>
-</a>
-        
-      </header>
-    
-<!-- 目录内容 -->
-
-<!-- 目录内容结束 -->
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="设置区块链网络"><a href="#设置区块链网络" class="headerlink" title="设置区块链网络"></a>设置区块链网络</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">cd $GOPATH/src/github.com/hyperledger/fabric-samples/first-network</span><br><span class="line"># 停止区块链网络</span><br><span class="line">./byfn.sh down</span><br></pre></td></tr></table></figure>
-<h1 id="启动网络"><a href="#启动网络" class="headerlink" title="启动网络"></a>启动网络</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cd $GOPATH/src/github.com/hyperledger/fabric-samples/fabcar</span><br><span class="line">./startFabric.sh javascript</span><br></pre></td></tr></table></figure>
-<p>若出现下述错误，则将<code>./startFabric.sh</code>分解，可以出现正确结果。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">cd $GOPATH/src/github.com/hyperledger/fabric-samples/test-network</span><br><span class="line">./network.sh down</span><br><span class="line">./network.sh up createChannel -ca -s couchdb</span><br><span class="line">./network.sh deployCC -l go</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>Error: failed to endorse chaincode install: rpc error: code = Unavailable desc = transport is closing</p>
-</blockquote>
-<h1 id="安装应用程序"><a href="#安装应用程序" class="headerlink" title="安装应用程序"></a>安装应用程序</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"># 以下操作均在javascript目录中执行</span><br><span class="line">cd ../fabcar/javascript</span><br><span class="line"># 安装依赖</span><br><span class="line">npm install </span><br><span class="line">ls</span><br></pre></td></tr></table></figure>
-<h1 id="登记管理员"><a href="#登记管理员" class="headerlink" title="登记管理员"></a>登记管理员</h1><p>使用<code>enrollAdmin.js</code>程序为admin生成私钥、公钥和x.509证书，这个程序使用一个证书签名请求（CSR）先在本地生成公钥和私钥，然后将公钥发送到CA，CA会发布一个让应用程序使用的证书。公钥、私钥以及证书会保存在钱包中，方便我们以管理员身份使用CA。</p>
-<p>登记一个admin管理员：<code>node enrollAdmin.js</code>，返回如下提示。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Wallet path: go/src/github.com/hyperledger/fabric-samples/fabcar/javascript/wallet</span><br><span class="line"></span><br><span class="line">Successfully enrolled admin user &quot;admin&quot; and imported it into the wallet</span><br></pre></td></tr></table></figure>
-<p>该命令将CA管理员的证书保存在Wallet目录中。</p>
-<h1 id="注册和登记普通用户user1"><a href="#注册和登记普通用户user1" class="headerlink" title="注册和登记普通用户user1"></a>注册和登记普通用户user1</h1><p>钱包里已存放管理员证书，此时可以登记一个新的偶同用户user1，user1可以查询和更新账本。</p>
-<p>使用<code>registerUser.js</code>为用户生成私钥、公钥和x.509证书，同样使用CSR登记user1并将证书保存到admin所在的钱包中。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">node registerUser.js</span><br><span class="line">Wallet path: go/src/github.com/hyperledger/fabric-samples/fabcar/javascript/wallet</span><br><span class="line">Successfully registered and enrolled admin user &quot;appUser&quot; and imported it into the wallet</span><br></pre></td></tr></table></figure>
-<h1 id="查询账本"><a href="#查询账本" class="headerlink" title="查询账本"></a>查询账本</h1><p>查询的是世界状态，即键值对的当前值。此时使用user1来操作账本。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">node query.js</span><br><span class="line">Wallet path: go/src/github.com/hyperledger/fabric-samples/fabcar/javascript/wallet</span><br><span class="line">Transaction has been evaluated, result is: [&#123;&quot;Key&quot;:&quot;CAR0&quot;,&quot;Record&quot;:</span><br><span class="line">&#123;&quot;make&quot;:&quot;Toyota&quot;,&quot;model&quot;:&quot;Prius&quot;,&quot;colour&quot;:&quot;blue&quot;,&quot;owner&quot;:&quot;Tomoko&quot;&#125;&#125;,&#123;&quot;Key&quot;:&quot;CAR1&quot;,&quot;Record&quot;:</span><br><span class="line">&#123;&quot;make&quot;:&quot;Ford&quot;,&quot;model&quot;:&quot;Mustang&quot;,&quot;colour&quot;:&quot;red&quot;,&quot;owner&quot;:&quot;Brad&quot;&#125;&#125;,&#123;&quot;Key&quot;:&quot;CAR2&quot;,&quot;Record&quot;:</span><br><span class="line">&#123;&quot;make&quot;:&quot;Hyundai&quot;,&quot;model&quot;:&quot;Tucson&quot;,&quot;colour&quot;:&quot;green&quot;,&quot;owner&quot;:&quot;Jin Soo&quot;&#125;&#125;,&#123;&quot;Key&quot;:&quot;CAR3&quot;,&quot;Record&quot;:</span><br><span class="line">&#123;&quot;make&quot;:&quot;Volkswagen&quot;,&quot;model&quot;:&quot;Passat&quot;,&quot;colour&quot;:&quot;yellow&quot;,&quot;owner&quot;:&quot;Max&quot;&#125;&#125;,&#123;&quot;Key&quot;:&quot;CAR4&quot;,&quot;Record&quot;:</span><br><span class="line">&#123;&quot;make&quot;:&quot;Tesla&quot;,&quot;model&quot;:&quot;S&quot;,&quot;colour&quot;:&quot;black&quot;,&quot;owner&quot;:&quot;Adriana&quot;&#125;&#125;,&#123;&quot;Key&quot;:&quot;CAR5&quot;,&quot;Record&quot;:</span><br><span class="line">&#123;&quot;make&quot;:&quot;Peugeot&quot;,&quot;model&quot;:&quot;205&quot;,&quot;colour&quot;:&quot;purple&quot;,&quot;owner&quot;:&quot;Michel&quot;&#125;&#125;,&#123;&quot;Key&quot;:&quot;CAR6&quot;,&quot;Record&quot;:</span><br><span class="line">&#123;&quot;make&quot;:&quot;Chery&quot;,&quot;model&quot;:&quot;S22L&quot;,&quot;colour&quot;:&quot;white&quot;,&quot;owner&quot;:&quot;Aarav&quot;&#125;&#125;,&#123;&quot;Key&quot;:&quot;CAR7&quot;,&quot;Record&quot;:</span><br><span class="line">&#123;&quot;make&quot;:&quot;Fiat&quot;,&quot;model&quot;:&quot;Punto&quot;,&quot;colour&quot;:&quot;violet&quot;,&quot;owner&quot;:&quot;Pari&quot;&#125;&#125;,&#123;&quot;Key&quot;:&quot;CAR8&quot;,&quot;Record&quot;:</span><br><span class="line">&#123;&quot;make&quot;:&quot;Tata&quot;,&quot;model&quot;:&quot;Nano&quot;,&quot;colour&quot;:&quot;indigo&quot;,&quot;owner&quot;:&quot;Valeria&quot;&#125;&#125;,&#123;&quot;Key&quot;:&quot;CAR9&quot;,&quot;Record&quot;:</span><br><span class="line">&#123;&quot;make&quot;:&quot;Holden&quot;,&quot;model&quot;:&quot;Barina&quot;,&quot;colour&quot;:&quot;brown&quot;,&quot;owner&quot;:&quot;Shotaro&quot;&#125;&#125;]</span><br></pre></td></tr></table></figure>
-<h1 id="更新账本"><a href="#更新账本" class="headerlink" title="更新账本"></a>更新账本</h1><p><code>invoke.js</code>中的<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">await contract.submitTransaction(&apos;createCar&apos;, &apos;CAR12&apos;, &apos;Honda&apos;, &apos;Accord&apos;, &apos;Black&apos;, &apos;Tom&apos;);</span><br></pre></td></tr></table></figure></p>
-<p>表明调用智能合约的<code>createCar</code>创建一辆车主为Tom的黑色Honda Accord汽车，并使用CAR12作为键，即更新CAR12键对应的值。保存并运行程序：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">node invoke.js</span><br><span class="line">Wallet path: go/src/github.com/hyperledger/fabric-samples/fabcar/javascript/wallet</span><br><span class="line">Transaction has been submitted</span><br></pre></td></tr></table></figure>
-<p>为查看更新结果，在<code>query.js</code>中将：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">const result = await contract.evaluateTransaction(&apos;queryAllCars&apos;);</span><br></pre></td></tr></table></figure></p>
-<p>改为：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">const result = await contract.evaluateTransaction(&apos;queryCar&apos;, &apos;CAR12&apos;);</span><br></pre></td></tr></table></figure></p>
-<p>保存退出，运行:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">node query.js</span><br><span class="line">Wallet path: go/src/github.com/hyperledger/fabric-samples/fabcar/javascript/wallet</span><br><span class="line">Transaction has been evaluated, result is: </span><br><span class="line">&#123;&quot;make&quot;:&quot;Honda&quot;,&quot;model&quot;:&quot;Accord&quot;,&quot;colour&quot;:&quot;Black&quot;,&quot;owner&quot;:&quot;Tom&quot;&#125;</span><br></pre></td></tr></table></figure>
-<p>此时，Tom向将他的黑色Honda Accord轿车转赠Dave，此时在<code>invoke.js</code>中将：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">await contract.submitTransaction(&apos;createCar&apos;, &apos;CAR12&apos;, &apos;Honda&apos;, &apos;Accord&apos;, &apos;Black&apos;, &apos;Tom&apos;);</span><br></pre></td></tr></table></figure></p>
-<p>改为：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">await contract.submitTransaction(&apos;changeCarOwner&apos;, &apos;CAR12&apos;, &apos;Dave&apos;);</span><br></pre></td></tr></table></figure></p>
-<p>保存退出，运行：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">node invoke.js</span><br><span class="line">Wallet path: go/src/github.com/hyperledger/fabric-samples/fabcar/javascript/wallet</span><br><span class="line">Transaction has been submitted</span><br><span class="line">node query.js</span><br><span class="line">Wallet path: go/src/github.com/hyperledger/fabric-samples/fabcar/javascript/wallet</span><br><span class="line">Transaction has been evaluated, result is: </span><br><span class="line">&#123;&quot;make&quot;:&quot;Honda&quot;,&quot;model&quot;:&quot;Accord&quot;,&quot;colour&quot;:&quot;Black&quot;,&quot;owner&quot;:&quot;Dave&quot;&#125;</span><br></pre></td></tr></table></figure>
-<h1 id="退出网络，清除身份"><a href="#退出网络，清除身份" class="headerlink" title="退出网络，清除身份"></a>退出网络，清除身份</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cd ..</span><br><span class="line">./networkDown.sh</span><br></pre></td></tr></table></figure>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">2020</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/study.github.io/2020/04/10/fabric-app/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
   
     <nav id="page-nav">
       <span class="page-number current">1</span><a class="page-number" href="/study.github.io/page/2/">2</a><a class="page-number" href="/study.github.io/page/3/">3</a><a class="page-number" href="/study.github.io/page/4/">4</a><a class="extend next" rel="next" href="/study.github.io/page/2/">Next &raquo;</a>
@@ -1390,10 +1365,6 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">2020</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">2019</a>
               </li>
              
@@ -1402,11 +1373,15 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">Hadoop</a>
+                <a href="javascript:void(0)" class="js-tag color5">2020</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">Heroku</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">Hadoop</a>
               </li>
              
               <li class="article-tag-list-item">
