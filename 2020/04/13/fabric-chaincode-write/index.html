@@ -16,7 +16,7 @@
 <meta property="og:site_name" content="散财童子小林">
 <meta property="og:description" content="环境https://rookielinlucy666.github.io/study.github.io/2020/04/08/fabric-v0-2-0/ 选择一个位置存放代码1234567891011cd $GOPATH/src/github.com/hyperledger/fabric-samples/chaincodemkdir helloworl &amp;amp;&amp;amp; cd hellow">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2020-05-26T09:38:25.373Z">
+<meta property="og:updated_time" content="2020-07-14T01:48:33.932Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="fabric链码编写和测试">
 <meta name="twitter:description" content="环境https://rookielinlucy666.github.io/study.github.io/2020/04/08/fabric-v0-2-0/ 选择一个位置存放代码1234567891011cd $GOPATH/src/github.com/hyperledger/fabric-samples/chaincodemkdir helloworl &amp;amp;&amp;amp; cd hellow">
@@ -232,6 +232,11 @@
 <p>Error: endorsement failure during query. response: status:500 message:”error in simulation: failed to execute transaction 23cbb805a07e9fe23da930f017039a9edd49be150ea3e6c9744be124cf65c7d4: invalid invocation: chaincode ‘mycc’ has not been initialized for this version, must call as init first”</p>
 <p>2.0 为 chaincode 增加了 init-required 选项，在 approve、commit 阶段设置，设置了 init-required 的 chaincode 必须先执行 Init 才能执行其他的操作。详见 chaincode_support.go CheckInvocation</p>
 <p>Error: could not assemble transaction: ProposalResponsePayloads do not match - proposal response: version:1 response:</p>
+<ul>
+<li>Docker日志</li>
+</ul>
+<p><a href="https://stackoverflow.com/questions/41823340/how-to-print-and-view-logs-from-hyperledger-fabric-chaincode" target="_blank" rel="noopener">https://stackoverflow.com/questions/41823340/how-to-print-and-view-logs-from-hyperledger-fabric-chaincode</a></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">If you startup your chaincode in dev mode using a command like ./chaincode_example02, then the log statements should be visible in the console where that same process is started.</span><br><span class="line"></span><br><span class="line">If you deploy the chaincode in net mode then each peer starts up a docker container that is named something like &lt;networkId&gt;-&lt;peer enroll id&gt;-&lt;chaincode Id&gt; .You can view all the docker containers started up on a peer by using the command docker ps, and view the content of a log by using the command docker logs &lt;container id (get this from the previous command)&gt;</span><br></pre></td></tr></table></figure>
 
       
 
@@ -514,15 +519,15 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">2020</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">2019</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">codewar</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">2020</a>
               </li>
              
               <li class="article-tag-list-item">

@@ -153,6 +153,143 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-fabric-chaincode-write" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/study.github.io/2020/04/13/fabric-chaincode-write/">fabric链码编写和测试</a>
+    </h1>
+  
+
+        
+        <a href="/study.github.io/2020/04/13/fabric-chaincode-write/" class="archive-article-date">
+  	<time datetime="2020-04-13T07:24:41.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-04-13</time>
+</a>
+        
+      </header>
+    
+<!-- 目录内容 -->
+
+<!-- 目录内容结束 -->
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="环境"><a href="#环境" class="headerlink" title="环境"></a>环境</h1><p><a href="https://rookielinlucy666.github.io/study.github.io/2020/04/08/fabric-v0-2-0/" target="_blank" rel="noopener">https://rookielinlucy666.github.io/study.github.io/2020/04/08/fabric-v0-2-0/</a></p>
+<h1 id="选择一个位置存放代码"><a href="#选择一个位置存放代码" class="headerlink" title="选择一个位置存放代码"></a>选择一个位置存放代码</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">cd $GOPATH/src/github.com/hyperledger/fabric-samples/chaincode</span><br><span class="line">mkdir helloworl &amp;&amp; cd helloworld</span><br><span class="line">mkdir go &amp;&amp; cd go</span><br><span class="line">touch helloworld.go</span><br><span class="line">open helloworld.go</span><br><span class="line"></span><br><span class="line">cp ../../sacc/go.mod ./</span><br><span class="line">cp ../../sacc/go.sum ./</span><br><span class="line">vi go.mod</span><br><span class="line">#将module github.com/hyperledger/fabric-samples/chaincode/sacc修改为下面</span><br><span class="line">module github.com/hyperledger/fabric-samples/chaincode/helloworld</span><br></pre></td></tr></table></figure>
+<h1 id="导入包"><a href="#导入包" class="headerlink" title="导入包"></a>导入包</h1><p>使用Go import导入链码shim包和peer protobuf包，随后加入一个HelloWorld结构体作为链码shim方法的接受者。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">package main</span><br><span class="line"></span><br><span class="line">import (</span><br><span class="line">	&quot;fmt&quot;</span><br><span class="line"></span><br><span class="line">	&quot;github.com/hyperledger/fabric-chaincode-go/shim&quot;</span><br><span class="line">	&quot;github.com/hyperledger/fabric-protos-go/peer&quot;</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">type HelloWorld struct &#123;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>由于此时还未实现<code>main</code>函数，采用vscode保存时可能出错，并且上述<code>import</code>中的包也还未使用，vscode会删除导入的包。因此，此时无需保存，接着code即可。</p>
+<h1 id="初始化链码Init"><a href="#初始化链码Init" class="headerlink" title="初始化链码Init"></a>初始化链码Init</h1><p>实现Chaincode interface的Init方法。<code>stub.GetStringArgs()</code>获取传入的参数，<code>stub.PutState(args[0], []byte(args[1]))</code>存储键值对参数，并返回<code>peer.Response</code>对象表明初始化成功。Init方法在链码初始化时执行，同时在链码升级时同样需要init方法来重置或者迁移链码。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">func (t *HelloWorld) Init(stub shim.ChaincodeStubInterface) peer.Response &#123;</span><br><span class="line"></span><br><span class="line">	args := stub.GetStringArgs()</span><br><span class="line">	if len(args) != 2 &#123;</span><br><span class="line">		return shim.Error(&quot;Incorrect arguments. Expecting a key and a value&quot;)</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	err := stub.PutState(args[0], []byte(args[1]))</span><br><span class="line">	if err != nil &#123;</span><br><span class="line">		return shim.Error(fmt.Sprintf(&quot;Failed to create asset: %s&quot;, args[0]))</span><br><span class="line">	&#125;</span><br><span class="line">	return shim.Success(nil)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="调用链码Invoke"><a href="#调用链码Invoke" class="headerlink" title="调用链码Invoke"></a>调用链码Invoke</h1><p>应用程序中将有两个方法分别是<code>set</code>和<code>get</code>用来存取键值对。<code>stub.GetFunctionAndParameters()</code>获取调用的方法名和参数。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">func (t *HelloWorld) Invoke(stub shim.ChaincodeStubInterface) peer.Response &#123;</span><br><span class="line">	fn, args := stub.GetFunctionAndParameters()</span><br><span class="line"></span><br><span class="line">	var result string</span><br><span class="line">	var err error</span><br><span class="line">	if fn == &quot;set&quot; &#123;</span><br><span class="line">		result, err = set(stub, args)</span><br><span class="line">	&#125; else &#123;</span><br><span class="line">		result, err = get(stub, args)</span><br><span class="line">	&#125;</span><br><span class="line">	if err != nil &#123;</span><br><span class="line">		return shim.Error(err.Error())</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	return shim.Success([]byte(result))</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="实现链码程序set和get"><a href="#实现链码程序set和get" class="headerlink" title="实现链码程序set和get"></a>实现链码程序set和get</h1><p>通过Chaincode interface中的<code>ChaincodeStubInterface.GetState</code>和<code>ChaincodeStubInterface.PutState</code>实现键值对的存取。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">func set(stub shim.ChaincodeStubInterface, args []string) (string, error) &#123;</span><br><span class="line">	if len(args) != 2 &#123;</span><br><span class="line">		return &quot;&quot;, fmt.Errorf(&quot;Incorrect arguments. Expecting a key and a value&quot;)</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	err := stub.PutState(args[0], []byte(args[1]))</span><br><span class="line">	if err != nil &#123;</span><br><span class="line">		return &quot;&quot;, fmt.Errorf(&quot;Failed to set asset: %s&quot;, args[0])</span><br><span class="line">	&#125;</span><br><span class="line">	return args[1], nil</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">func get(stub shim.ChaincodeStubInterface, args []string) (string, error) &#123;</span><br><span class="line">	if len(args) != 1 &#123;</span><br><span class="line">		return &quot;&quot;, fmt.Errorf(&quot;Incorrect arguments. Expecting a key&quot;)</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	value, err := stub.GetState(args[0])</span><br><span class="line">	if err != nil &#123;</span><br><span class="line">		return &quot;&quot;, fmt.Errorf(&quot;Failed to get asset: %s&quot;, args[0])</span><br><span class="line">	&#125;</span><br><span class="line">	return string(value), nil</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="组合main"><a href="#组合main" class="headerlink" title="组合main"></a>组合main</h1><p>容器进行链码初始化时需要调用main方法。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">func main() &#123;</span><br><span class="line">	if err := shim.Start(new(HelloWorld)); err != nil &#123;</span><br><span class="line">		fmt.Printf(&quot;Error starting HelloWorld chaincode: %s&quot;, err)</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="编译链码"><a href="#编译链码" class="headerlink" title="编译链码"></a>编译链码</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">go get</span><br><span class="line">go build</span><br></pre></td></tr></table></figure>
+<p>若没有错误，将在当前目录下出现名为<code>helloworld</code>的二进制文件。</p>
+<h1 id="链码部署"><a href="#链码部署" class="headerlink" title="链码部署"></a>链码部署</h1><p>本部分转载自：<a href="http://blog.hubwiz.com/2020/02/23/fabric-2.0-chaincode-operation/" target="_blank" rel="noopener">http://blog.hubwiz.com/2020/02/23/fabric-2.0-chaincode-operation/</a></p>
+<h4 id="1-以无链码方式启动First-Network："><a href="#1-以无链码方式启动First-Network：" class="headerlink" title="1.以无链码方式启动First Network："></a>1.以无链码方式启动First Network：</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cd $GOPATH/src/github.com/hyperledger/fabric-samples/first-network</span><br><span class="line">./byfn.sh up -n</span><br></pre></td></tr></table></figure>
+<p>现在First Network已经启动，通道mychannel已经创建并且所有peer节点已经加入mychannel通道。注意：在Fabric 2.0.0中，First Network使用Raft作为排序服务，所有5个排序节点都在运行。在这个演示中，我们只使用 orderer.example.com，使用其他排序节点同理。</p>
+<h4 id="2-打包helloworld链码"><a href="#2-打包helloworld链码" class="headerlink" title="2.打包helloworld链码"></a>2.打包helloworld链码</h4><p>首先处理依赖问题：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">cd $GOPATH/src/github.com/hyperledger/fabric-samples/chaincode/helloworld/go</span><br><span class="line">GO111MODULE=on go mod vendor</span><br><span class="line">cd $GOPATH/src/github.com/hyperledger/fabric-samples/first-network</span><br></pre></td></tr></table></figure>
+<p>然后打包链码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">docker exec cli peer lifecycle chaincode package helloworld.tar.gz \</span><br><span class="line">--path github.com/hyperledger/fabric-samples/chaincode/helloworld/go/ \</span><br><span class="line">--label helloworld_1</span><br></pre></td></tr></table></figure>
+<p>输入<code>docker exec cli ls</code>在CLI容器内可以看到生成了新的文件helloworld.tar.gz：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">docker exec cli ls</span><br><span class="line"></span><br><span class="line"># 输出</span><br><span class="line">channel-artifacts</span><br><span class="line">crypto</span><br><span class="line">helloworld.tar.gz</span><br><span class="line">log.txt</span><br><span class="line">mychannel.block</span><br><span class="line">scripts</span><br></pre></td></tr></table></figure>
+<h4 id="3-在指定peer节点上安装helloworld链码包"><a href="#3-在指定peer节点上安装helloworld链码包" class="headerlink" title="3.在指定peer节点上安装helloworld链码包"></a>3.在指定peer节点上安装helloworld链码包</h4><p>现在在peer0.org1和peer0.org2上安装helloworld链码包，这个演示只需要使用这两个节点进行链码调用和查询。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"># peer0.org1</span><br><span class="line">docker exec cli peer lifecycle chaincode install helloworld.tar.gz</span><br><span class="line"></span><br><span class="line"># 输出</span><br><span class="line">2020-04-14 07:43:48.528 UTC [cli.lifecycle.chaincode] submitInstallProposal -&gt; INFO 001 Installed remotely: response:&lt;status:200 payload:&quot;\nMhelloworld_1:6f113ccdebf6f073868d980b990b87bc2eb5c62fa1a42f93e26a58b4136bfd77\022\014helloworld_1&quot; &gt;</span><br><span class="line">2020-04-14 07:43:48.529 UTC [cli.lifecycle.chaincode] submitInstallProposal -&gt; INFO 002 Chaincode code package identifier: helloworld_1:6f113ccdebf6f073868d980b990b87bc2eb5c62fa1a42f93e26a58b4136bfd77</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"># peer0.org2</span><br><span class="line">docker exec \</span><br><span class="line">  -e CORE_PEER_MSPCONFIGPATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org2.example.com/users/Admin@org2.example.com/msp \</span><br><span class="line">  -e CORE_PEER_ADDRESS=peer0.org2.example.com:9051 \</span><br><span class="line">  -e CORE_PEER_LOCALMSPID=&quot;Org2MSP&quot; \</span><br><span class="line">  -e CORE_PEER_TLS_ROOTCERT_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org2.example.com/peers/peer0.org2.example.com/tls/ca.crt \</span><br><span class="line">  cli peer lifecycle chaincode install helloworld.tar.gz </span><br><span class="line">  </span><br><span class="line"># 输出</span><br><span class="line">2020-04-14 07:45:10.114 UTC [cli.lifecycle.chaincode] submitInstallProposal -&gt; INFO 001 Installed remotely: response:&lt;status:200 payload:&quot;\nMhelloworld_1:6f113ccdebf6f073868d980b990b87bc2eb5c62fa1a42f93e26a58b4136bfd77\022\014helloworld_1&quot; &gt;</span><br><span class="line">2020-04-14 07:45:10.115 UTC [cli.lifecycle.chaincode] submitInstallProposal -&gt; INFO 002 Chaincode code package identifier: helloworld_1:6f113ccdebf6f073868d980b990b87bc2eb5c62fa1a42f93e26a58b4136bfd77</span><br></pre></td></tr></table></figure>
+<p>输出链码包的标识符，在下面的链码审批阶段会用到。输出的链码标识符为：helloworld_1:6f113ccdebf6f073868d980b990b87bc2eb5c62fa1a42f93e26a58b4136bfd77。</p>
+<p>可以使用<code>docker exec cli peer lifecycle chaincode queryinstalled</code>命令随时检查节点上的链码安装情况，如果我们需要找出链码包的标识ID，这个命令会很有用。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"># peer0.org1</span><br><span class="line">docker exec cli peer lifecycle chaincode queryinstalled</span><br><span class="line"></span><br><span class="line"># 输出</span><br><span class="line">Installed chaincodes on peer:</span><br><span class="line">Package ID: helloworld_1:6f113ccdebf6f073868d980b990b87bc2eb5c62fa1a42f93e26a58b4136bfd77, Label: helloworld_1</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"># peer0.org2</span><br><span class="line">docker exec \</span><br><span class="line">  -e CORE_PEER_MSPCONFIGPATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org2.example.com/users/Admin@org2.example.com/msp \</span><br><span class="line">  -e CORE_PEER_ADDRESS=peer0.org2.example.com:9051 \</span><br><span class="line">  -e CORE_PEER_LOCALMSPID=&quot;Org2MSP&quot; \</span><br><span class="line">  -e CORE_PEER_TLS_ROOTCERT_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org2.example.com/peers/peer0.org2.example.com/tls/ca.crt \</span><br><span class="line">  cli peer lifecycle chaincode queryinstalled</span><br><span class="line">  </span><br><span class="line"># 输出</span><br><span class="line">Installed chaincodes on peer:</span><br><span class="line">Package ID: helloworld_1:6f113ccdebf6f073868d980b990b87bc2eb5c62fa1a42f93e26a58b4136bfd77, Label: helloworld_1</span><br></pre></td></tr></table></figure>
+<h4 id="4-审批链码"><a href="#4-审批链码" class="headerlink" title="4.审批链码"></a>4.审批链码</h4><p>根据默认策略，需要超过半数的机构审批链码后才能向通道提交链码，具体可参考configtx.yaml中的Application/Policies/LifecycleEndorsement部分。目前的设置中包含两个机构，因此需要两个机构同时批准链码。</p>
+<p>首先是Org1批准链码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">#PACKAGE_ID即helloworld_1:6f113ccdebf6f073868d980b990b87bc2eb5c62fa1a42f93e26a58b4136bfd77</span><br><span class="line">docker exec cli peer lifecycle chaincode approveformyorg \</span><br><span class="line">  --tls \</span><br><span class="line">  --cafile /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/example.com/orderers/orderer.example.com/msp/tlscacerts/tlsca.example.com-cert.pem \</span><br><span class="line">  --channelID mychannel --name mycc --version 1 \</span><br><span class="line">  --init-required --sequence 1 --waitForEvent --package-id $&#123;PACKAGE_ID&#125;</span><br><span class="line">  </span><br><span class="line"># 输出</span><br><span class="line">2020-04-14 07:48:36.342 UTC [cli.lifecycle.chaincode] setOrdererClient -&gt; INFO 001 Retrieved channel (mychannel) orderer endpoint: orderer.example.com:7050</span><br><span class="line">2020-04-14 07:48:38.455 UTC [chaincodeCmd] ClientWait -&gt; INFO 002 txid [71ad8cbeae8fb96483e236b4dabbc044f2e1acccc459b01157ea7d7d57a56d82] committed with status (VALID) at</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">让Org2批准链码：</span><br><span class="line"></span><br><span class="line">#$&#123;PACKAGE_ID&#125;即helloworld_1:6f113ccdebf6f073868d980b990b87bc2eb5c62fa1a42f93e26a58b4136bfd77</span><br><span class="line"></span><br><span class="line">docker exec \</span><br><span class="line">  -e CORE_PEER_MSPCONFIGPATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org2.example.com/users/Admin@org2.example.com/msp \</span><br><span class="line">  -e CORE_PEER_ADDRESS=peer0.org2.example.com:9051 \</span><br><span class="line">  -e CORE_PEER_LOCALMSPID=&quot;Org2MSP&quot; \</span><br><span class="line">  -e CORE_PEER_TLS_ROOTCERT_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org2.example.com/peers/peer0.org2.example.com/tls/ca.crt \</span><br><span class="line">  cli peer lifecycle chaincode approveformyorg \</span><br><span class="line">  --tls \</span><br><span class="line">  --cafile /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/example.com/orderers/orderer.example.com/msp/tlscacerts/tlsca.example.com-cert.pem \</span><br><span class="line">  --channelID mychannel --name mycc --version 1 --init-required \</span><br><span class="line">  --sequence 1 --waitForEvent --package-id $&#123;PACKAGE_ID&#125;</span><br><span class="line"> </span><br><span class="line"> # 输出 </span><br><span class="line"> 2020-04-14 07:52:17.334 UTC [cli.lifecycle.chaincode] setOrdererClient -&gt; INFO 001 Retrieved channel (mychannel) orderer endpoint: orderer.example.com:7050</span><br><span class="line">2020-04-14 07:52:19.428 UTC [chaincodeCmd] ClientWait -&gt; INFO 002 txid [0b2e037698548040fdd0426eda7fa04fb238c45845a607706eb82e87463dc245] committed with status (VALID) at</span><br></pre></td></tr></table></figure>
+<p>注意在approval命令中指定了init相关的参数，以便向helloworld链码的 Init方法传入所需的参数。</p>
+<p>可以随时使用如下命令查看链码的提交状态</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">docker exec cli peer lifecycle chaincode checkcommitreadiness \</span><br><span class="line">  --channelID mychannel --name mycc --version 1 --sequence 1 --output json</span><br><span class="line">  </span><br><span class="line">  &#123;</span><br><span class="line">	&quot;approvals&quot;: &#123;</span><br><span class="line">		&quot;Org1MSP&quot;: true,</span><br><span class="line">		&quot;Org2MSP&quot;: true</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>两个机构都已经批准了链码，现在可以提交了。</p>
+<h4 id="5-向通道mychannel提交链码"><a href="#5-向通道mychannel提交链码" class="headerlink" title="5.向通道mychannel提交链码"></a>5.向通道mychannel提交链码</h4><p>链码提交可以在一个peer节点上完成：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">docker exec cli peer lifecycle chaincode commit -o orderer.example.com:7050 \</span><br><span class="line">  --tls \</span><br><span class="line">  --cafile /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/example.com/orderers/orderer.example.com/msp/tlscacerts/tlsca.example.com-cert.pem \</span><br><span class="line">  --peerAddresses peer0.org1.example.com:7051 \</span><br><span class="line">  --tlsRootCertFiles /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls/ca.crt \</span><br><span class="line">  --peerAddresses peer0.org2.example.com:9051 \</span><br><span class="line">  --tlsRootCertFiles /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org2.example.com/peers/peer0.org2.example.com/tls/ca.crt \</span><br><span class="line">  --channelID mychannel --name mycc --version 1 --sequence 1 --init-required</span><br><span class="line">  </span><br><span class="line"># 输出</span><br><span class="line">2020-04-14 07:57:11.516 UTC [chaincodeCmd] ClientWait -&gt; INFO 001 txid [614ce69bb9b85140b02dc993550469c5d0b8afa7718df3ebd4bfa56e45d82f9b] committed with status (VALID) at peer0.org1.example.com:7051</span><br><span class="line">2020-04-14 07:57:11.561 UTC [chaincodeCmd] ClientWait -&gt; INFO 002 txid [614ce69bb9b85140b02dc993550469c5d0b8afa7718df3ebd4bfa56e45d82f9b] committed with status (VALID) at peer0.org2.example.com:9051</span><br></pre></td></tr></table></figure>
+<p>注意在commit命令中已经包含了init所需的参数。</p>
+<p>同样，我们可以使用querycommited命令来查看链码的提交状态：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">docker exec cli peer lifecycle chaincode querycommitted --channelID mychannel --name mycc</span><br><span class="line"></span><br><span class="line"># 输出</span><br><span class="line">Committed chaincode definition for chaincode &apos;mycc&apos; on channel &apos;mychannel&apos;:</span><br><span class="line">Version: 1, Sequence: 1, Endorsement Plugin: escc, Validation Plugin: vscc, Approvals: [Org1MSP: true, Org2MSP: true]</span><br></pre></td></tr></table></figure>
+<p>在链码提交到通道之后，链码的生命周期就完成了，链码已经可以访问。 现在回到链码的调用和查询，这和之前的版本是一致的。</p>
+<h4 id="6-调用链码的Init方法"><a href="#6-调用链码的Init方法" class="headerlink" title="6.调用链码的Init方法"></a>6.调用链码的Init方法</h4><p>需要首先调用helloworld链码的Init方法进行链码初始化。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">docker exec cli peer chaincode invoke -o orderer.example.com:7050 \</span><br><span class="line">  --tls \</span><br><span class="line">  --cafile /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/example.com/orderers/orderer.example.com/msp/tlscacerts/tlsca.example.com-cert.pem \</span><br><span class="line">  --peerAddresses peer0.org1.example.com:7051 \</span><br><span class="line">  --tlsRootCertFiles /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls/ca.crt \</span><br><span class="line">  --peerAddresses peer0.org2.example.com:9051 \</span><br><span class="line">  --tlsRootCertFiles /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org2.example.com/peers/peer0.org2.example.com/tls/ca.crt \</span><br><span class="line">  -C mychannel -n mycc --isInit -c &apos;&#123;&quot;Args&quot;:[&quot;name&quot;,&quot;kc&quot;]&#125;&apos;</span><br><span class="line"></span><br><span class="line"># 输出  </span><br><span class="line">2020-04-14 07:59:58.716 UTC [chaincodeCmd] chaincodeInvokeOrQuery -&gt; INFO 001 Chaincode invoke successful. result: status:200</span><br></pre></td></tr></table></figure>
+<p>现在可以查询链码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">docker exec cli peer chaincode query -C mychannel -n mycc -c &apos;&#123;&quot;Args&quot;:[&quot;get&quot;,&quot;name&quot;]&#125;&apos;</span><br><span class="line"></span><br><span class="line"># 输出</span><br><span class="line">kc</span><br></pre></td></tr></table></figure>
+<h4 id="7-调用链码的set-方法并从另一个peer节点查询"><a href="#7-调用链码的set-方法并从另一个peer节点查询" class="headerlink" title="7.调用链码的set()方法并从另一个peer节点查询"></a>7.调用链码的set()方法并从另一个peer节点查询</h4><p>和之前一样，在peer0.org1上调用链码的set()方法，在peer0.org2上 进行查询：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"># peer0.org1</span><br><span class="line">docker exec cli peer chaincode invoke \</span><br><span class="line">  -o orderer.example.com:7050 \</span><br><span class="line">  --tls \</span><br><span class="line">  --cafile /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/example.com/orderers/orderer.example.com/msp/tlscacerts/tlsca.example.com-cert.pem \</span><br><span class="line">  --peerAddresses peer0.org1.example.com:7051 \</span><br><span class="line">  --tlsRootCertFiles /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls/ca.crt \</span><br><span class="line">  --peerAddresses peer0.org2.example.com:9051 \</span><br><span class="line">  --tlsRootCertFiles /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org2.example.com/peers/peer0.org2.example.com/tls/ca.crt \</span><br><span class="line">  -C mychannel -n mycc -c &apos;&#123;&quot;Args&quot;:[&quot;set&quot;,&quot;name&quot;,&quot;Peter&quot;]&#125;&apos;</span><br><span class="line"></span><br><span class="line"># 输出  </span><br><span class="line">2020-04-14 08:01:04.146 UTC [chaincodeCmd] chaincodeInvokeOrQuery -&gt; INFO 001 Chaincode invoke successful. result: status:200 payload:&quot;Peter&quot;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">  # peer0.org2</span><br><span class="line">docker exec \</span><br><span class="line">  -e CORE_PEER_MSPCONFIGPATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org2.example.com/users/Admin@org2.example.com/msp \</span><br><span class="line">  -e CORE_PEER_ADDRESS=peer0.org2.example.com:9051 \</span><br><span class="line">  -e CORE_PEER_LOCALMSPID=&quot;Org2MSP&quot; \</span><br><span class="line">  -e CORE_PEER_TLS_ROOTCERT_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org2.example.com/peers/peer0.org2.example.com/tls/ca.crt \</span><br><span class="line">  cli peer chaincode query -C mychannel -n mycc -c &apos;&#123;&quot;Args&quot;:[&quot;get&quot;,&quot;name&quot;]&#125;&apos;</span><br><span class="line">  </span><br><span class="line">  # 输出</span><br><span class="line">  Peter</span><br></pre></td></tr></table></figure>
+<p>关闭网络<br><code>./byfn.sh up -n</code></p>
+<p>Error: endorsement failure during query. response: status:500 message:”error in simulation: failed to execute transaction 23cbb805a07e9fe23da930f017039a9edd49be150ea3e6c9744be124cf65c7d4: invalid invocation: chaincode ‘mycc’ has not been initialized for this version, must call as init first”</p>
+<p>2.0 为 chaincode 增加了 init-required 选项，在 approve、commit 阶段设置，设置了 init-required 的 chaincode 必须先执行 Init 才能执行其他的操作。详见 chaincode_support.go CheckInvocation</p>
+<p>Error: could not assemble transaction: ProposalResponsePayloads do not match - proposal response: version:1 response:</p>
+<ul>
+<li>Docker日志</li>
+</ul>
+<p><a href="https://stackoverflow.com/questions/41823340/how-to-print-and-view-logs-from-hyperledger-fabric-chaincode" target="_blank" rel="noopener">https://stackoverflow.com/questions/41823340/how-to-print-and-view-logs-from-hyperledger-fabric-chaincode</a></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">If you startup your chaincode in dev mode using a command like ./chaincode_example02, then the log statements should be visible in the console where that same process is started.</span><br><span class="line"></span><br><span class="line">If you deploy the chaincode in net mode then each peer starts up a docker container that is named something like &lt;networkId&gt;-&lt;peer enroll id&gt;-&lt;chaincode Id&gt; .You can view all the docker containers started up on a peer by using the command docker ps, and view the content of a log by using the command docker logs &lt;container id (get this from the previous command)&gt;</span><br></pre></td></tr></table></figure>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">2020</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/study.github.io/2020/04/13/fabric-chaincode-write/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-fabric-app" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -1125,90 +1262,6 @@
 
 
   
-    <article id="post-recommand-video" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/study.github.io/2020/03/15/recommand-video/">recommand-video-links</a>
-    </h1>
-  
-
-        
-        <a href="/study.github.io/2020/03/15/recommand-video/" class="archive-article-date">
-  	<time datetime="2020-03-15T08:15:53.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-03-15</time>
-</a>
-        
-      </header>
-    
-<!-- 目录内容 -->
-
-<!-- 目录内容结束 -->
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>北京大学区块链技术与应用-肖臻老师</p>
-<p><a href="https://www.bilibili.com/video/av37065233?p=1" target="_blank" rel="noopener">https://www.bilibili.com/video/av37065233?p=1</a></p>
-<p>区块链学习中文资源</p>
-<p><a href="https://github.com/RookieLinLucy666/blockchain">https://github.com/RookieLinLucy666/blockchain</a></p>
-<p>详解区块链P2P网络</p>
-<p><a href="https://keeganlee.me/post/blockchain/20180313/" target="_blank" rel="noopener">https://keeganlee.me/post/blockchain/20180313/</a></p>
-<p>Kademlia协议原理简介</p>
-<p><a href="http://www.yeolar.com/note/2010/03/21/kademlia/#id13" target="_blank" rel="noopener">http://www.yeolar.com/note/2010/03/21/kademlia/#id13</a></p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">2020</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/study.github.io/2020/03/15/recommand-video/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
   
     <nav id="page-nav">
       <a class="extend prev" rel="prev" href="/study.github.io/">&laquo; Prev</a><a class="page-number" href="/study.github.io/">1</a><span class="page-number current">2</span><a class="page-number" href="/study.github.io/page/3/">3</a><a class="page-number" href="/study.github.io/page/4/">4</a><a class="extend next" rel="next" href="/study.github.io/page/3/">Next &raquo;</a>
@@ -1317,15 +1370,15 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">2020</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">2019</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">codewar</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">2020</a>
               </li>
              
               <li class="article-tag-list-item">
