@@ -153,6 +153,214 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-fisco-gosdk" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/study.github.io/2020/11/06/fisco-gosdk/">FISCOBCOS Go SDK Tutorial</a>
+    </h1>
+  
+
+        
+        <a href="/study.github.io/2020/11/06/fisco-gosdk/" class="archive-article-date">
+  	<time datetime="2020-11-06T02:08:25.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-11-06</time>
+</a>
+        
+      </header>
+    
+<!-- 目录内容 -->
+
+<!-- 目录内容结束 -->
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="FISCO-BCOS-Go-SDK-调用流程"><a href="#FISCO-BCOS-Go-SDK-调用流程" class="headerlink" title="FISCO BCOS Go-SDK 调用流程"></a>FISCO BCOS Go-SDK 调用流程</h1><p>首先声明，本文不涉及国密调用流程，有国密需求请到官方github中获取信息。<br>在<a href="https://github.com/FISCO-BCOS/go-sdk">官方github说明</a>稍作修改，让教程更加方便快捷。</p>
+<h2 id="环境准备"><a href="#环境准备" class="headerlink" title="环境准备"></a>环境准备</h2><ul>
+<li>Golang, 版本需不低于1.13.6，项目采用go module进行包管理。</li>
+<li>FISCO BCOS 2.2.0+, 需要提前运行FISCOBCOS区块链平台<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">cd ~/fisco/</span><br><span class="line">bash nodes/127.0.0.1/start_all.sh</span><br><span class="line">cp nodes/127.0.0.1/sdk/* console/conf/</span><br><span class="line">cd ~/fisco/console &amp;&amp; bash start.sh #启动成功后，退出即可</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>启动FISCO BCOS平台后，拷贝证书<code>ca.crt/sdk.crt/sdk.key</code>到当前项目目录下，目录结构如下所示。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">├── Store.go</span><br><span class="line">├── account.go</span><br><span class="line">├── ca.crt</span><br><span class="line">├── code</span><br><span class="line">├── contract</span><br><span class="line">│   └── Store.sol</span><br><span class="line">├── go-sdk</span><br><span class="line">├── go.mod</span><br><span class="line">├── go.sum</span><br><span class="line">├── main.go</span><br><span class="line">├── sdk.crt</span><br><span class="line">├── sdk.key</span><br><span class="line">└── vendor</span><br></pre></td></tr></table></figure></p>
+<ul>
+<li>Solidity编译器，默认0.4.25版本<h2 id="配置文件说明（看看即可，具体实现方式会在下文给出代码）"><a href="#配置文件说明（看看即可，具体实现方式会在下文给出代码）" class="headerlink" title="配置文件说明（看看即可，具体实现方式会在下文给出代码）"></a>配置文件说明（看看即可，具体实现方式会在下文给出代码）</h2>这个文件即下文所说的<code>config.toml</code>。<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">[Network]</span><br><span class="line">#type rpc or channel</span><br><span class="line">Type=&quot;channel&quot;</span><br><span class="line">CAFile=&quot;ca.crt&quot;</span><br><span class="line">Cert=&quot;sdk.crt&quot;</span><br><span class="line">Key=&quot;sdk.key&quot;</span><br><span class="line">[[Network.Connection]]</span><br><span class="line">NodeURL=&quot;127.0.0.1:20200&quot;</span><br><span class="line">GroupID=1</span><br><span class="line"># [[Network.Connection]]</span><br><span class="line"># NodeURL=&quot;127.0.0.1:20200&quot;</span><br><span class="line"># GroupID=2</span><br><span class="line"></span><br><span class="line">[Account]</span><br><span class="line"># only support PEM format for now</span><br><span class="line">KeyFile=&quot;.ci/0x83309d045a19c44dc3722d15a6abd472f95866ac.pem&quot;</span><br><span class="line"></span><br><span class="line">[Chain]</span><br><span class="line">ChainID=1</span><br><span class="line">SMCrypto=false</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="Network"><a href="#Network" class="headerlink" title="Network"></a>Network</h3><ul>
+<li>Type：支持channel和rpc两种模式，其中channel使用ssl链接，需要提供证书。rpc使用http访问节点。</li>
+<li>CAFile：链根证书</li>
+<li>Cert：SDK建立SSL链接时使用的证书</li>
+<li>Key：SDK建立SSL链接时使用的证书对应的私钥</li>
+<li>Network.Connection数组，配置节点信息，可配置多个。<h3 id="Account-看看如何生成即可，具体实现方式在下文代码中体现"><a href="#Account-看看如何生成即可，具体实现方式在下文代码中体现" class="headerlink" title="Account(看看如何生成即可，具体实现方式在下文代码中体现)"></a>Account(看看如何生成即可，具体实现方式在下文代码中体现)</h3></li>
+<li>KeyFile：节点签发交易时所使用的私钥，PEM格式，支持国密和非国密。<h4 id="使用脚本生成"><a href="#使用脚本生成" class="headerlink" title="使用脚本生成"></a>使用脚本生成</h4><a href="https://fisco-bcos-documentation.readthedocs.io/zh_CN/latest/docs/manual/account.html" target="_blank" rel="noopener">https://fisco-bcos-documentation.readthedocs.io/zh_CN/latest/docs/manual/account.html</a></li>
+<li>获取脚本<br><code>curl -#LO https://raw.githubusercontent.com/FISCO-BCOS/console/master/tools/get_account.sh &amp;&amp; chmod u+x get_account.sh &amp;&amp; bash get_account.sh -h</code></li>
+<li>生成私钥、地址和账户<br><code>bash get_account.sh</code><br>此时，当前目录的accounts文件夹下包含公私钥文件。<h4 id="使用Go-SDK代码生成"><a href="#使用Go-SDK代码生成" class="headerlink" title="使用Go-SDK代码生成"></a>使用Go-SDK代码生成</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">package main</span><br><span class="line"></span><br><span class="line">import (</span><br><span class="line">    &quot;crypto/ecdsa&quot;</span><br><span class="line">    &quot;fmt&quot;</span><br><span class="line">    &quot;log&quot;</span><br><span class="line">    &quot;os&quot;</span><br><span class="line">    &quot;github.com/ethereum/go-ethereum/crypto&quot;</span><br><span class="line">    &quot;github.com/ethereum/go-ethereum/common/hexutil&quot;</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">func main() &#123;</span><br><span class="line">    privateKey, err := crypto.GenerateKey()</span><br><span class="line">    if err != nil &#123;</span><br><span class="line">        log.Fatal(err)</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    privateKeyBytes := crypto.FromECDSA(privateKey)</span><br><span class="line">    fmt.Println(&quot;private key: &quot;, hexutil.Encode(privateKeyBytes)[2:]) // privateKey in hex without &quot;0x&quot;</span><br><span class="line"></span><br><span class="line">    publicKey := privateKey.Public()</span><br><span class="line">    publicKeyECDSA, ok := publicKey.(*ecdsa.PublicKey)</span><br><span class="line">    if !ok &#123;</span><br><span class="line">        log.Fatal(&quot;cannot assert type: publicKey is not of type *ecdsa.PublicKey&quot;)</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    publicKeyBytes := crypto.FromECDSAPub(publicKeyECDSA)</span><br><span class="line">    fmt.Println(&quot;publick key: &quot;, hexutil.Encode(publicKeyBytes)[4:])  // publicKey in hex without &quot;0x&quot;</span><br><span class="line"></span><br><span class="line">    address := crypto.PubkeyToAddress(*publicKeyECDSA).Hex()</span><br><span class="line">    fmt.Println(&quot;address: &quot;, address)  // account address</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="Chain"><a href="#Chain" class="headerlink" title="Chain"></a>Chain</h3><ul>
+<li>ChainID：链ID，与节点config.ini中chain.id保持一致。</li>
+<li>SMCrypto：链使用的签名算法，ture表示使用国密SM2，false表示使用普通ECDSA。<h2 id="控制台使用（看看即可，可以看看go-sdk源码，里面包含测试用例，对下面调用很有帮助）"><a href="#控制台使用（看看即可，可以看看go-sdk源码，里面包含测试用例，对下面调用很有帮助）" class="headerlink" title="控制台使用（看看即可，可以看看go-sdk源码，里面包含测试用例，对下面调用很有帮助）"></a>控制台使用（看看即可，可以看看go-sdk源码，里面包含测试用例，对下面调用很有帮助）</h2>在使用控制台需要先拉取代码或下载代码，然后对配置文件<code>config.toml</code>进行更改:</li>
+</ul>
+<p>1.拉取代码并编译<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git clone https://github.com/FISCO-BCOS/go-sdk.git</span><br><span class="line">cd go-sdk</span><br><span class="line">go build cmd/console.go</span><br></pre></td></tr></table></figure></p>
+<p>2.搭建FISCO BCOS 2.2以上版本节点。<br>3.<code>config.toml</code>默认使用channel模式，请拷贝对应的SDK证书。<br>4.最后，运行控制台查看可用指令:<br>./console help</p>
+<h2 id="Solidity合约编译为Go文件"><a href="#Solidity合约编译为Go文件" class="headerlink" title="Solidity合约编译为Go文件"></a>Solidity合约编译为Go文件</h2><p>在利用SDK进行项目开发时，对智能合约进行操作时需要将Solidity智能合约利用go-sdk的<code>abigen</code>工具转换为<code>Go</code>文件代码。整体上主要包含了五个流程：</p>
+<ul>
+<li>准备需要编译的智能合约</li>
+<li>配置好相应版本的solc编译器</li>
+<li>构建go-sdk的合约编译工具abigen</li>
+<li>编译生成go文件</li>
+<li>使用生成的go文件进行合约调用<br>1.提供一份简单的样例智能合约<code>Store.sol</code>如下:<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">pragma solidity ^0.4.25;</span><br><span class="line"></span><br><span class="line">contract Store &#123;</span><br><span class="line">  event ItemSet(bytes32 key, bytes32 value);</span><br><span class="line"></span><br><span class="line">  string public version;</span><br><span class="line">  mapping (bytes32 =&gt; bytes32) public items;</span><br><span class="line"></span><br><span class="line">  constructor(string _version) public &#123;</span><br><span class="line">    version = _version;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  function setItem(bytes32 key, bytes32 value) external &#123;</span><br><span class="line">    items[key] = value;</span><br><span class="line">    emit ItemSet(key, value);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>2.安装对应版本的solc编译器，目前FISCO BCOS默认的solc编译器版本为0.4.25。(下载<code>go-sdk</code>，即可在相应目录下进行编译)<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">bash tools/download_solc.sh -v 0.4.25</span><br></pre></td></tr></table></figure></p>
+<p>3.构建<code>go-sdk</code>的代码生成工具<code>abigen</code>（均在<code>go-sdk</code>的目录下编译）<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># 下面指令在go-sdk目录下操作，编译生成abigen工具</span><br><span class="line">go build ./cmd/abigen</span><br></pre></td></tr></table></figure></p>
+<p>执行命令后，检查根目录下是否存在<code>abigen</code>，并将准备的智能合约<code>Store.sol</code>放置在一个新的目录下:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mkdir ./store</span><br><span class="line">mv Store.sol ./store</span><br></pre></td></tr></table></figure></p>
+<p>4.编译生成go文件，先利用solc将合约文件生成abi和bin文件，以前面所提供的Store.sol为例<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./solc-0.4.25 --bin --abi -o ./store ./store/Store.sol</span><br></pre></td></tr></table></figure></p>
+<p>Store.sol目录下会生成Store.bin和Store.abi。此时利用abigen工具将Store.bin和Store.abi转换成Store.go：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./abigen --bin ./store/Store.bin --abi ./store/Store.abi --pkg store --type Store --out ./store/Store.go</span><br></pre></td></tr></table></figure></p>
+<p>最后store目录下面存在以下文件：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Store.abi  Store.bin  Store.go  Store.sol</span><br></pre></td></tr></table></figure></p>
+<p>将Store.go复制到项目目录下，项目结构如下所示：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">├── Store.go</span><br><span class="line">├── account.go</span><br><span class="line">├── ca.crt</span><br><span class="line">├── code</span><br><span class="line">├── contract</span><br><span class="line">│   └── Store.sol</span><br><span class="line">├── go-sdk</span><br><span class="line">├── go.mod</span><br><span class="line">├── go.sum</span><br><span class="line">├── main.go</span><br><span class="line">├── sdk.crt</span><br><span class="line">├── sdk.key</span><br><span class="line">└── vendor</span><br></pre></td></tr></table></figure></p>
+<h2 id="部署智能合约"><a href="#部署智能合约" class="headerlink" title="部署智能合约"></a>部署智能合约</h2><p>创建main函数，调用Store合约，<code>touch main.go</code>。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">package main</span><br><span class="line"></span><br><span class="line">import (</span><br><span class="line">	&quot;encoding/hex&quot;</span><br><span class="line">	&quot;fmt&quot;</span><br><span class="line">	&quot;log&quot;</span><br><span class="line"></span><br><span class="line">	&quot;github.com/FISCO-BCOS/go-sdk/client&quot;</span><br><span class="line">	&quot;github.com/FISCO-BCOS/go-sdk/conf&quot;</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">func main() &#123;</span><br><span class="line">	privateKeyStr, _, _ := generateAccount()</span><br><span class="line">	privateKey, _ := hex.DecodeString(privateKeyStr)</span><br><span class="line">	config := &amp;conf.Config&#123;IsHTTP: false, ChainID: 1, IsSMCrypto: false, GroupID: 1, CAFile: &quot;ca.crt&quot;, Key: &quot;sdk.key&quot;, Cert: &quot;sdk.crt&quot;,</span><br><span class="line">		PrivateKey: privateKey, NodeURL: &quot;127.0.0.1:20200&quot;&#125;</span><br><span class="line">	client, err := client.Dial(config)</span><br><span class="line">	if err != nil &#123;</span><br><span class="line">		log.Fatal(err)</span><br><span class="line">	&#125;</span><br><span class="line">	input := &quot;Store deployment 1.0&quot;</span><br><span class="line">	address, tx, instance, err := DeployStore(client.GetTransactOpts(), client, input)</span><br><span class="line">	if err != nil &#123;</span><br><span class="line">		log.Fatal(err)</span><br><span class="line">	&#125;</span><br><span class="line">	fmt.Println(&quot;contract address: &quot;, address.Hex()) // the address should be saved</span><br><span class="line">	fmt.Println(&quot;transaction hash: &quot;, tx.Hash().Hex())</span><br><span class="line">	_ = instance</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>其中生成外部账户的<code>generateAccount()</code>在<code>account.go</code>文件中。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line">package main</span><br><span class="line"></span><br><span class="line">import (</span><br><span class="line">	&quot;crypto/ecdsa&quot;</span><br><span class="line">	&quot;fmt&quot;</span><br><span class="line">	&quot;log&quot;</span><br><span class="line"></span><br><span class="line">	&quot;github.com/ethereum/go-ethereum/common/hexutil&quot;</span><br><span class="line">	&quot;github.com/ethereum/go-ethereum/crypto&quot;</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">func generateAccount() (string, string, string) &#123;</span><br><span class="line">	privateKey, err := crypto.GenerateKey()</span><br><span class="line">	if err != nil &#123;</span><br><span class="line">		log.Fatal(err)</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	privateKeyBytes := crypto.FromECDSA(privateKey)</span><br><span class="line">	privateKeyStr := hexutil.Encode(privateKeyBytes)[2:] // privateKey in hex without &quot;0x&quot;</span><br><span class="line"></span><br><span class="line">	publicKey := privateKey.Public()</span><br><span class="line">	publicKeyECDSA, ok := publicKey.(*ecdsa.PublicKey)</span><br><span class="line">	if !ok &#123;</span><br><span class="line">		log.Fatal(&quot;cannot assert type: publicKey is not of type *ecdsa.PublicKey&quot;)</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	publicKeyBytes := crypto.FromECDSAPub(publicKeyECDSA)</span><br><span class="line">	publicKeyStr := hexutil.Encode(publicKeyBytes)[4:] // publicKey in hex without &quot;0x&quot;</span><br><span class="line"></span><br><span class="line">	address := crypto.PubkeyToAddress(*publicKeyECDSA).Hex()</span><br><span class="line">	addressStr := address // account address</span><br><span class="line"></span><br><span class="line">	return privateKeyStr, publicKeyStr, addressStr</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">func typeof(v interface&#123;&#125;) string &#123;</span><br><span class="line">	return fmt.Sprintf(&quot;%T&quot;, v)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>此时运行项目<code>go run *.go</code>，出现以下内容，则成功部署智能合约。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">contract address:0xA6CBac6EE073b345298Dc6909240a067B5220C6B</span><br><span class="line">transaction hash: 0xf81e158b29c9fa2db53b1bfb8e73170de8116f85b4a21cf6084fcbe9c81e7796</span><br></pre></td></tr></table></figure></p>
+<h2 id="加载智能合约并调用查询接口"><a href="#加载智能合约并调用查询接口" class="headerlink" title="加载智能合约并调用查询接口"></a>加载智能合约并调用查询接口</h2><p>在部署过程中设置的Store.sol合约中有一个名为version的全局变量。 因为它是公开的，这意味着它们将成为我们自动创建的getter函数。常量和view函数也接受bind.CallOpts作为第一个参数。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><span class="line">package main</span><br><span class="line"></span><br><span class="line">import (</span><br><span class="line">	&quot;encoding/hex&quot;</span><br><span class="line">	&quot;fmt&quot;</span><br><span class="line">	&quot;log&quot;</span><br><span class="line"></span><br><span class="line">	&quot;github.com/FISCO-BCOS/go-sdk/client&quot;</span><br><span class="line">	&quot;github.com/FISCO-BCOS/go-sdk/conf&quot;</span><br><span class="line">	&quot;github.com/ethereum/go-ethereum/common&quot;</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">func main() &#123;</span><br><span class="line">	privateKeyStr, _, _ := generateAccount()</span><br><span class="line">	privateKey, _ := hex.DecodeString(privateKeyStr)</span><br><span class="line">	config := &amp;conf.Config&#123;IsHTTP: false, ChainID: 1, IsSMCrypto: false, GroupID: 1, CAFile: &quot;ca.crt&quot;, Key: &quot;sdk.key&quot;, Cert: &quot;sdk.crt&quot;,</span><br><span class="line">		PrivateKey: privateKey, NodeURL: &quot;127.0.0.1:20200&quot;&#125;</span><br><span class="line">	client, err := client.Dial(config)</span><br><span class="line">	if err != nil &#123;</span><br><span class="line">		log.Fatal(err)</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	//Deploy Smart Contracts</span><br><span class="line"></span><br><span class="line">	// input := &quot;Store deployment 1.0&quot;</span><br><span class="line">	// address, tx, instance, err := DeployStore(client.GetTransactOpts(), client, input)</span><br><span class="line">	// if err != nil &#123;</span><br><span class="line">	// 	log.Fatal(err)</span><br><span class="line">	// &#125;</span><br><span class="line">	// fmt.Println(&quot;contract address: &quot;, address.Hex()) // the address should be saved</span><br><span class="line">	// fmt.Println(&quot;transaction hash: &quot;, tx.Hash().Hex())</span><br><span class="line">	// _ = instance</span><br><span class="line"></span><br><span class="line">	// 	contract address:  0xA6CBac6EE073b345298Dc6909240a067B5220C6B</span><br><span class="line">	// transaction hash:  0xf81e158b29c9fa2db53b1bfb8e73170de8116f85b4a21cf6084fcbe9c81e7796</span><br><span class="line"></span><br><span class="line">	//Load Contracts and Query</span><br><span class="line">	contractAddress := common.HexToAddress(&quot;0xA6CBac6EE073b345298Dc6909240a067B5220C6B&quot;)</span><br><span class="line">	instance, err := NewStore(contractAddress, client)</span><br><span class="line">	if err != nil &#123;</span><br><span class="line">		log.Fatal(err)</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	storeSession := &amp;StoreSession&#123;Contract: instance, CallOpts: *client.GetCallOpts(), TransactOpts: *client.GetTransactOpts()&#125;</span><br><span class="line"></span><br><span class="line">	version, err := storeSession.Version()</span><br><span class="line">	if err != nil &#123;</span><br><span class="line">		log.Fatal(err)</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	fmt.Println(&quot;version :&quot;, version)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h2 id="调用智能合约写接口"><a href="#调用智能合约写接口" class="headerlink" title="调用智能合约写接口"></a>调用智能合约写接口</h2><p>写入智能合约需要我们用私钥来对交易事务进行签名，我们创建的智能合约有一个名为SetItem的外部方法，它接受soliditybytes32类型的两个参数（key，value）。 这意味着在Go文件中需要传递一个长度为32个字节的字节数组。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br></pre></td><td class="code"><pre><span class="line">package main</span><br><span class="line"></span><br><span class="line">import (</span><br><span class="line">	&quot;encoding/hex&quot;</span><br><span class="line">	&quot;fmt&quot;</span><br><span class="line">	&quot;log&quot;</span><br><span class="line"></span><br><span class="line">	&quot;github.com/FISCO-BCOS/go-sdk/client&quot;</span><br><span class="line">	&quot;github.com/FISCO-BCOS/go-sdk/conf&quot;</span><br><span class="line">	&quot;github.com/ethereum/go-ethereum/common&quot;</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">func main() &#123;</span><br><span class="line">	privateKeyStr, _, _ := generateAccount()</span><br><span class="line">	privateKey, _ := hex.DecodeString(privateKeyStr)</span><br><span class="line">	config := &amp;conf.Config&#123;IsHTTP: false, ChainID: 1, IsSMCrypto: false, GroupID: 1, CAFile: &quot;ca.crt&quot;, Key: &quot;sdk.key&quot;, Cert: &quot;sdk.crt&quot;,</span><br><span class="line">		PrivateKey: privateKey, NodeURL: &quot;127.0.0.1:20200&quot;&#125;</span><br><span class="line">	client, err := client.Dial(config)</span><br><span class="line">	if err != nil &#123;</span><br><span class="line">		log.Fatal(err)</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	//Deploy Smart Contracts</span><br><span class="line"></span><br><span class="line">	// input := &quot;Store deployment 1.0&quot;</span><br><span class="line">	// address, tx, instance, err := DeployStore(client.GetTransactOpts(), client, input)</span><br><span class="line">	// if err != nil &#123;</span><br><span class="line">	// 	log.Fatal(err)</span><br><span class="line">	// &#125;</span><br><span class="line">	// fmt.Println(&quot;contract address: &quot;, address.Hex()) // the address should be saved</span><br><span class="line">	// fmt.Println(&quot;transaction hash: &quot;, tx.Hash().Hex())</span><br><span class="line">	// _ = instance</span><br><span class="line"></span><br><span class="line">	// 	contract address:  0xA6CBac6EE073b345298Dc6909240a067B5220C6B</span><br><span class="line">	// transaction hash:  0xf81e158b29c9fa2db53b1bfb8e73170de8116f85b4a21cf6084fcbe9c81e7796</span><br><span class="line"></span><br><span class="line">	//Load Contracts and Query</span><br><span class="line">	contractAddress := common.HexToAddress(&quot;0xA6CBac6EE073b345298Dc6909240a067B5220C6B&quot;)</span><br><span class="line">	instance, err := NewStore(contractAddress, client)</span><br><span class="line">	if err != nil &#123;</span><br><span class="line">		log.Fatal(err)</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	storeSession := &amp;StoreSession&#123;Contract: instance, CallOpts: *client.GetCallOpts(), TransactOpts: *client.GetTransactOpts()&#125;</span><br><span class="line"></span><br><span class="line">	version, err := storeSession.Version()</span><br><span class="line">	if err != nil &#123;</span><br><span class="line">		log.Fatal(err)</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	fmt.Println(&quot;version :&quot;, version)</span><br><span class="line"></span><br><span class="line">	key := [32]byte&#123;&#125;</span><br><span class="line">	value := [32]byte&#123;&#125;</span><br><span class="line">	copy(key[:], []byte(&quot;foo&quot;))</span><br><span class="line">	copy(value[:], []byte(&quot;bar&quot;))</span><br><span class="line"></span><br><span class="line">	tx, receipt, err := storeSession.SetItem(key, value)</span><br><span class="line">	if err != nil &#123;</span><br><span class="line">		log.Fatal(err)</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	fmt.Printf(&quot;tx sent: %s\n&quot;, tx.Hash().Hex())</span><br><span class="line">	fmt.Printf(&quot;transaction hash of receipt: %s\n&quot;, receipt.GetTransactionHash())</span><br><span class="line"></span><br><span class="line">	//**************Seems useless******************</span><br><span class="line">	// wait for the mining</span><br><span class="line">	// receipt, err := client.WaitMined(tx)</span><br><span class="line">	// if err != nil &#123;</span><br><span class="line">	// 	log.Fatalf(&quot;tx mining error:%v\n&quot;, err)</span><br><span class="line">	// &#125;</span><br><span class="line">	//*********************************************</span><br><span class="line"></span><br><span class="line">	// read the result</span><br><span class="line">	result, err := storeSession.Items(key)</span><br><span class="line">	if err != nil &#123;</span><br><span class="line">		log.Fatal(err)</span><br><span class="line">	&#125;</span><br><span class="line">	fmt.Println(string(result[:])) // &quot;bar&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>输出结果如下即为成功:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">version : Store deployment 1.0</span><br><span class="line">tx sent: 0xe89e6eb586e096adbdceb1d83938ef914380c6f102b0635a512e53e26f4a6df7</span><br><span class="line">transaction hash of receipt: 0xe89e6eb586e096adbdceb1d83938ef914380c6f102b0635a512e53e26f4a6df7</span><br><span class="line">bar</span><br></pre></td></tr></table></figure></p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/study.github.io/2020/11/06/fisco-gosdk/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-latex-eps" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/study.github.io/2020/10/05/latex-eps/">vscode latex eps</a>
+    </h1>
+  
+
+        
+        <a href="/study.github.io/2020/10/05/latex-eps/" class="archive-article-date">
+  	<time datetime="2020-10-05T02:46:41.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-10-05</time>
+</a>
+        
+      </header>
+    
+<!-- 目录内容 -->
+
+<!-- 目录内容结束 -->
+    <div class="article-entry" itemprop="articleBody">
+      
+        <ul>
+<li>ppt转eps</li>
+</ul>
+<p><a href="https://zhuanlan.zhihu.com/p/38715627" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/38715627</a></p>
+<ul>
+<li>Mac pdf转eps</li>
+</ul>
+<p><a href="https://wangxin1248.github.io/life/2020/01/pdf2eps.html" target="_blank" rel="noopener">https://wangxin1248.github.io/life/2020/01/pdf2eps.html</a></p>
+<ul>
+<li>latex插入eps报错</li>
+</ul>
+<p>除了改变编译路径外，直接将eps转为pdf，然后去除白边，随后插入即可</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">\begin&#123;figure&#125;</span><br><span class="line">    \centering</span><br><span class="line">    \includegraphics[width=3.33in, keepaspectratio]&#123;fig name&#125;</span><br><span class="line">    \caption&#123;description&#125;</span><br><span class="line">    \label&#123;fig1&#125;</span><br><span class="line">    \end&#123;figure&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>论文适合的图片字体大小</li>
+</ul>
+<p>PPT： 16-20<br>时序图plantuml: 30<br>python作图：x轴14，y轴10，图例10</p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">2020</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/study.github.io/2020/10/05/latex-eps/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-fabric-fisco-deploy" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -749,6 +957,7 @@
 <li>关闭fisco</li>
 </ul>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">cd ~/fisco</span><br><span class="line"></span><br><span class="line">bash nodes/127.0.0.1/stop_all.sh</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"># 获取Java工程项目压缩包</span><br><span class="line"> $ cd ~</span><br><span class="line"> $ curl -#LO https://github.com/FISCO-BCOS/LargeFiles/raw/master/tools/asset-app.tar.gz</span><br><span class="line"> # 解压得到Java工程项目asset-app目录</span><br><span class="line"> $ tar -zxf asset-app.tar.gz</span><br></pre></td></tr></table></figure>
       
 
       
@@ -994,241 +1203,6 @@
 
 
   
-    <article id="post-python-matplotlib-accumulative" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/study.github.io/2020/05/01/python-matplotlib-accumulative/">python堆积柱状图</a>
-    </h1>
-  
-
-        
-        <a href="/study.github.io/2020/05/01/python-matplotlib-accumulative/" class="archive-article-date">
-  	<time datetime="2020-04-30T16:04:36.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-05-01</time>
-</a>
-        
-      </header>
-    
-<!-- 目录内容 -->
-
-<!-- 目录内容结束 -->
-    <div class="article-entry" itemprop="articleBody">
-      
-        <ul>
-<li>堆积柱状图（对比图）及百分比柱状图</li>
-</ul>
-<p><a href="https://blog.csdn.net/weixin_44521703/article/details/101827068" target="_blank" rel="noopener">https://blog.csdn.net/weixin_44521703/article/details/101827068</a></p>
-<ul>
-<li>给多个子图加总标题</li>
-</ul>
-<p>在画完所有的子图后，<code>plt.suptitle(&#39;title&#39;)</code></p>
-<ul>
-<li>并列柱状图</li>
-</ul>
-<p><a href="https://www.jianshu.com/p/fe354a32278e" target="_blank" rel="noopener">https://www.jianshu.com/p/fe354a32278e</a></p>
-<ul>
-<li>简单堆积柱状图</li>
-</ul>
-<p>两组：<a href="https://www.cnblogs.com/czz0508/p/10457366.html" target="_blank" rel="noopener">https://www.cnblogs.com/czz0508/p/10457366.html</a></p>
-<p>三组：<a href="https://blog.csdn.net/gtuif/article/details/89156771" target="_blank" rel="noopener">https://blog.csdn.net/gtuif/article/details/89156771</a></p>
-<ul>
-<li>matplotlib点、线形状及颜色</li>
-</ul>
-<p><a href="https://www.biaodianfu.com/matplotlib-plot.html" target="_blank" rel="noopener">https://www.biaodianfu.com/matplotlib-plot.html</a></p>
-<ul>
-<li>折线堆积图</li>
-</ul>
-<p><a href="https://www.cnblogs.com/czz0508/p/10458455.html" target="_blank" rel="noopener">https://www.cnblogs.com/czz0508/p/10458455.html</a></p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">2020</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/study.github.io/2020/05/01/python-matplotlib-accumulative/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-caliper-deploy-sacc" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/study.github.io/2020/04/29/caliper-deploy-sacc/">Hyperledger Caliper部署示例链码sacc</a>
-    </h1>
-  
-
-        
-        <a href="/study.github.io/2020/04/29/caliper-deploy-sacc/" class="archive-article-date">
-  	<time datetime="2020-04-29T07:22:37.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-04-29</time>
-</a>
-        
-      </header>
-    
-<!-- 目录内容 -->
-
-<!-- 目录内容结束 -->
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="Hyperledger-Fabric性能测试工具Caliper介绍"><a href="#Hyperledger-Fabric性能测试工具Caliper介绍" class="headerlink" title="Hyperledger Fabric性能测试工具Caliper介绍"></a>Hyperledger Fabric性能测试工具Caliper介绍</h1><p>官方文档：<a href="https://hyperledger.github.io/caliper/vNext/architecture-ch/" target="_blank" rel="noopener">https://hyperledger.github.io/caliper/vNext/architecture-ch/</a></p>
-<p><a href="https://www.jianshu.com/p/1644810cf790" target="_blank" rel="noopener">https://www.jianshu.com/p/1644810cf790</a></p>
-<h1 id="Caliper安装"><a href="#Caliper安装" class="headerlink" title="Caliper安装"></a>Caliper安装</h1><p><a href="https://rookielinlucy666.github.io/study.github.io/2020/04/06/caliper-fabric/" target="_blank" rel="noopener">https://rookielinlucy666.github.io/study.github.io/2020/04/06/caliper-fabric/</a></p>
-<h1 id="Caliper测试sacc链码"><a href="#Caliper测试sacc链码" class="headerlink" title="Caliper测试sacc链码"></a>Caliper测试sacc链码</h1><p>在第二步的环境下进行测试。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">cd caliper-benchmarks/benchmarks/scenario</span><br><span class="line">mkdir hello </span><br><span class="line">cd hello</span><br></pre></td></tr></table></figure>
-<p>以下操作都在hello目录下执行。</p>
-<ul>
-<li>修改<code>config.yaml</code></li>
-</ul>
-<p><code>vi config.yaml</code>修改<code>config.yaml</code> 文件内容如下：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">---</span><br><span class="line">test:</span><br><span class="line">  name: hello</span><br><span class="line">  description: This is an example benchmark for caliper, to test the backend DLT&apos;s</span><br><span class="line">    performance with simple account opening &amp; querying transactions</span><br><span class="line">  clients:</span><br><span class="line">    type: local</span><br><span class="line">    number: 1</span><br><span class="line">  rounds:</span><br><span class="line">  - label: set</span><br><span class="line">    description: Test description for the setting data through the deployed chaincode</span><br><span class="line">    txNumber:</span><br><span class="line">    - 100</span><br><span class="line">    rateControl:</span><br><span class="line">    - type: fixed-rate</span><br><span class="line">      opts:</span><br><span class="line">        tps: 50</span><br><span class="line">    arguments:</span><br><span class="line">      data: &apos;02cd44766d9f2d43944e78eb1dad08bad37e12cc42ce89fe3a5f54849536e2ca&apos;</span><br><span class="line">    callback: benchmarks/scenario/hello/set.js</span><br><span class="line">  - label: get</span><br><span class="line">    description: Test description for the query performance of the deployed chaincode</span><br><span class="line">    txNumber:</span><br><span class="line">    - 100</span><br><span class="line">    rateControl:</span><br><span class="line">    - type: fixed-rate</span><br><span class="line">      opts:</span><br><span class="line">        tps: 100</span><br><span class="line">    callback: benchmarks/scenario/hello/get.js</span><br><span class="line">monitor:</span><br><span class="line">  type:</span><br><span class="line">  - docker</span><br><span class="line">  - process</span><br><span class="line">  docker:</span><br><span class="line">    name:</span><br><span class="line">    - all</span><br><span class="line">  process:</span><br><span class="line">  - command: node</span><br><span class="line">    arguments: local-client.js</span><br><span class="line">    multiOutput: avg</span><br><span class="line">  interval: 1</span><br></pre></td></tr></table></figure>
-<ul>
-<li>修改<code>set.js</code></li>
-</ul>
-<p><code>vi set.js</code>修改hello目录下<code>set.js</code>文件内容如下：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">&apos;use strict&apos;;</span><br><span class="line"></span><br><span class="line">module.exports.info = &apos;set data&apos;;</span><br><span class="line"></span><br><span class="line">let account_array = [];</span><br><span class="line">let txnPerBatch;</span><br><span class="line">let initData;</span><br><span class="line">let bc, contx;</span><br><span class="line">module.exports.init = function(blockchain, context, args) &#123;</span><br><span class="line">    if(!args.hasOwnProperty(&apos;data&apos;))&#123;</span><br><span class="line">        return Promise.reject(new Error(&apos;hello.set - \&apos;data\&apos; is missed in the arguments&apos;));</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    if(!args.hasOwnProperty(&apos;txnPerBatch&apos;)) &#123;</span><br><span class="line">        args.txnPerBatch = 10;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    initData = args.data;</span><br><span class="line">    txnPerBatch = args.txnPerBatch;</span><br><span class="line">    bc = blockchain;</span><br><span class="line">    contx = context;</span><br><span class="line"></span><br><span class="line">    return Promise.resolve();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">const dic = &apos;abcdefghijklmnopqrstuvwxyz&apos;;</span><br><span class="line">function get26Num(number)&#123;</span><br><span class="line">    let result = &apos;&apos;;</span><br><span class="line">    while(number &gt; 0) &#123;</span><br><span class="line">        result += dic.charAt(number % 26);</span><br><span class="line">        number = parseInt(number/26);</span><br><span class="line">    &#125;</span><br><span class="line">    return result;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">let prefix;</span><br><span class="line">function generateAccount() &#123;</span><br><span class="line">    // should be [a-z]&#123;1,9&#125;</span><br><span class="line">    if(typeof prefix === &apos;undefined&apos;) &#123;</span><br><span class="line">        prefix = get26Num(process.pid);</span><br><span class="line">    &#125;</span><br><span class="line">    return prefix + get26Num(account_array.length+1);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">function generateWorkload() &#123;</span><br><span class="line">    let workload = [];</span><br><span class="line">    for(let i= 0; i &lt; txnPerBatch; i++) &#123;</span><br><span class="line">        let acc_id = generateAccount();</span><br><span class="line">        account_array.push(acc_id);</span><br><span class="line"></span><br><span class="line">        workload.push(&#123;</span><br><span class="line">            chaincodeFunction: &apos;set&apos;,</span><br><span class="line">            chaincodeArguments: [acc_id, initData],</span><br><span class="line">        &#125;);</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">    return workload;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">module.exports.run = function() &#123;</span><br><span class="line">    let args = generateWorkload();</span><br><span class="line">    return bc.invokeSmartContract(contx, &apos;hello&apos;, &apos;v0&apos;, args, 100);</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">module.exports.end = function() &#123;</span><br><span class="line">    return Promise.resolve();</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">module.exports.account_array = account_array;</span><br></pre></td></tr></table></figure>
-<ul>
-<li>修改<code>get.js</code></li>
-</ul>
-<p><code>vi get.js</code>修改hello目录下<code>get.js</code>文件内容如下：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">&apos;use strict&apos;;</span><br><span class="line"></span><br><span class="line">module.exports.info  = &apos;get data&apos;;</span><br><span class="line"></span><br><span class="line">let bc, contx;</span><br><span class="line">let account_array;</span><br><span class="line"></span><br><span class="line">module.exports.init = function(blockchain, context, args) &#123;</span><br><span class="line">    const set = require(&apos;./set.js&apos;);</span><br><span class="line">    bc       = blockchain;</span><br><span class="line">    contx    = context;</span><br><span class="line">    account_array = set.account_array;</span><br><span class="line"></span><br><span class="line">    return Promise.resolve();</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">module.exports.run = function() &#123;</span><br><span class="line">    const acc  = account_array[Math.floor(Math.random()*(account_array.length))];</span><br><span class="line"></span><br><span class="line">    let args = &#123;</span><br><span class="line">        chaincodeFunction: &apos;get&apos;,</span><br><span class="line">        chaincodeArguments: [acc],</span><br><span class="line">    &#125;;</span><br><span class="line"></span><br><span class="line">    return bc.bcObj.querySmartContract(contx, &apos;hello&apos;, &apos;v0&apos;, args, 10);</span><br><span class="line"></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">module.exports.end = function() &#123;</span><br><span class="line">    // do nothing</span><br><span class="line">    return Promise.resolve();</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-<ul>
-<li>修改链码</li>
-</ul>
-<p>在<code>caliper-benchmarks/src/fabric/scenario/</code>目录下执行。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">cd ~/caliper-benchmarks/src/fabric/scenario/</span><br><span class="line">mkdir hello</span><br><span class="line">cd hello</span><br><span class="line">mkdir go</span><br><span class="line">cd go</span><br></pre></td></tr></table></figure>
-<p><code>vi hello.go</code>修改go文件内容如下：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">/*</span><br><span class="line"> * Copyright IBM Corp All Rights Reserved</span><br><span class="line"> *</span><br><span class="line"> * SPDX-License-Identifier: Apache-2.0</span><br><span class="line"> */</span><br><span class="line"></span><br><span class="line">package main</span><br><span class="line"></span><br><span class="line">import (</span><br><span class="line">	&quot;fmt&quot;</span><br><span class="line"></span><br><span class="line">	&quot;github.com/hyperledger/fabric/protos/peer&quot;</span><br><span class="line">	&quot;github.com/hyperledger/fabric/core/chaincode/shim&quot;</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">// SimpleAsset implements a simple chaincode to manage an asset</span><br><span class="line">type SimpleAsset struct &#123;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// Init is called during chaincode instantiation to initialize any</span><br><span class="line">// data. Note that chaincode upgrade also calls this function to reset</span><br><span class="line">// or to migrate data.</span><br><span class="line">func (t *SimpleAsset) Init(stub shim.ChaincodeStubInterface) peer.Response &#123;</span><br><span class="line">	// nothing to do</span><br><span class="line">	return shim.Success(nil)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// Invoke is called per transaction on the chaincode. Each transaction is</span><br><span class="line">// either a &apos;get&apos; or a &apos;set&apos; on the asset created by Init function. The Set</span><br><span class="line">// method may create a new asset by specifying a new key-value pair.</span><br><span class="line">func (t *SimpleAsset) Invoke(stub shim.ChaincodeStubInterface) peer.Response &#123;</span><br><span class="line">	// Extract the function and args from the transaction proposal</span><br><span class="line">	fn, args := stub.GetFunctionAndParameters()</span><br><span class="line"></span><br><span class="line">	var result string</span><br><span class="line">	var err error</span><br><span class="line">	if fn == &quot;set&quot; &#123;</span><br><span class="line">		result, err = set(stub, args)</span><br><span class="line">	&#125; else &#123; // assume &apos;get&apos; even if fn is nil</span><br><span class="line">		result, err = get(stub, args)</span><br><span class="line">	&#125;</span><br><span class="line">	if err != nil &#123;</span><br><span class="line">		return shim.Error(err.Error())</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	// Return the result as success payload</span><br><span class="line">	return shim.Success([]byte(result))</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// Set stores the asset (both key and value) on the ledger. If the key exists,</span><br><span class="line">// it will override the value with the new one</span><br><span class="line">func set(stub shim.ChaincodeStubInterface, args []string) (string, error) &#123;</span><br><span class="line">	if len(args) != 2 &#123;</span><br><span class="line">		return &quot;&quot;, fmt.Errorf(&quot;Incorrect arguments. Expecting a key and a value&quot;)</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	err := stub.PutState(args[0], []byte(args[1]))</span><br><span class="line">	if err != nil &#123;</span><br><span class="line">		return &quot;&quot;, fmt.Errorf(&quot;Failed to set asset: %s&quot;, args[0])</span><br><span class="line">	&#125;</span><br><span class="line">	return args[1], nil</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// Get returns the value of the specified asset key</span><br><span class="line">func get(stub shim.ChaincodeStubInterface, args []string) (string, error) &#123;</span><br><span class="line">	if len(args) != 1 &#123;</span><br><span class="line">		return &quot;&quot;, fmt.Errorf(&quot;Incorrect arguments. Expecting a key&quot;)</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	value, err := stub.GetState(args[0])</span><br><span class="line">	if err != nil &#123;</span><br><span class="line">		return &quot;&quot;, fmt.Errorf(&quot;Failed to get asset: %s with error: %s&quot;, args[0], err)</span><br><span class="line">	&#125;</span><br><span class="line">	if value == nil &#123;</span><br><span class="line">		return &quot;&quot;, fmt.Errorf(&quot;Asset not found: %s&quot;, args[0])</span><br><span class="line">	&#125;</span><br><span class="line">	return string(value), nil</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// main function starts up the chaincode in the container during instantiate</span><br><span class="line">func main() &#123;</span><br><span class="line">	if err := shim.Start(new(SimpleAsset)); err != nil &#123;</span><br><span class="line">		fmt.Printf(&quot;Error starting SimpleAsset chaincode: %s&quot;, err)</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>若出现下述错误，将包<code>&quot;github.com/hyperledger/fabric-protos-go/peer</code>换为<code>&quot;github.com/hyperledger/fabric/protos/peer</code></p>
-<blockquote>
-<p>Error: Error: Invalid endorsement for hello@v0 in mychannel from peer0.org1.example.com: error starting container: error starting container: Failed to generate platform-specific docker build: Error returned from build: 1 “chaincode/input/src/fabric/scenario/hello/go/hello.go:6:2: cannot find package “github.com/hyperledger/fabric-protos-go/peer” in any of:</p>
-</blockquote>
-<ul>
-<li>修改执行的链码文件（只执行<code>hello.go</code>）</li>
-</ul>
-<p><code>cd ~/caliper-benchmarks/networks/fabric/fabric-v1.4.1/2org1peergoleveldb</code></p>
-<p><code>vi fabric-go.yaml</code>内容如下：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">name: Fabric</span><br><span class="line">version: &quot;1.0&quot;</span><br><span class="line">mutual-tls: false</span><br><span class="line"></span><br><span class="line">caliper:</span><br><span class="line">  blockchain: fabric</span><br><span class="line">  command:</span><br><span class="line">    start: export FABRIC_VERSION=1.4.1;docker-compose -f networks/fabric/docker-compose/2org1peergoleveldb/docker-compose.yaml up -d;sleep 3s</span><br><span class="line">    end: docker-compose -f networks/fabric/docker-compose/2org1peergoleveldb/docker-compose.yaml down;(test -z \&quot;$(docker ps -aq)\&quot;) || docker rm $(docker ps -aq);(test -z \&quot;$(docker images dev* -q)\&quot;) || docker rmi $(docker images dev* -q);rm -rf /tmp/hfc-*</span><br><span class="line"></span><br><span class="line">info:</span><br><span class="line">  Version: 1.4.1</span><br><span class="line">  Size: 2 Orgs with 1 Peer</span><br><span class="line">  Orderer: Solo,</span><br><span class="line">  Distribution: Single Host</span><br><span class="line">  StateDB: GoLevelDB</span><br><span class="line"></span><br><span class="line">clients:</span><br><span class="line">  client0.org1.example.com:</span><br><span class="line">    client:</span><br><span class="line">      organization: Org1</span><br><span class="line">      credentialStore:</span><br><span class="line">        path: /tmp/hfc-kvs/org1</span><br><span class="line">        cryptoStore:</span><br><span class="line">          path: /tmp/hfc-cvs/org1</span><br><span class="line">      clientPrivateKey:</span><br><span class="line">        path: networks/fabric/config_solo/crypto-config/peerOrganizations/org1.example.com/users/User1@org1.example.com/msp/keystore/key.pem</span><br><span class="line">      clientSignedCert:</span><br><span class="line">        path: networks/fabric/config_solo/crypto-config/peerOrganizations/org1.example.com/users/User1@org1.example.com/msp/signcerts/User1@org1.example.com-cert.pem</span><br><span class="line"></span><br><span class="line">  client0.org2.example.com:</span><br><span class="line">    client:</span><br><span class="line">      organization: Org2</span><br><span class="line">      credentialStore:</span><br><span class="line">        path: /tmp/hfc-kvs/org2</span><br><span class="line">        cryptoStore:</span><br><span class="line">          path: /tmp/hfc-cvs/org2</span><br><span class="line">      clientPrivateKey:</span><br><span class="line">        path: networks/fabric/config_solo/crypto-config/peerOrganizations/org2.example.com/users/User1@org2.example.com/msp/keystore/key.pem</span><br><span class="line">      clientSignedCert:</span><br><span class="line">        path: networks/fabric/config_solo/crypto-config/peerOrganizations/org2.example.com/users/User1@org2.example.com/msp/signcerts/User1@org2.example.com-cert.pem</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">channels:</span><br><span class="line">  mychannel:</span><br><span class="line">    configBinary: networks/fabric/config_solo/mychannel.tx</span><br><span class="line">    created: false</span><br><span class="line">    orderers:</span><br><span class="line">    - orderer.example.com</span><br><span class="line">    peers:</span><br><span class="line">      peer0.org1.example.com:</span><br><span class="line">        eventSource: true</span><br><span class="line">      peer0.org2.example.com:</span><br><span class="line">        eventSource: true</span><br><span class="line"></span><br><span class="line">    chaincodes:</span><br><span class="line">#    - id: marbles</span><br><span class="line">#      version: v0</span><br><span class="line">#      language: golang</span><br><span class="line">#      path: fabric/samples/marbles/go</span><br><span class="line">#      metadataPath: src/fabric/samples/marbles/go/metadata</span><br><span class="line">#    - id: drm</span><br><span class="line">#      version: v0</span><br><span class="line">#      language: golang</span><br><span class="line">#      path: fabric/scenario/drm/go</span><br><span class="line">#    - id: simple</span><br><span class="line">#      version: v0</span><br><span class="line">#      language: golang</span><br><span class="line">#      path: fabric/scenario/simple/go</span><br><span class="line">#    - id: smallbank</span><br><span class="line">#      version: v0</span><br><span class="line">#      language: golang</span><br><span class="line">#      path: fabric/scenario/smallbank/go</span><br><span class="line">    - id: hello</span><br><span class="line">      version: v0</span><br><span class="line">      language: golang</span><br><span class="line">      path: fabric/scenario/hello/go</span><br><span class="line"></span><br><span class="line">organizations:</span><br><span class="line">  Org1:</span><br><span class="line">    mspid: Org1MSP</span><br><span class="line">    peers:</span><br><span class="line">    - peer0.org1.example.com</span><br><span class="line">    certificateAuthorities:</span><br><span class="line">    - ca.org1.example.com</span><br><span class="line">    adminPrivateKey:</span><br><span class="line">      path: networks/fabric/config_solo/crypto-config/peerOrganizations/org1.example.com/users/Admin@org1.example.com/msp/keystore/key.pem</span><br><span class="line">    signedCert:</span><br><span class="line">      path: networks/fabric/config_solo/crypto-config/peerOrganizations/org1.example.com/users/Admin@org1.example.com/msp/signcerts/Admin@org1.example.com-cert.pem</span><br><span class="line"></span><br><span class="line">  Org2:</span><br><span class="line">    mspid: Org2MSP</span><br><span class="line">    peers:</span><br><span class="line">    - peer0.org2.example.com</span><br><span class="line">    certificateAuthorities:</span><br><span class="line">    - ca.org2.example.com</span><br><span class="line">    adminPrivateKey:</span><br><span class="line">      path: networks/fabric/config_solo/crypto-config/peerOrganizations/org2.example.com/users/Admin@org2.example.com/msp/keystore/key.pem</span><br><span class="line">    signedCert:</span><br><span class="line">      path: networks/fabric/config_solo/crypto-config/peerOrganizations/org2.example.com/users/Admin@org2.example.com/msp/signcerts/Admin@org2.example.com-cert.pem</span><br><span class="line"></span><br><span class="line">orderers:</span><br><span class="line">  orderer.example.com:</span><br><span class="line">    url: grpc://localhost:7050</span><br><span class="line">    grpcOptions:</span><br><span class="line">      ssl-target-name-override: orderer.example.com</span><br><span class="line"></span><br><span class="line">peers:</span><br><span class="line">  peer0.org1.example.com:</span><br><span class="line">    url: grpc://localhost:7051</span><br><span class="line">    grpcOptions:</span><br><span class="line">      ssl-target-name-override: peer0.org1.example.com</span><br><span class="line">      grpc.keepalive_time_ms: 600000</span><br><span class="line"></span><br><span class="line">  peer0.org2.example.com:</span><br><span class="line">    url: grpc://localhost:8051</span><br><span class="line">    grpcOptions:</span><br><span class="line">      ssl-target-name-override: peer0.org2.example.com</span><br><span class="line">      grpc.keepalive_time_ms: 600000</span><br><span class="line"></span><br><span class="line">certificateAuthorities:</span><br><span class="line">  ca.org1.example.com:</span><br><span class="line">    url: http://localhost:7054</span><br><span class="line">    httpOptions:</span><br><span class="line">      verify: false</span><br><span class="line">    registrar:</span><br><span class="line">    - enrollId: admin</span><br><span class="line">      enrollSecret: adminpw</span><br><span class="line"></span><br><span class="line">  ca.org2.example.com:</span><br><span class="line">    url: http://localhost:8054</span><br><span class="line">    httpOptions:</span><br><span class="line">      verify: false</span><br><span class="line">    registrar:</span><br><span class="line">    - enrollId: admin</span><br><span class="line">      enrollSecret: adminpw</span><br></pre></td></tr></table></figure>
-<ul>
-<li>修改<code>docker-compose.yaml</code></li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cd ~/caliper-benchmarks/networks/fabric/docker-compose/2org1peergoleveldb</span><br><span class="line">vi docker-compose.yaml</span><br></pre></td></tr></table></figure>
-<ul>
-<li>开始测试</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">cd ~/caliper-benchmarks/</span><br><span class="line"></span><br><span class="line">npx caliper benchmark run \</span><br><span class="line">    --caliper-workspace . \</span><br><span class="line">    --caliper-benchconfig benchmarks/scenario/hello/config.yaml \</span><br><span class="line">    --caliper-networkconfig networks/fabric/fabric-v1.4.1/2org1peergoleveldb/fabric-go.yaml</span><br><span class="line"></span><br><span class="line">```      </span><br><span class="line"></span><br><span class="line">如果出现如下错误，执行`sudo systemctl restart docker`重启docker。</span><br></pre></td></tr></table></figure>
-<p> error [caliper] [caliper-flow]     Error: Error: Couldn’t create Channel<br> ‘mychannel’: Orderer response indicated unsuccessful Channel ‘mychannel’<br> creation: BAD_REQUEST</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">如果出现如下错误，根据错误的相应数字修改`node_modules/fabric-client/config/default.json`中的`request-time`</span><br></pre></td></tr></table></figure>
-<p>error: [Peer.js]: sendProposal - timed out after:300000<br>2020-05-01T17:07:17.092Z - error: [Peer.js]: sendProposal - timed out after:300000<br>2020.05.02-01:07:17.093 error [caliper] [caliper-flow]     Error: Error: Invalid endorsement for hello@v0 in mychannel from peer0.org1.example.com: REQUEST_TIMEOU</p>
-<p><code>`</code></p>
-<p>如碰上任何错误，请去Caliper安装的文章中寻找：<a href="https://rookielinlucy666.github.io/study.github.io/2020/04/06/caliper-fabric/" target="_blank" rel="noopener">https://rookielinlucy666.github.io/study.github.io/2020/04/06/caliper-fabric/</a></p>
-<p>该报告将详细介绍每一轮基准测试的以下信息：</p>
-<p>Name – 轮次名称，这与基准测试配置文件中的测试轮次标签相关</p>
-<p>Succ/Fail – 成功/失败事务的数量</p>
-<p>Send Rate – Caliper 发出事务的速率</p>
-<p>Latency (max/min/avg) – 关于发出事务到收到响应之间所用秒数的统计信息</p>
-<p>Throughput – 平均每秒处理的事务数</p>
-<h1 id="在IBM-Blockchain-Platform-Extension-for-VS-Code使用Caliper"><a href="#在IBM-Blockchain-Platform-Extension-for-VS-Code使用Caliper" class="headerlink" title="在IBM Blockchain Platform Extension for VS Code使用Caliper"></a>在IBM Blockchain Platform Extension for VS Code使用Caliper</h1><p><a href="https://www.ibm.com/developerworks/cn/cloud/library/blockchain-performance-testing-smart-contracts-vscode-caliper/index.html" target="_blank" rel="noopener">https://www.ibm.com/developerworks/cn/cloud/library/blockchain-performance-testing-smart-contracts-vscode-caliper/index.html</a>  </p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">2020</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/study.github.io/2020/04/29/caliper-deploy-sacc/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
   
     <nav id="page-nav">
       <span class="page-number current">1</span><a class="page-number" href="/study.github.io/page/2/">2</a><a class="page-number" href="/study.github.io/page/3/">3</a><a class="page-number" href="/study.github.io/page/4/">4</a><a class="extend next" rel="next" href="/study.github.io/page/2/">Next &raquo;</a>
@@ -1345,11 +1319,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">2020</a>
+                <a href="javascript:void(0)" class="js-tag color2">Heroku</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">Heroku</a>
+                <a href="javascript:void(0)" class="js-tag color5">2020</a>
               </li>
              
               <li class="article-tag-list-item">
