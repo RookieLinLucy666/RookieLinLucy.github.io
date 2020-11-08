@@ -153,6 +153,208 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-fabric-gosdk" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/study.github.io/2020/11/08/fabric-gosdk/">fabric gosdk tutorial</a>
+    </h1>
+  
+
+        
+        <a href="/study.github.io/2020/11/08/fabric-gosdk/" class="archive-article-date">
+  	<time datetime="2020-11-08T03:37:06.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-11-08</time>
+</a>
+        
+      </header>
+    
+<!-- 目录内容 -->
+
+<!-- 目录内容结束 -->
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="Hyperledger-Fabric-Go-SDK-调用流程"><a href="#Hyperledger-Fabric-Go-SDK-调用流程" class="headerlink" title="Hyperledger Fabric Go-SDK 调用流程"></a>Hyperledger Fabric Go-SDK 调用流程</h1><h2 id="前提"><a href="#前提" class="headerlink" title="前提"></a>前提</h2><p>已经配置好Hyperledger Fabric的环境</p>
+<h2 id="启动"><a href="#启动" class="headerlink" title="启动"></a>启动</h2><h3 id="启动无链码的Fabric网络"><a href="#启动无链码的Fabric网络" class="headerlink" title="启动无链码的Fabric网络"></a>启动无链码的Fabric网络</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">cd $GOPATH/src/github.com/hyperledger/fabric-samples/first-network</span><br><span class="line">./byfn.sh -m down</span><br><span class="line">./byfn.sh up -n</span><br></pre></td></tr></table></figure>
+<h3 id="将该网络生成的证书crypto-config放到fabric目录中"><a href="#将该网络生成的证书crypto-config放到fabric目录中" class="headerlink" title="将该网络生成的证书crypto-config放到fabric目录中"></a>将该网络生成的证书crypto-config放到fabric目录中</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cp -r $GOPATH/src/github.com/hyperledger/fabric-samples/first-network/crypto-config $GOPATH/src/github.com/SlackOffWork/MMR/code/fabric</span><br></pre></td></tr></table></figure>
+<h2 id="部署合约"><a href="#部署合约" class="headerlink" title="部署合约"></a>部署合约</h2><p>合约采用fabric给出的合约实例<code>abstore</code>进行部署。</p>
+<h3 id="合约文件abstore-go"><a href="#合约文件abstore-go" class="headerlink" title="合约文件abstore.go"></a>合约文件abstore.go</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br></pre></td><td class="code"><pre><span class="line">/*</span><br><span class="line">Copyright IBM Corp. 2016 All Rights Reserved.</span><br><span class="line"></span><br><span class="line">Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span><br><span class="line">you may not use this file except in compliance with the License.</span><br><span class="line">You may obtain a copy of the License at</span><br><span class="line"></span><br><span class="line">		 http://www.apache.org/licenses/LICENSE-2.0</span><br><span class="line"></span><br><span class="line">Unless required by applicable law or agreed to in writing, software</span><br><span class="line">distributed under the License is distributed on an &quot;AS IS&quot; BASIS,</span><br><span class="line">WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span><br><span class="line">See the License for the specific language governing permissions and</span><br><span class="line">limitations under the License.</span><br><span class="line">*/</span><br><span class="line"></span><br><span class="line">package main</span><br><span class="line"></span><br><span class="line">import (</span><br><span class="line">	&quot;errors&quot;</span><br><span class="line">	&quot;fmt&quot;</span><br><span class="line">	&quot;strconv&quot;</span><br><span class="line"></span><br><span class="line">	&quot;github.com/hyperledger/fabric-contract-api-go/contractapi&quot;</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">// ABstore Chaincode implementation</span><br><span class="line">type ABstore struct &#123;</span><br><span class="line">	contractapi.Contract</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">func (t *ABstore) Init(ctx contractapi.TransactionContextInterface, A string, Aval int, B string, Bval int) error &#123;</span><br><span class="line">	fmt.Println(&quot;ABstore Init&quot;)</span><br><span class="line">	var err error</span><br><span class="line">	// Initialize the chaincode</span><br><span class="line">	fmt.Printf(&quot;Aval = %d, Bval = %d\n&quot;, Aval, Bval)</span><br><span class="line">	// Write the state to the ledger</span><br><span class="line">	err = ctx.GetStub().PutState(A, []byte(strconv.Itoa(Aval)))</span><br><span class="line">	if err != nil &#123;</span><br><span class="line">		return err</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	err = ctx.GetStub().PutState(B, []byte(strconv.Itoa(Bval)))</span><br><span class="line">	if err != nil &#123;</span><br><span class="line">		return err</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	return nil</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// Transaction makes payment of X units from A to B</span><br><span class="line">func (t *ABstore) Invoke(ctx contractapi.TransactionContextInterface, A, B string, X int) error &#123;</span><br><span class="line">	var err error</span><br><span class="line">	var Aval int</span><br><span class="line">	var Bval int</span><br><span class="line">	// Get the state from the ledger</span><br><span class="line">	// TODO: will be nice to have a GetAllState call to ledger</span><br><span class="line">	Avalbytes, err := ctx.GetStub().GetState(A)</span><br><span class="line">	if err != nil &#123;</span><br><span class="line">		return fmt.Errorf(&quot;Failed to get state&quot;)</span><br><span class="line">	&#125;</span><br><span class="line">	if Avalbytes == nil &#123;</span><br><span class="line">		return fmt.Errorf(&quot;Entity not found&quot;)</span><br><span class="line">	&#125;</span><br><span class="line">	Aval, _ = strconv.Atoi(string(Avalbytes))</span><br><span class="line"></span><br><span class="line">	Bvalbytes, err := ctx.GetStub().GetState(B)</span><br><span class="line">	if err != nil &#123;</span><br><span class="line">		return fmt.Errorf(&quot;Failed to get state&quot;)</span><br><span class="line">	&#125;</span><br><span class="line">	if Bvalbytes == nil &#123;</span><br><span class="line">		return fmt.Errorf(&quot;Entity not found&quot;)</span><br><span class="line">	&#125;</span><br><span class="line">	Bval, _ = strconv.Atoi(string(Bvalbytes))</span><br><span class="line"></span><br><span class="line">	// Perform the execution</span><br><span class="line">	Aval = Aval - X</span><br><span class="line">	Bval = Bval + X</span><br><span class="line">	fmt.Printf(&quot;Aval = %d, Bval = %d\n&quot;, Aval, Bval)</span><br><span class="line"></span><br><span class="line">	// Write the state back to the ledger</span><br><span class="line">	err = ctx.GetStub().PutState(A, []byte(strconv.Itoa(Aval)))</span><br><span class="line">	if err != nil &#123;</span><br><span class="line">		return err</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	err = ctx.GetStub().PutState(B, []byte(strconv.Itoa(Bval)))</span><br><span class="line">	if err != nil &#123;</span><br><span class="line">		return err</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	return nil</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// Delete  an entity from state</span><br><span class="line">func (t *ABstore) Delete(ctx contractapi.TransactionContextInterface, A string) error &#123;</span><br><span class="line"></span><br><span class="line">	// Delete the key from the state in ledger</span><br><span class="line">	err := ctx.GetStub().DelState(A)</span><br><span class="line">	if err != nil &#123;</span><br><span class="line">		return fmt.Errorf(&quot;Failed to delete state&quot;)</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	return nil</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// Query callback representing the query of a chaincode</span><br><span class="line">func (t *ABstore) Query(ctx contractapi.TransactionContextInterface, A string) (string, error) &#123;</span><br><span class="line">	var err error</span><br><span class="line">	// Get the state from the ledger</span><br><span class="line">	Avalbytes, err := ctx.GetStub().GetState(A)</span><br><span class="line">	if err != nil &#123;</span><br><span class="line">		jsonResp := &quot;&#123;\&quot;Error\&quot;:\&quot;Failed to get state for &quot; + A + &quot;\&quot;&#125;&quot;</span><br><span class="line">		return &quot;&quot;, errors.New(jsonResp)</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	if Avalbytes == nil &#123;</span><br><span class="line">		jsonResp := &quot;&#123;\&quot;Error\&quot;:\&quot;Nil amount for &quot; + A + &quot;\&quot;&#125;&quot;</span><br><span class="line">		return &quot;&quot;, errors.New(jsonResp)</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	jsonResp := &quot;&#123;\&quot;Name\&quot;:\&quot;&quot; + A + &quot;\&quot;,\&quot;Amount\&quot;:\&quot;&quot; + string(Avalbytes) + &quot;\&quot;&#125;&quot;</span><br><span class="line">	fmt.Printf(&quot;Query Response:%s\n&quot;, jsonResp)</span><br><span class="line">	return string(Avalbytes), nil</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">func main() &#123;</span><br><span class="line">	cc, err := contractapi.NewChaincode(new(ABstore))</span><br><span class="line">	if err != nil &#123;</span><br><span class="line">		panic(err.Error())</span><br><span class="line">	&#125;</span><br><span class="line">	if err := cc.Start(); err != nil &#123;</span><br><span class="line">		fmt.Printf(&quot;Error starting ABstore chaincode: %s&quot;, err)</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="打包合约"><a href="#打包合约" class="headerlink" title="打包合约"></a>打包合约</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">docker exec cli peer lifecycle chaincode package abstore.tar.gz \</span><br><span class="line">--path github.com/hyperledger/fabric-samples/chaincode/abstore/go \</span><br><span class="line">--label abstore</span><br></pre></td></tr></table></figure>
+<h3 id="查看打包后的合约列表"><a href="#查看打包后的合约列表" class="headerlink" title="查看打包后的合约列表"></a>查看打包后的合约列表</h3><p><code>docker exec cli ls</code></p>
+<h3 id="org1安装合约"><a href="#org1安装合约" class="headerlink" title="org1安装合约"></a>org1安装合约</h3><p><code>docker exec cli peer lifecycle chaincode install abstore.tar.gz</code></p>
+<h3 id="org2安装合约"><a href="#org2安装合约" class="headerlink" title="org2安装合约"></a>org2安装合约</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">docker exec \</span><br><span class="line">  -e CORE_PEER_MSPCONFIGPATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org2.example.com/users/Admin@org2.example.com/msp \</span><br><span class="line">  -e CORE_PEER_ADDRESS=peer0.org2.example.com:9051 \</span><br><span class="line">  -e CORE_PEER_LOCALMSPID=&quot;Org2MSP&quot; \</span><br><span class="line">  -e CORE_PEER_TLS_ROOTCERT_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org2.example.com/peers/peer0.org2.example.com/tls/ca.crt \</span><br><span class="line">  cli peer lifecycle chaincode install abstore.tar.gz</span><br></pre></td></tr></table></figure>
+<h3 id="org1提案合约"><a href="#org1提案合约" class="headerlink" title="org1提案合约"></a>org1提案合约</h3><p>这里的<code>${package_id}</code>替换成安装合约后输出的标识符，如<code>abstore:xxxxxxx</code>。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">docker exec cli peer lifecycle chaincode approveformyorg \</span><br><span class="line">  --tls \</span><br><span class="line">  --cafile /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/example.com/orderers/orderer.example.com/msp/tlscacerts/tlsca.example.com-cert.pem \</span><br><span class="line">  --channelID mychannel --name abstore --version 1 \</span><br><span class="line">  --init-required --sequence 1 --waitForEvent --package-id $&#123;package_id&#125;</span><br></pre></td></tr></table></figure></p>
+<h3 id="org2提案合约"><a href="#org2提案合约" class="headerlink" title="org2提案合约"></a>org2提案合约</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">docker exec \</span><br><span class="line">-e CORE_PEER_MSPCONFIGPATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org2.example.com/users/Admin@org2.example.com/msp \</span><br><span class="line">-e CORE_PEER_ADDRESS=peer0.org2.example.com:9051 \</span><br><span class="line">-e CORE_PEER_LOCALMSPID=&quot;Org2MSP&quot; \</span><br><span class="line">-e CORE_PEER_TLS_ROOTCERT_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org2.example.com/peers/peer0.org2.example.com/tls/ca.crt \</span><br><span class="line">cli peer lifecycle chaincode approveformyorg \</span><br><span class="line">--tls \</span><br><span class="line">--cafile /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/example.com/orderers/orderer.example.com/msp/tlscacerts/tlsca.example.com-cert.pem \</span><br><span class="line">--channelID mychannel --name abstore --version 1 --init-required \</span><br><span class="line">--sequence 1 --waitForEvent --package-id $&#123;package_id&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="合约设定初始化"><a href="#合约设定初始化" class="headerlink" title="合约设定初始化"></a>合约设定初始化</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">docker exec cli peer lifecycle chaincode commit -o orderer.example.com:7050 \</span><br><span class="line">  --tls \</span><br><span class="line">  --cafile /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/example.com/orderers/orderer.example.com/msp/tlscacerts/tlsca.example.com-cert.pem \</span><br><span class="line">  --peerAddresses peer0.org1.example.com:7051 \</span><br><span class="line">  --tlsRootCertFiles /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls/ca.crt \</span><br><span class="line">  --peerAddresses peer0.org2.example.com:9051 \</span><br><span class="line">  --tlsRootCertFiles /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org2.example.com/peers/peer0.org2.example.com/tls/ca.crt \</span><br><span class="line">  --channelID mychannel --name abstore --version 1 --sequence 1 --init-required</span><br><span class="line">  ### 合约初始化</span><br><span class="line">  docker exec cli peer chaincode invoke -o orderer.example.com:7050 \</span><br><span class="line">  --tls \</span><br><span class="line">  --cafile /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/example.com/orderers/orderer.example.com/msp/tlscacerts/tlsca.example.com-cert.pem \</span><br><span class="line">  --peerAddresses peer0.org1.example.com:7051 \</span><br><span class="line">  --tlsRootCertFiles /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls/ca.crt \</span><br><span class="line">  --peerAddresses peer0.org2.example.com:9051 \</span><br><span class="line">  --tlsRootCertFiles /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org2.example.com/peers/peer0.org2.example.com/tls/ca.crt \</span><br><span class="line">  -C mychannel -n abstore --isInit -c &apos;&#123;&quot;Args&quot;:[&quot;Init&quot;,&quot;a&quot;,&quot;100&quot;,&quot;b&quot;,&quot;10&quot;]&#125;&apos;</span><br></pre></td></tr></table></figure>
+<h3 id="调用合约函数"><a href="#调用合约函数" class="headerlink" title="调用合约函数"></a>调用合约函数</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">docker exec cli peer chaincode invoke \</span><br><span class="line">-o orderer.example.com:7050 \</span><br><span class="line">--tls \</span><br><span class="line">--cafile /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/example.com/orderers/orderer.example.com/msp/tlscacerts/tlsca.example.com-cert.pem \</span><br><span class="line">--peerAddresses peer0.org1.example.com:7051 \</span><br><span class="line">--tlsRootCertFiles /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls/ca.crt \</span><br><span class="line">--peerAddresses peer0.org2.example.com:9051 \</span><br><span class="line">--tlsRootCertFiles /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org2.example.com/peers/peer0.org2.example.com/tls/ca.crt \</span><br><span class="line">-C mychannel -n abstore -c &apos;&#123;&quot;Args&quot;:[&quot;Invoke&quot;,&quot;a&quot;,&quot;b&quot;,&quot;1&quot;]&#125;&apos;</span><br></pre></td></tr></table></figure>
+<h3 id="查询合约"><a href="#查询合约" class="headerlink" title="查询合约"></a>查询合约</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">docker exec cli peer chaincode invoke \</span><br><span class="line">  -o orderer.example.com:7050 \</span><br><span class="line">  --tls \</span><br><span class="line">  --cafile /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/example.com/orderers/orderer.example.com/msp/tlscacerts/tlsca.example.com-cert.pem \</span><br><span class="line">  --peerAddresses peer0.org1.example.com:7051 \</span><br><span class="line">  --tlsRootCertFiles /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls/ca.crt \</span><br><span class="line">  --peerAddresses peer0.org2.example.com:9051 \</span><br><span class="line">  --tlsRootCertFiles /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org2.example.com/peers/peer0.org2.example.com/tls/ca.crt \</span><br><span class="line">  -C mychannel -n abstore -c &apos;&#123;&quot;Args&quot;:[&quot;Query&quot;,&quot;a&quot;]&#125;&apos;</span><br><span class="line">``` </span><br><span class="line"></span><br><span class="line">## 项目目录说明</span><br></pre></td></tr></table></figure>
+<p>├── crypto-config<br>│   ├── ordererOrganizations<br>│   └── peerOrganizations<br>├── fabric-sdk-go<br>├── fabric.go<br>├── keystore<br>├── testdata<br>│   └── connection-tls.yaml<br>└── wallet<br>    ├── User1.id<br>    ├── appUser.id<br>    └── user.id<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">## 配置文件（testdata/connection-tls.yaml）</span><br><span class="line">配置文件中一定要包含`entityMatchers`字段，不然无法连接。</span><br></pre></td></tr></table></figure></p>
+<p>name: basic-network<br>version: 1.0.0<br>client:<br>  organization: Org1<br>  connection:<br>    timeout:<br>      peer:<br>        endorser: ‘300’<br>      orderer: ‘300’<br>  cryptoconfig:<br>    path: ‘${FABRIC_SDK_GO_PROJECT_PATH}/fabric/crypto-config’<br>channels:<br>  mychannel:<br>    peers:<br>      badpeer.org1.example.com:<br>        endorsingPeer: true<br>        chaincodeQuery: true<br>        ledgerQuery: true<br>        eventSource: true<br>      peer0.org1.example.com:<br>        endorsingPeer: true<br>        chaincodeQuery: true<br>        ledgerQuery: true<br>        eventSource: true<br>      peer0.org2.example.com:<br>        endorsingPeer: true<br>        chaincodeQuery: true<br>        ledgerQuery: true<br>        eventSource: true<br>organizations:<br>  Org1:<br>    mspid: Org1MSP<br>    cryptoPath: <a href="mailto:&#39;peerOrganizations/org1.example.com/users/{username}@org1.example.com" target="_blank" rel="noopener">&#39;peerOrganizations/org1.example.com/users/{username}@org1.example.com</a>/msp’<br>    peers:</p>
+<pre><code>  - peer0.org1.example.com
+certificateAuthorities:
+  - ca-org1
+</code></pre><p>  Org2:<br>    mspid: Org2MSP<br>    cryptoPath: <a href="mailto:&#39;peerOrganizations/org2.example.com/users/{username}@org2.example.com" target="_blank" rel="noopener">&#39;peerOrganizations/org2.example.com/users/{username}@org2.example.com</a>/msp’<br>    peers:</p>
+<pre><code>  - peer0.org2.example.com
+certificateAuthorities:
+  - ca-org2
+</code></pre><p>orderers:<br>  orderer.example.com:<br>    url: ‘grpcs://127.0.0.1:7050’<br>    mspid: OrdererMSP<br>    grpcOptions:<br>      ssl-target-name-override: orderer.example.com<br>      hostnameOverride: orderer.example.com<br>    tlsCACerts:<br>      path: &gt;-<br>        ${FABRIC_SDK_GO_PROJECT_PATH}/fabric/crypto-config/ordererOrganizations/example.com/orderers/orderer.example.com/tls/ca.crt<br>peers:<br>  peer0.org1.example.com:<br>    url: ‘grpcs://127.0.0.1:7051’<br>    grpcOptions:<br>      ssl-target-name-override: peer0.org1.example.com<br>      hostnameOverride: peer0.org1.example.com<br>      request-timeout: 120001<br>    tlsCACerts:<br>      path: &gt;-<br>        ${FABRIC_SDK_GO_PROJECT_PATH}/fabric/crypto-config/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls/ca.crt<br>  peer0.org2.example.com:<br>    url: ‘grpcs://127.0.0.1:9051’<br>    grpcOptions:<br>      ssl-target-name-override: peer0.org2.example.com<br>      hostnameOverride: peer0.org2.example.com<br>      request-timeout: 120001<br>    tlsCACerts:<br>      path: &gt;-<br>        ${FABRIC_SDK_GO_PROJECT_PATH}/fabric/crypto-config/peerOrganizations/org2.example.com/peers/peer0.org2.example.com/tls/ca.crt<br>certificateAuthorities:<br>  ca-org1:<br>    url: ‘<a href="https://127.0.0.1:7054&#39;" target="_blank" rel="noopener">https://127.0.0.1:7054&#39;</a><br>    grpcOptions:<br>      verify: true<br>    tlsCACerts:<br>      path: &gt;-<br>        ${FABRIC_SDK_GO_PROJECT_PATH}/fabric/crypto-config/peerOrganizations/org1.example.com/ca/ca.org1.example.com-cert.pem<br>    registrar:<br>      enrollId: admin<br>      enrollSecret: adminpw<br>  ca-org2:<br>    url: ‘<a href="https://127.0.0.1:8054&#39;" target="_blank" rel="noopener">https://127.0.0.1:8054&#39;</a><br>    grpcOptions:<br>      verify: true<br>    tlsCACerts:<br>      path: &gt;-<br>        ${FABRIC_SDK_GO_PROJECT_PATH}/fabric/crypto-config/peerOrganizations/org2.example.com/ca/ca.org2.example.com-cert.pem<br>    registrar:<br>      enrollId: admin<br>      enrollSecret: adminpw<br>entityMatchers:<br>  peer:</p>
+<pre><code>- pattern: peer0.org1.example.(\w+)
+  urlSubstitutionExp: localhost:7051
+  sslTargetOverrideUrlSubstitutionExp: peer0.org1.example.com
+  mappedHost: peer0.org1.example.com
+- pattern: peer0.org2.example.(\w+)
+  urlSubstitutionExp: localhost:9051
+  sslTargetOverrideUrlSubstitutionExp: peer0.org2.example.com
+  mappedHost: peer0.org2.example.com
+- pattern: (\w+).org1.example.(\w+):(\d+)
+  urlSubstitutionExp: localhost:${2}
+  sslTargetOverrideUrlSubstitutionExp: ${1}.org1.example.com
+  mappedHost: ${1}.org1.example.com
+- pattern: (\w+).org2.example.(\w+):(\d+)
+  urlSubstitutionExp: localhost:${2}
+  sslTargetOverrideUrlSubstitutionExp: ${1}.org2.example.com
+  mappedHost: ${1}.org2.example.com
+- pattern: (\w+):7051
+  urlSubstitutionExp: localhost:7051
+  sslTargetOverrideUrlSubstitutionExp: peer0.org1.example.com
+  mappedHost: peer0.org1.example.com
+- pattern: (\w+):9051
+  urlSubstitutionExp: localhost:9051
+  sslTargetOverrideUrlSubstitutionExp: peer0.org2.example.com
+  mappedHost: peer0.org2.example.com
+</code></pre><p>  orderer:</p>
+<pre><code>- pattern: (\w+).example.(\w+)
+  urlSubstitutionExp: localhost:7050
+  sslTargetOverrideUrlSubstitutionExp: orderer.example.com
+  mappedHost: orderer.example.com
+- pattern: (\w+).example.(\w+):(\d+)
+  urlSubstitutionExp: localhost:7050
+  sslTargetOverrideUrlSubstitutionExp: orderer.example.com
+  mappedHost: orderer.example.com
+</code></pre><p>  certificateAuthority:</p>
+<pre><code>- pattern: (\w+).org1.example.(\w+)
+  urlSubstitutionExp: localhost:7054
+  sslTargetOverrideUrlSubstitutionExp: ca.org1.example.com
+  mappedHost: ca.org1.example.com
+- pattern: (\w+).org2.example.(\w+)
+  urlSubstitutionExp: localhost:8054
+  sslTargetOverrideUrlSubstitutionExp: ca.org2.example.com
+  mappedHost: ca.org2.example.com
+</code></pre><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">## SDK连接和调用</span><br></pre></td></tr></table></figure>
+<p>package main</p>
+<p>import (<br>    “fmt”<br>    “os”</p>
+<pre><code>&quot;github.com/hyperledger/fabric-sdk-go/pkg/core/config&quot;
+&quot;github.com/hyperledger/fabric-sdk-go/pkg/gateway&quot;
+</code></pre><p>)</p>
+<p><a href="mailto://crypto-config/peerOrganizations/org1.example.com/users/User1@org1.example.com" target="_blank" rel="noopener">//crypto-config/peerOrganizations/org1.example.com/users/User1@org1.example.com</a>/msp/keystore/priv_sk<br>const testPrivKey string = <code>-----BEGIN PRIVATE KEY-----
+MIGHAgEAMBMGByqGSM49AgEGCCqGSM49AwEHBG0wawIBAQQg8J2W/t2LpXsEb3st
+yYc5ECOLISzdG22VIeymfu58sLehRANCAATKCTBZbp9aXsFUcgSX5+3EpteQ/aM5
+dPiWNlsur2BnQ/ZftD9q7rNYAg2cVTBg4h5HQlQ8RPtQ+p68FGWFavfI
+-----END PRIVATE KEY-----</code></p>
+<p><a href="mailto://crypto-config/peerOrganizations/org1.example.com/users/User1@org1.example.com" target="_blank" rel="noopener">//crypto-config/peerOrganizations/org1.example.com/users/User1@org1.example.com</a><a href="mailto:/msp/signcerts/User1@org1.example.com-cert.pem" target="_blank" rel="noopener">/msp/signcerts/User1@org1.example.com-cert.pem</a><br>const testCert string = <code>-----BEGIN CERTIFICATE-----
+MIICKjCCAdGgAwIBAgIRAM4Qk1t29vvYQBNfoRzN8qMwCgYIKoZIzj0EAwIwczEL
+MAkGA1UEBhMCVVMxEzARBgNVBAgTCkNhbGlmb3JuaWExFjAUBgNVBAcTDVNhbiBG
+cmFuY2lzY28xGTAXBgNVBAoTEG9yZzEuZXhhbXBsZS5jb20xHDAaBgNVBAMTE2Nh
+Lm9yZzEuZXhhbXBsZS5jb20wHhcNMjAxMTA4MDIxNzAwWhcNMzAxMTA2MDIxNzAw
+WjBsMQswCQYDVQQGEwJVUzETMBEGA1UECBMKQ2FsaWZvcm5pYTEWMBQGA1UEBxMN
+U2FuIEZyYW5jaXNjbzEPMA0GA1UECxMGY2xpZW50MR8wHQYDVQQDDBZVc2VyMUBv
+cmcxLmV4YW1wbGUuY29tMFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEygkwWW6f
+Wl7BVHIEl+ftxKbXkP2jOXT4ljZbLq9gZ0P2X7Q/au6zWAINnFUwYOIeR0JUPET7
+UPqevBRlhWr3yKNNMEswDgYDVR0PAQH/BAQDAgeAMAwGA1UdEwEB/wQCMAAwKwYD
+VR0jBCQwIoAgcrWHPAspAozUlPsZ+BEvvO9+T4AJ115nv6eyukgsvDUwCgYIKoZI
+zj0EAwIDRwAwRAIgB4+vPKbDZP36Do45n+ZpkZAMXk0rJp16CMbBpLZWIlsCIChh
+a8Jpi3l6CX8a+x9BOASiqppDezU//4JQAYbCzTro
+-----END CERTIFICATE-----</code></p>
+<p>func main() {<br>    // A wallet existing in the ‘wallet’ folder<br>    wallet, err := gateway.NewFileSystemWallet(“wallet”)<br>    if err != nil {<br>        fmt.Printf(“Failed to create wallet: %s\n”, err)<br>        os.Exit(1)<br>    }</p>
+<pre><code>wallet.Put(&quot;user&quot;, gateway.NewX509Identity(&quot;Org1MSP&quot;, testCert, testPrivKey))
+
+// Connect to the gateway peer(s) using the network config and identity in the wallet
+gw, err := gateway.Connect(
+    gateway.WithConfig(config.FromFile(&quot;testdata/connection-tls.yaml&quot;)),
+    gateway.WithIdentity(wallet, &quot;user&quot;),
+)
+if err != nil {
+    fmt.Printf(&quot;Failed to connect to gateway: %s\n&quot;, err)
+    os.Exit(1)
+}
+defer gw.Close()
+
+// Get the network channel &apos;mychannel&apos;
+network, err := gw.GetNetwork(&quot;mychannel&quot;)
+if err != nil {
+    fmt.Printf(&quot;Failed to get network: %s\n&quot;, err)
+    os.Exit(1)
+}
+
+// Get the smart contract &apos;abstore&apos;
+contract := network.GetContract(&quot;abstore&quot;)
+
+// Submit a transaction in that contract to the ledger
+// result, err := contract.SubmitTransaction(&quot;Invoke&quot;, &quot;a&quot;, &quot;b&quot;, &quot;10&quot;)
+result, err := contract.EvaluateTransaction(&quot;Query&quot;, &quot;a&quot;)
+
+if err != nil {
+    fmt.Printf(&quot;Failed to submit transaction: %s\n&quot;, err)
+    os.Exit(1)
+}
+fmt.Println(string(result))
+</code></pre><p>}<br><code>`</code></p>
+<h2 id="连接SDK过程中可能出现的问题"><a href="#连接SDK过程中可能出现的问题" class="headerlink" title="连接SDK过程中可能出现的问题"></a>连接SDK过程中可能出现的问题</h2><blockquote>
+<p>Failed to submit transaction: Failed to submit: error getting channel response for channel [mychannel]: Discovery status Code: (11) UNKNOWN. Description: error received from Discovery Server: failed constructing descriptor for chaincodes:<a href="name:&quot;abstore&quot;" target="_blank" rel="noopener">name:&quot;abstore&quot;</a></p>
+</blockquote>
+<p>没在基础fabric网络中部署合约</p>
+<blockquote>
+<p>Failed to submit transaction: Failed to submit: Multiple errors occurred: - Transaction processing for endorser [peer0.org2.example.com:9051]: Endorser Client Status Code: (2) CONNECTION_FAILED. Description: dialing connection on target [peer0.org2.example.com:9051]: connection is in TRANSIENT_FAILURE - Transaction processing for endorser [peer0.org1.example.com:7051]: Endorser Client Status Code: (2) CONNECTION_FAILED. Description: dialing connection on target [peer0.org1.example.com:7051]: connection is in TRANSIENT_FAILURE</p>
+</blockquote>
+<p>配置文件不正确，一定要在配置文件中加上<code>entityMatchers</code>字段。</p>
+<blockquote>
+<p>Failed to submit transaction: Failed to submit: error registering for TxStatus event: could not create client conn: could not connect to localhost:com: dialing connection on target [localhost:com]: connection is in TRANSIENT_FAILURE</p>
+</blockquote>
+<p>查询函数不正确，查询类的函数使用<code>EvaluateTransaction</code>，调用类的函数使用<code>SubmitTransaction</code>。</p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/study.github.io/2020/11/08/fabric-gosdk/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-fisco-gosdk" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -1120,92 +1322,9 @@
 
 
   
-    <article id="post-planUML" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/study.github.io/2020/05/16/planUML/">Mac-VSCODE-plantUML</a>
-    </h1>
-  
-
-        
-        <a href="/study.github.io/2020/05/16/planUML/" class="archive-article-date">
-  	<time datetime="2020-05-16T03:40:59.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-05-16</time>
-</a>
-        
-      </header>
-    
-<!-- 目录内容 -->
-
-<!-- 目录内容结束 -->
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>VSCODE的Extension中搜索PlantUML，进行安装。</p>
-<p>新建test.puml文件，在文件中写入相应脚本。可以在官网中找到文档和在线服务。</p>
-<p>链接：<a href="https://plantuml.com/" target="_blank" rel="noopener">https://plantuml.com/</a></p>
-<p>编写好脚本后，按<code>alt+D</code>生成preview。</p>
-<p>若想保存，则在脚本中右键<code>Export Current Diagram</code>，并在弹出的边框中选择图片类型，如png/svg/eps等。</p>
-<p>调整大小字体<br>转自：<a href="https://blog.csdn.net/zh_weir/article/details/72675013" target="_blank" rel="noopener">https://blog.csdn.net/zh_weir/article/details/72675013</a></p>
-<p>可以使用Creole和HTML格式，通过<code>**&lt;size:20&gt;我要还钱&lt;/size&gt;**</code>对消息进行加粗并定义字体大小，同时结合<code>skinparam MaxMessageSize 280</code>可控制图片大小。</p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">2020</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/study.github.io/2020/05/16/planUML/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
   
     <nav id="page-nav">
-      <span class="page-number current">1</span><a class="page-number" href="/study.github.io/page/2/">2</a><a class="page-number" href="/study.github.io/page/3/">3</a><a class="page-number" href="/study.github.io/page/4/">4</a><a class="extend next" rel="next" href="/study.github.io/page/2/">Next &raquo;</a>
+      <span class="page-number current">1</span><a class="page-number" href="/study.github.io/page/2/">2</a><a class="page-number" href="/study.github.io/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/study.github.io/page/5/">5</a><a class="extend next" rel="next" href="/study.github.io/page/2/">Next &raquo;</a>
     </nav>
   
 
@@ -1319,15 +1438,15 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">Heroku</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">2020</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">Hadoop</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">Heroku</a>
               </li>
              
               <li class="article-tag-list-item">

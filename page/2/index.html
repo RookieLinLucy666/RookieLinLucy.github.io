@@ -153,6 +153,89 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-planUML" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/study.github.io/2020/05/16/planUML/">Mac-VSCODE-plantUML</a>
+    </h1>
+  
+
+        
+        <a href="/study.github.io/2020/05/16/planUML/" class="archive-article-date">
+  	<time datetime="2020-05-16T03:40:59.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-05-16</time>
+</a>
+        
+      </header>
+    
+<!-- 目录内容 -->
+
+<!-- 目录内容结束 -->
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>VSCODE的Extension中搜索PlantUML，进行安装。</p>
+<p>新建test.puml文件，在文件中写入相应脚本。可以在官网中找到文档和在线服务。</p>
+<p>链接：<a href="https://plantuml.com/" target="_blank" rel="noopener">https://plantuml.com/</a></p>
+<p>编写好脚本后，按<code>alt+D</code>生成preview。</p>
+<p>若想保存，则在脚本中右键<code>Export Current Diagram</code>，并在弹出的边框中选择图片类型，如png/svg/eps等。</p>
+<p>调整大小字体<br>转自：<a href="https://blog.csdn.net/zh_weir/article/details/72675013" target="_blank" rel="noopener">https://blog.csdn.net/zh_weir/article/details/72675013</a></p>
+<p>可以使用Creole和HTML格式，通过<code>**&lt;size:20&gt;我要还钱&lt;/size&gt;**</code>对消息进行加粗并定义字体大小，同时结合<code>skinparam MaxMessageSize 280</code>可控制图片大小。</p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">2020</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/study.github.io/2020/05/16/planUML/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-python-matplotlib-accumulative" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -1194,101 +1277,9 @@
 
 
   
-    <article id="post-git-proxy" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/study.github.io/2020/04/05/git-proxy/">git-proxy</a>
-    </h1>
-  
-
-        
-        <a href="/study.github.io/2020/04/05/git-proxy/" class="archive-article-date">
-  	<time datetime="2020-04-05T13:36:36.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-04-05</time>
-</a>
-        
-      </header>
-    
-<!-- 目录内容 -->
-
-<!-- 目录内容结束 -->
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="git设置、查看、取消代理"><a href="#git设置、查看、取消代理" class="headerlink" title="git设置、查看、取消代理"></a>git设置、查看、取消代理</h1><ul>
-<li>设置代理：</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git config --global http.proxy &apos;socks5://127.0.0.1:1080&apos; </span><br><span class="line">git config --global https.proxy &apos;socks5://127.0.0.1:1080&apos;</span><br></pre></td></tr></table></figure>
-<ul>
-<li>查看代理：</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git config --global --get http.proxy</span><br><span class="line">git config --global --get https.proxy</span><br></pre></td></tr></table></figure>
-<ul>
-<li>取消代理：</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git config --global --unset http.proxy</span><br><span class="line">git config --global --unset https.proxy</span><br></pre></td></tr></table></figure>
-<ul>
-<li>针对docker容器的代理配置：</li>
-</ul>
-<p>在创建(run)容器的时候，加上 <code>--net=host</code>选项</p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">2020</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/study.github.io/2020/04/05/git-proxy/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
   
     <nav id="page-nav">
-      <a class="extend prev" rel="prev" href="/study.github.io/">&laquo; Prev</a><a class="page-number" href="/study.github.io/">1</a><span class="page-number current">2</span><a class="page-number" href="/study.github.io/page/3/">3</a><a class="page-number" href="/study.github.io/page/4/">4</a><a class="extend next" rel="next" href="/study.github.io/page/3/">Next &raquo;</a>
+      <a class="extend prev" rel="prev" href="/study.github.io/">&laquo; Prev</a><a class="page-number" href="/study.github.io/">1</a><span class="page-number current">2</span><a class="page-number" href="/study.github.io/page/3/">3</a><a class="page-number" href="/study.github.io/page/4/">4</a><a class="page-number" href="/study.github.io/page/5/">5</a><a class="extend next" rel="next" href="/study.github.io/page/3/">Next &raquo;</a>
     </nav>
   
 
@@ -1402,15 +1393,15 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">Heroku</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">2020</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">Hadoop</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">Heroku</a>
               </li>
              
               <li class="article-tag-list-item">
