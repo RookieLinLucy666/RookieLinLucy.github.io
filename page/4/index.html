@@ -153,6 +153,98 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-git本地账号切换" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/study.github.io/2020/03/03/git本地账号切换/">git本地账号切换</a>
+    </h1>
+  
+
+        
+        <a href="/study.github.io/2020/03/03/git本地账号切换/" class="archive-article-date">
+  	<time datetime="2020-03-03T12:34:50.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-03-03</time>
+</a>
+        
+      </header>
+    
+<!-- 目录内容 -->
+
+<!-- 目录内容结束 -->
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>1.设置全局用户名和邮箱</p>
+<p><code>git config --global user.name &quot;username&quot;</code></p>
+<p><code>git config --global user.email &quot;useremail&quot;</code></p>
+<p>2.ssh密钥</p>
+<p>若已生成ssh密钥</p>
+<p><code>cp -R ~/.ssh ~/.ssh_backup</code>        备份</p>
+<p><code>rm -r ~/.ssh</code>        删除</p>
+<p><code>ssh-keygen -t rsa -C &quot;useremail&quot;</code>        生成密钥对 id_rsa 和 id_rsa.pub</p>
+<p><code>ssh-add -K ~/.ssh/id_rsa</code>        添加密钥到ssh</p>
+<p>在github的setting中添加ssh密钥，即 id_rsa.pub文件中的内容</p>
+<p>3.查看账号信息</p>
+<p><code>git config --list</code></p>
+<p>4.验证权限</p>
+<p><code>ssh -T git@github.com</code> </p>
+<p><code>Hi username! You&#39;ve successfully authenticated, but GitHub does not provide shell access.</code></p>
+<p>此时成功</p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">2020</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/study.github.io/2020/03/03/git本地账号切换/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-hexo常见命令" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -1649,94 +1741,6 @@
 
 
   
-    <article id="post-Mac-OS-X-安装Hadoop" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/study.github.io/2019/05/18/Mac-OS-X-安装Hadoop/">Mac OS X 安装Hadoop</a>
-    </h1>
-  
-
-        
-        <a href="/study.github.io/2019/05/18/Mac-OS-X-安装Hadoop/" class="archive-article-date">
-  	<time datetime="2019-05-18T01:04:08.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-05-18</time>
-</a>
-        
-      </header>
-    
-<!-- 目录内容 -->
-
-<!-- 目录内容结束 -->
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="Mac安装JDK"><a href="#Mac安装JDK" class="headerlink" title="Mac安装JDK"></a>Mac安装JDK</h1><p>##下载安装JDK</p>
-<ul>
-<li><a href="https://www.oracle.com/technetwork/java/javase/downloads/index.html" target="_blank" rel="noopener">进入Oracle官网</a></li>
-<li>找到Java SE 8u211，点击Download下载JDK</li>
-<li>选择Accept License Agreement，登录Oracle账号(可免费申请)，点击Mac OS X x64选项即可下载</li>
-</ul>
-        
-          <a class="article-more-a" href="/study.github.io/2019/05/18/Mac-OS-X-安装Hadoop/#more">more >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">2019</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">Hadoop</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/study.github.io/2019/05/18/Mac-OS-X-安装Hadoop/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
   
     <nav id="page-nav">
       <a class="extend prev" rel="prev" href="/study.github.io/page/3/">&laquo; Prev</a><a class="page-number" href="/study.github.io/">1</a><a class="page-number" href="/study.github.io/page/2/">2</a><a class="page-number" href="/study.github.io/page/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/study.github.io/page/5/">5</a><a class="extend next" rel="next" href="/study.github.io/page/5/">Next &raquo;</a>
@@ -1849,7 +1853,7 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">codewar</a>
+                <a href="javascript:void(0)" class="js-tag color2">Heroku</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1861,7 +1865,7 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">Heroku</a>
+                <a href="javascript:void(0)" class="js-tag color3">codewar</a>
               </li>
              
               <li class="article-tag-list-item">
